@@ -19,7 +19,7 @@
   .cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
   .cats button { border: 2px solid var(--borde); background: #fff; border-radius: 12px; padding: 8px 4px; font-size: 15px; font-weight: 800; }
   .cats button.si { background: var(--texto); border-color: var(--texto); color: #fff; }
-  .aviso { margin: 0; text-align: center; font-size: 14px; color: var(--gris); font-weight: 700; }
+  .aviso { margin: 0; text-align: center; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--gris); font-weight: 700; }
 
   #kits { flex: 1; min-height: 0; display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 8px; touch-action: pan-y; }
   #kits.entra { animation: entra .25s ease-out; }
@@ -33,12 +33,23 @@
   .puntos i { width: 7px; height: 7px; border-radius: 50%; background: #0003; }
   .puntos i.ver { background: var(--verde); }
   .dibujo { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: clamp(34px, 9vh, 64px); }
-  .info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 4px; }
-  .info h3 { flex-shrink: 0; margin: 0; font-size: 17px; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .info h3 { flex-shrink: 0; margin: 0; font-size: 16px; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .incluye { flex: 1; min-height: 0; overflow: hidden; margin: 0; padding: 0; list-style: none; font-size: 13.5px; line-height: 1.3; color: #3d3d42; }
+  .incluye li { padding-left: 1.1em; text-indent: -1.1em; }
+  .incluye li::before { content: "✓ "; color: var(--verde); font-weight: 900; }
+  .incluye li.mas { color: var(--verde); font-weight: 800; } .incluye li.mas::before { content: ""; }
+  .abajo { flex-shrink: 0; display: flex; align-items: center; gap: 6px; }
   .etiqueta { position: absolute; top: 4px; left: 4px; background: #ffd54f; border-radius: 6px; padding: 1px 7px; font-size: 12px; font-weight: 800; }
-  @media (max-height: 700px) { .info h3 { font-size: 16px; -webkit-line-clamp: 1; } .precio { font-size: 20px !important; } .quiero { padding: 8px 6px !important; } }
-  .precio { margin: 0; font-size: 22px; font-weight: 900; }
-  .quiero { border: 0; border-radius: 10px; background: var(--verde); color: #fff; font-size: 17px; font-weight: 800; padding: 10px 6px; }
+  @media (max-height: 700px) {
+    #lista { gap: 6px; padding-top: 6px; }
+    .arriba h1 { font-size: 17px; } .wa { padding: 7px 9px; font-size: 15px; }
+    .cats { gap: 5px; } .cats button { padding: 6px 2px; font-size: 13px; white-space: nowrap; }
+    .info h3 { -webkit-line-clamp: 1; } .incluye { font-size: 12.5px; line-height: 1.25; } .quiero { padding: 7px 4px !important; }
+    .paginas button { padding: 10px 6px; font-size: 16px; } .kit { padding: 6px; }
+  }
+  .precio { margin: 0; font-size: 18px; font-weight: 900; white-space: nowrap; }
+  .quiero { flex: 1; border: 0; border-radius: 10px; background: var(--verde); color: #fff; font-size: 15px; font-weight: 800; padding: 9px 4px; white-space: nowrap; }
 
   .paginas { display: flex; align-items: center; gap: 8px; }
   .paginas button { flex: 1; border: 0; border-radius: 12px; padding: 13px 6px; font-size: 18px; font-weight: 800; background: #1565c0; color: #fff; }
@@ -90,7 +101,7 @@
     <a class="wa" href="https://wa.me/595992500100" target="_blank" rel="noopener">💬 0992 500 100</a>
   </div>
   <div class="cats" id="cats"></div>
-  <p class="aviso">🚚 Delivery en CDE y hasta 20 km, incluido en el precio</p>
+  <p class="aviso">🚚 Delivery incluido · CDE y hasta 20 km</p>
   <div id="kits"></div>
   <div class="paginas">
     <button id="ant">◀ Anteriores</button>
@@ -211,7 +222,7 @@ function prepararKits(texto) {
     .map((k) => ({
       id: k.id, nombre: k.nombre, categoria: k.categoria, precio: Number(k.precio), etiqueta: k.etiqueta,
       destacado: /^(si|sí)$/i.test(k.destacado),
-      trae: k.productos.split(/\s*[|+]\s*/).filter(Boolean),
+      trae: k.productos.split(/\s*\|\s*/).filter(Boolean),
       fotos: [k.foto1, k.foto2, k.foto3, k.foto4].filter((f) => f && /^https?:/.test(f) && !FOTOS_BLOQUEADAS.some((b) => f.includes(b))),
     }))
     .sort((a, b) => (b.destacado - a.destacado) || (a.precio - b.precio));
@@ -263,10 +274,14 @@ function mostrarPagina(direccion) {
         : dibujo(k)}${k.etiqueta ? `<span class="etiqueta">${k.etiqueta}</span>` : ""}</div>
       <div class="info">
         <h3>${k.nombre}</h3>
-        <p class="precio">${gs(k.precio)}</p>
-        <button class="quiero" onclick="pedir('${k.id}')">Quiero este kit</button>
+        <ul class="incluye">${k.trae.map((t) => `<li>${t}</li>`).join("")}</ul>
+        <div class="abajo">
+          <p class="precio">${gs(k.precio)}</p>
+          <button class="quiero" onclick="pedir('${k.id}')">Lo quiero</button>
+        </div>
       </div>
     </article>`).join("");
+  ajustarIncluye();
   $("num").textContent = `${pagina + 1} de ${paginas()}`;
   $("ant").disabled = pagina === 0;
   $("sig").disabled = pagina >= paginas() - 1;
@@ -274,6 +289,19 @@ function mostrarPagina(direccion) {
   // adelanta las fotos de la página siguiente para que aparezcan al instante
   lista.slice(desde + 3, desde + 6).forEach((k) => k.fotos.forEach((f) => { new Image().src = f; }));
 }
+// Si en un celular chico no entran todos los productos del kit, el último renglón dice "+ N más".
+function ajustarIncluye() {
+  document.querySelectorAll("#kits .incluye").forEach((ul) => {
+    const lis = [...ul.children], fin = ul.getBoundingClientRect().bottom + 1;
+    const fuera = lis.filter((li) => li.getBoundingClientRect().bottom > fin);
+    if (!fuera.length) return;
+    const ocultar = fuera.length + 1, quedan = lis.length - ocultar;
+    lis.slice(quedan).forEach((li) => li.remove());
+    ul.insertAdjacentHTML("beforeend", `<li class="mas">+ ${ocultar} producto${ocultar > 1 ? "s" : ""} más</li>`);
+  });
+}
+addEventListener("resize", () => { if (!$("lista").hidden) mostrarPagina(0); });
+
 function irA(n) { if (n < 0 || n >= paginas() || n === pagina) return; const d = n > pagina ? 1 : -1; pagina = n; mostrarPagina(d); }
 $("ant").onclick = () => irA(pagina - 1);
 $("sig").onclick = () => irA(pagina + 1);
