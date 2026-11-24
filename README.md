@@ -1,0 +1,12 @@
+# Tu Centro de Compras
+
+Tienda de kits: https://tucentrodecompras.gedepla.workers.dev
+
+- `publico/index.html` es toda la tienda (un solo archivo).
+- Los precios y el stock los pone solo el motor: https://motor-kits.gedepla.workers.dev/kits.csv
+- Cada cambio que se sube a este repositorio se publica solo en Cloudflare (Workers Builds).
+
+Cómo funciona para el cliente:
+1. Elige una categoría (arranca en "Más vendidos") y ve 3 kits por pantalla; "Siguientes" o deslizar para ver más.
+2. Toca "Quiero este kit", pone nombre, ciudad, ubicación y forma de pago (transferencia o QR).
+3. El pedido llega armado al WhatsApp 0992 500 100.

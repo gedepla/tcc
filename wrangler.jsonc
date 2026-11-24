@@ -1,0 +1,6 @@
+{
+  // Tienda "Tu Centro de Compras": página estática en Cloudflare Workers.
+  "name": "tucentrodecompras",
+  "compatibility_date": "2026-06-01",
+  "assets": { "directory": "./publico" }
+}
