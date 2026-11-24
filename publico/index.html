@@ -48,6 +48,17 @@
     .info h3 { -webkit-line-clamp: 1; } .incluye { font-size: 12.5px; line-height: 1.25; } .quiero { padding: 7px 4px !important; }
     .paginas button { padding: 10px 6px; font-size: 16px; } .kit { padding: 6px; }
   }
+  /* celulares muy chicos: se achica lo de arriba para que entren 3 líneas de descripción */
+  @media (max-height: 600px) {
+    #lista { gap: 5px; padding: 5px 8px 6px; }
+    .arriba h1 { font-size: 15px; } .arriba h1 br { display: none; } .wa { padding: 6px 8px; font-size: 13px; }
+    .aviso { display: none; }
+    .cats button { padding: 5px 2px; font-size: 12px; }
+    .paginas button { padding: 8px 4px; font-size: 15px; }
+    .foto { max-width: 34%; } .precio { font-size: 16px; } .quiero { font-size: 14px; padding: 6px 4px !important; }
+    .info { gap: 2px; } .info h3 { font-size: 14px; } .incluye { font-size: 12px; line-height: 1.2; }
+    .cats button { padding: 4px 2px; } .kit { padding: 5px; }
+  }
   .precio { margin: 0; font-size: 18px; font-weight: 900; white-space: nowrap; }
   .quiero { flex: 1; border: 0; border-radius: 10px; background: var(--verde); color: #fff; font-size: 15px; font-weight: 800; padding: 9px 4px; white-space: nowrap; }
 
