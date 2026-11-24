@@ -148,7 +148,7 @@ export function calcularKits(lecturas, anteriores = {}) {
       if (l.imagen && !fotos.includes(l.imagen)) fotos.push(l.imagen);
     }
     const precio = motivos.some((m) => /no se pudo|no está|no definido|falta|no existe|no publica|respondió|tardó|todavía|subrequests/.test(m)) ? null : precioDeVenta(costo, kit.categoria);
-    if (precio && precio > CONFIG.precioMaximo) motivos.push(`precio ${precio} supera el máximo de ${CONFIG.precioMaximo}`);
+    if (precio && CONFIG.precioMaximo && precio > CONFIG.precioMaximo) motivos.push(`precio ${precio} supera el máximo de ${CONFIG.precioMaximo}`);
     const activo = motivos.length === 0;
     if (!activo) alertas.push({ kit: kit.id, nombre: kit.nombre, motivos });
     const ganancia = precio ? precio - costo - fijos() : null;

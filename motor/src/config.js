@@ -16,7 +16,7 @@ export const CONFIG = {
   costoPublicidad: 0,     // publicidad promedio por venta
 
   // Frenos automáticos
-  precioMaximo: 300000,   // si el kit pasa este precio, se oculta
+  precioMaximo: 0,        // 0 = sin tope. Si ponés un monto (ej. 300000), los kits más caros se ocultan
   alertaSubida: 0.2,      // si un producto sube más de 20 % de un día a otro, el kit se oculta ese día
 
   // Redondeo: los precios terminan en 9.000 (139.000, 149.000…)
