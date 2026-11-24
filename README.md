@@ -10,3 +10,6 @@ Cómo funciona para el cliente:
 1. Elige una categoría (arranca en "Más vendidos") y ve 3 kits por pantalla; "Siguientes" o deslizar para ver más.
 2. Toca "Quiero este kit", pone nombre, ciudad, ubicación y forma de pago (transferencia o QR).
 3. El pedido llega armado al WhatsApp 0992 500 100.
+
+## Cómo publicar un cambio
+Se edita `publico/index.html` y se sube a la rama `main`: Cloudflare la publica sola en 1 o 2 minutos.
