@@ -73,8 +73,16 @@
   #pedido { max-width: 560px; margin: 0 auto; padding: 12px 16px 40px; }
   .boton { display: block; width: 100%; border: 0; border-radius: 14px; background: var(--verde); color: #fff; font-size: 21px; font-weight: 800; padding: 16px; }
   .boton.claro { background: #fff; color: var(--texto); border: 2px solid var(--borde); font-size: 19px; }
-  .elegido { background: #fff; border: 2px solid var(--verde); border-radius: 16px; padding: 14px 16px; margin: 14px 0; }
-  .elegido h3 { margin: 0; font-size: 21px; }
+  .carrito-btn { background: #ff9800; color: #fff; border: 0; border-radius: 12px; padding: 9px 11px; font-size: 16px; font-weight: 900; white-space: nowrap; }
+  .carrito-btn.salta { animation: salta .5s ease 2; }
+  @keyframes salta { 50% { transform: scale(1.18); } }
+  h2.tit { font-size: 23px; margin: 16px 0 8px; }
+  .item { background: #fff; border: 2px solid var(--verde); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; }
+  .item h3 { margin: 0; font-size: 19px; }
+  .item .fila { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+  .item .sub { font-size: 20px; font-weight: 900; margin-left: auto; }
+  .quitar { border: 0; background: none; color: var(--rojo); font-weight: 800; font-size: 16px; padding: 8px 0; }
+  .vacio-msg { text-align: center; color: var(--gris); font-size: 19px; margin: 30px 0; }
   .trae { margin: 6px 0; padding-left: 22px; color: var(--gris); font-size: 16px; }
   .incl { color: var(--verde); font-weight: 700; margin: 0; }
   .cant { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
@@ -111,6 +119,7 @@
 <main id="lista">
   <div class="arriba">
     <h1>🎁 Tu Centro <br>de Compras</h1>
+    <button class="carrito-btn" id="verCarrito" hidden>🛒 <span id="nCarrito">0</span></button>
     <a class="wa" href="https://wa.me/595992500100" target="_blank" rel="noopener">💬 0992 500 100</a>
   </div>
   <div class="cats" id="cats"></div>
@@ -127,18 +136,9 @@
 <main id="pedido" hidden>
   <button class="boton claro" id="volver">← Volver a los kits</button>
 
-  <div class="elegido">
-    <div class="ayuda">Elegiste:</div>
-    <h3 id="pNombre"></h3>
-    <ul class="trae" id="pTrae"></ul>
-    <p class="incl" id="pPrecio"></p>
-    <div class="cant">
-      <span style="font-weight:700">Cantidad:</span>
-      <button type="button" id="menos" aria-label="Uno menos">−</button>
-      <output id="cantidad">1</output>
-      <button type="button" id="mas" aria-label="Uno más">+</button>
-    </div>
-  </div>
+  <h2 class="tit">🛒 Tu pedido</h2>
+  <div id="items"></div>
+  <button type="button" class="boton claro" id="agregarOtro">➕ Agregar otro kit</button>
 
   <label for="nombre">1. Tu nombre</label>
   <input id="nombre" autocomplete="name" placeholder="Ej: María González">
@@ -212,7 +212,7 @@ const DIBUJO = { longevidad: ["💊", "#e8f5e9"], cabello: ["💇", "#fff3e0"], 
 const $ = (id) => document.getElementById(id);
 const gs = (n) => n.toLocaleString("es-PY") + " Gs";
 let kits = [], categoria = "vendidos", pagina = 0;
-let elegido = null, cantidad = 1, pago = "", ubicacion = "", ciudad = "", barrio = "", km = null;
+let carrito = [], pago = "", ubicacion = "", ciudad = "", barrio = "", km = null;
 
 // --- leer la planilla (CSV) ---
 function leerCSV(texto) {
@@ -329,21 +329,49 @@ $("kits").addEventListener("touchend", (e) => {
 });
 
 // --- pantalla de pedido ---
-function pedir(id) {
-  elegido = kits.find((k) => k.id === id); cantidad = 1;
-  $("pNombre").textContent = elegido.nombre;
-  $("pTrae").innerHTML = elegido.trae.map((t) => `<li>${t}</li>`).join("");
-  $("pPrecio").textContent = gs(elegido.precio) + " · envío incluido";
-  actualizarTotal(); $("error").hidden = true;
-  $("lista").hidden = true; $("pedido").hidden = false; scrollTo(0, 0);
-  history.pushState({ pedido: true }, "");
-}
-$("volver").onclick = () => history.back();
-addEventListener("popstate", () => { $("pedido").hidden = true; $("lista").hidden = false; });
+// --- carrito: "Lo quiero" suma el kit y abre "Tu pedido" ---
+try { carrito = JSON.parse(localStorage.getItem("carrito") || "[]"); } catch (e) { carrito = []; }
+const guardar = () => { try { localStorage.setItem("carrito", JSON.stringify(carrito)); } catch (e) {} };
+const enCarrito = () => carrito.map((c) => ({ ...c, kit: kits.find((k) => k.id === c.id) })).filter((c) => c.kit);
+const totalCarrito = () => enCarrito().reduce((t, c) => t + c.kit.precio * c.cant, 0);
 
-function actualizarTotal() { $("cantidad").value = cantidad; $("total").textContent = "Total: " + gs(elegido.precio * cantidad); }
-$("menos").onclick = () => { if (cantidad > 1) { cantidad--; actualizarTotal(); } };
-$("mas").onclick = () => { if (cantidad < 10) { cantidad++; actualizarTotal(); } };
+function pintarCarrito() {
+  const lista = enCarrito(), n = lista.reduce((t, c) => t + c.cant, 0);
+  $("nCarrito").textContent = n; $("verCarrito").hidden = n === 0;
+  $("items").innerHTML = lista.map((c) => `
+    <div class="item">
+      <h3>${c.kit.nombre}</h3>
+      <ul class="trae">${c.kit.trae.map((t) => `<li>${t}</li>`).join("")}</ul>
+      <div class="fila cant">
+        <button type="button" onclick="cambiar('${c.id}',-1)" aria-label="Uno menos">−</button>
+        <output>${c.cant}</output>
+        <button type="button" onclick="cambiar('${c.id}',1)" aria-label="Uno más">+</button>
+        <span class="sub">${gs(c.kit.precio * c.cant)}</span>
+      </div>
+      <button type="button" class="quitar" onclick="cambiar('${c.id}',-99)">🗑 Quitar</button>
+    </div>`).join("") || `<p class="vacio-msg">Todavía no elegiste ningún kit.</p>`;
+  $("total").innerHTML = n ? `Total: ${gs(totalCarrito())}<div class="incl" style="font-size:16px">🚚 envío incluido</div>` : "";
+}
+function cambiar(id, d) {
+  const c = carrito.find((x) => x.id === id); if (!c) return;
+  c.cant = Math.min(10, c.cant + d);
+  if (c.cant <= 0) carrito = carrito.filter((x) => x.id !== id);
+  guardar(); pintarCarrito();
+}
+function abrirPedido() {
+  pintarCarrito(); $("error").hidden = true;
+  if ($("pedido").hidden) { $("lista").hidden = true; $("pedido").hidden = false; history.pushState({ pedido: true }, ""); }
+  scrollTo(0, 0);
+}
+function pedir(id) {
+  const c = carrito.find((x) => x.id === id);
+  if (c) c.cant = Math.min(10, c.cant + 1); else carrito.push({ id, cant: 1 });
+  guardar(); abrirPedido();
+  $("verCarrito").classList.remove("salta"); void $("verCarrito").offsetWidth; $("verCarrito").classList.add("salta");
+}
+$("verCarrito").onclick = abrirPedido;
+$("volver").onclick = $("agregarOtro").onclick = () => history.back();
+addEventListener("popstate", () => { $("pedido").hidden = true; $("lista").hidden = false; pintarCarrito(); mostrarPagina(0); });
 
 $("ciudades").innerHTML = CIUDADES.map((c) => `<button type="button" data-ciudad="${c}">${c}</button>`).join("");
 document.querySelectorAll("[data-ciudad]").forEach((b) => b.onclick = () => {
@@ -386,7 +414,7 @@ $("gps").onclick = () => {
 $("enviar").onclick = () => {
   const nombre = $("nombre").value.trim(), dir = $("direccion").value.trim();
   const zona = barrio || $("otroBarrio").value.trim();
-  const falta = !nombre ? "Escribí tu nombre." : !ciudad ? "Tocá tu ciudad." : !zona ? "Tocá tu barrio (o escribilo en “Otro barrio”)."
+  const falta = !enCarrito().length ? "Tu pedido está vacío. Tocá “➕ Agregar otro kit”." : !nombre ? "Escribí tu nombre." : !ciudad ? "Tocá tu ciudad." : !zona ? "Tocá tu barrio (o escribilo en “Otro barrio”)."
     : !ubicacion ? "Falta tu ubicación: tocá el botón azul “📍 Tocá acá para mandar tu ubicación”. Sin ubicación no se puede completar el pedido."
     : km > RADIO_KM ? `Tu ubicación está a más de ${RADIO_KM} km de CDE. Por ahora no llegamos ahí.` : !pago ? "Elegí cómo vas a pagar." : "";
   if (falta && !ubicacion && nombre && ciudad && zona) $("gps").scrollIntoView({ behavior: "smooth", block: "center" });
@@ -394,8 +422,8 @@ $("enviar").onclick = () => {
   $("error").hidden = true;
   const texto = [
     "¡Hola! Quiero hacer este pedido:",
-    `🎁 ${elegido.nombre} x${cantidad}`,
-    `💰 Total: ${gs(elegido.precio * cantidad)} (envío incluido)`,
+    ...enCarrito().map((c) => `🎁 ${c.kit.nombre} x${c.cant} = ${gs(c.kit.precio * c.cant)}`),
+    `💰 Total: ${gs(totalCarrito())} (envío incluido)`,
     `👤 Nombre: ${nombre}`,
     `🏙️ Ciudad: ${ciudad}`,
     `🏘️ Barrio: ${zona}`,
@@ -403,6 +431,7 @@ $("enviar").onclick = () => {
     `📍 Ubicación: ${ubicacion} (a ${Math.round(km)} km del centro)`,
     `💳 Pago: ${pago}`,
   ].filter(Boolean).join("\n");
+  carrito = []; guardar();   // el pedido ya salió: el carrito queda vacío para la próxima
   location.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
 };
 // el aviso rojo se borra apenas la persona corrige algo
@@ -414,7 +443,7 @@ function cargar(texto) {
   kits = nuevos;
   if (!kitsDe(categoria).length) categoria = CATEGORIAS.find(([c]) => kitsDe(c).length)?.[0] || "vendidos";
   pagina = Math.min(pagina, paginas() - 1);
-  mostrarCategorias(); mostrarPagina(0);
+  mostrarCategorias(); mostrarPagina(0); pintarCarrito();
 }
 cargar(RESPALDO);
 fetch(CATALOGO, { cache: "no-store" }).then((r) => r.ok ? r.text() : Promise.reject()).then(cargar).catch(() => {});
