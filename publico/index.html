@@ -65,6 +65,14 @@
   .ciudades { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .ciudades button { padding: 14px 6px; font-size: 18px; font-weight: 800; border-radius: 12px; border: 3px solid var(--borde); background: #fff; }
   .ciudades button.si { border-color: var(--verde); background: #e8f7ee; }
+  .barrios { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 320px; overflow-y: auto; padding: 2px; }
+  .barrios button { padding: 12px 6px; font-size: 16px; font-weight: 700; border-radius: 10px; border: 2px solid var(--borde); background: #fff; }
+  .barrios button.si { border-color: var(--verde); background: #e8f7ee; font-weight: 800; }
+  .obligatorio { background: #fff3e0; border: 3px solid #ef6c00; border-radius: 16px; padding: 14px; margin-top: 8px; }
+  .obligatorio p { margin: 0 0 10px; font-weight: 800; color: #b23c00; font-size: 17px; }
+  .gps { font-size: 23px; padding: 20px; animation: late 1.6s ease-in-out infinite; }
+  .gps.listo { animation: none; }
+  @keyframes late { 50% { transform: scale(1.03); box-shadow: 0 0 0 6px #1565c033; } }
   .pagos { display: flex; gap: 10px; }
   .pagos button { flex: 1; padding: 16px 8px; font-size: 19px; font-weight: 800; border-radius: 12px; border: 3px solid var(--borde); background: #fff; }
   .pagos button.si { border-color: var(--verde); background: #e8f7ee; }
@@ -115,12 +123,21 @@
   <div class="ciudades" id="ciudades"></div>
   <p class="ayuda">Por ahora entregamos solo en Ciudad del Este y hasta 20 km. Pronto a todo el país.</p>
 
-  <label>3. ¿Dónde te entregamos?</label>
-  <button type="button" class="boton gps" id="gps">📍 Mandar mi ubicación</button>
-  <p class="ayuda" id="gpsMsg">Tocá el botón y aceptá el permiso. Así el delivery te encuentra fácil.</p>
-  <textarea id="direccion" rows="3" placeholder="Calle, número de casa y una referencia. Ej: frente a la despensa Don Juan" style="margin-top:12px"></textarea>
+  <div id="pasoBarrio" hidden>
+    <label>3. Tu barrio, colonia o km</label>
+    <div class="barrios" id="barrios"></div>
+    <input id="otroBarrio" placeholder="Escribí tu barrio o colonia" style="margin-top:10px" hidden>
+  </div>
 
-  <label>4. ¿Cómo vas a pagar?</label>
+  <label>4. Tu ubicación GPS</label>
+  <div class="obligatorio">
+    <p>⚠️ Obligatorio: sin tu ubicación no se puede completar el pedido.</p>
+    <button type="button" class="boton gps" id="gps">📍 Tocá acá para mandar tu ubicación</button>
+    <p class="ayuda" id="gpsMsg" style="font-weight:600;color:var(--gris);margin:10px 0 0">Tocá el botón azul y cuando el celular pregunte, tocá <b>“Permitir”</b>. Así el delivery llega directo a tu casa.</p>
+  </div>
+  <textarea id="direccion" rows="2" placeholder="Referencia (opcional). Ej: casa de rejas verdes, frente a la despensa Don Juan" style="margin-top:12px"></textarea>
+
+  <label>5. ¿Cómo vas a pagar?</label>
   <div class="pagos">
     <button type="button" data-pago="Transferencia">🏦 Transferencia</button>
     <button type="button" data-pago="QR">📱 QR</button>
@@ -141,7 +158,18 @@ const POR_PAGINA = 3;
 // Zona de entrega: 20 km alrededor del centro de Ciudad del Este.
 const CENTRO = { lat: -25.5097, lng: -54.6111 };   // microcentro de CDE
 const RADIO_KM = 20;
-const CIUDADES = ["Ciudad del Este", "Presidente Franco", "Hernandarias", "Minga Guazú"];
+// Barrios, colonias y km de cada ciudad (dentro de los 20 km). "Otro barrio" deja escribirlo.
+const BARRIOS = {
+  "Ciudad del Este": ["Microcentro", "Área 1", "Área 2", "Área 3", "Área 4", "Área 5", "Área 6", "Belén", "Boquerón", "Carolina",
+    "Che La Reina", "Ciudad Nueva", "Don Bosco", "Fracción El Bosque", "Juan Pablo II", "Las Carmelitas", "María Auxiliadora",
+    "Obrero", "Pablo Rojas", "Remansito", "San Agustín", "San Antonio", "San Blas", "San Isidro", "San José", "San Juan",
+    "San Rafael", "Santa Ana", "23 de Octubre", "Km 1 a 4 Monday", "Km 5 a 8 Monday", "Km 9 a 12 Monday", "Km 3 a 8 Acaray", "Km 9 a 12 Acaray"],
+  "Presidente Franco": ["Centro", "San Antonio", "Las Mercedes", "Fray Luis de Bolaños", "San Rafael", "Fátima", "Puerto Jiménez",
+    "Puerto Flores", "Paso Itá", "Tres Fronteras", "Saltos del Monday"],
+  "Hernandarias": ["Centro", "San Miguel", "Santa Teresa", "Santa Bárbara", "Paraná Country Club", "Supercarretera"],
+  "Minga Guazú": ["Km 14", "Km 15", "Km 16", "Km 17 lado Acaray", "Km 17 lado Monday", "Km 18", "Km 19", "Km 20", "Minga Poty"],
+};
+const CIUDADES = Object.keys(BARRIOS);
 function kmDesdeCDE(lat, lng) {
   const r = Math.PI / 180, dLat = (lat - CENTRO.lat) * r, dLng = (lng - CENTRO.lng) * r;
   const a = Math.sin(dLat / 2) ** 2 + Math.cos(CENTRO.lat * r) * Math.cos(lat * r) * Math.sin(dLng / 2) ** 2;
@@ -160,7 +188,7 @@ const DIBUJO = { longevidad: ["💊", "#e8f5e9"], cabello: ["💇", "#fff3e0"], 
 const $ = (id) => document.getElementById(id);
 const gs = (n) => n.toLocaleString("es-PY") + " Gs";
 let kits = [], categoria = "vendidos", pagina = 0;
-let elegido = null, cantidad = 1, pago = "", ubicacion = "", ciudad = "", km = null;
+let elegido = null, cantidad = 1, pago = "", ubicacion = "", ciudad = "", barrio = "", km = null;
 
 // --- leer la planilla (CSV) ---
 function leerCSV(texto) {
@@ -278,8 +306,19 @@ $("mas").onclick = () => { if (cantidad < 10) { cantidad++; actualizarTotal(); }
 
 $("ciudades").innerHTML = CIUDADES.map((c) => `<button type="button" data-ciudad="${c}">${c}</button>`).join("");
 document.querySelectorAll("[data-ciudad]").forEach((b) => b.onclick = () => {
-  ciudad = b.dataset.ciudad;
+  ciudad = b.dataset.ciudad; barrio = "";
   document.querySelectorAll("[data-ciudad]").forEach((x) => x.classList.toggle("si", x === b));
+  $("barrios").innerHTML = [...BARRIOS[ciudad], "✏️ Otro barrio"].map((n) => `<button type="button" data-barrio="${n}">${n}</button>`).join("");
+  $("otroBarrio").hidden = true; $("otroBarrio").value = ""; $("pasoBarrio").hidden = false; $("barrios").scrollTop = 0;
+  $("pasoBarrio").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+$("barrios").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-barrio]"); if (!b) return;
+  $("error").hidden = true;
+  document.querySelectorAll("[data-barrio]").forEach((x) => x.classList.toggle("si", x === b));
+  const otro = b.dataset.barrio.startsWith("✏️");
+  barrio = otro ? "" : b.dataset.barrio;
+  $("otroBarrio").hidden = !otro; if (otro) $("otroBarrio").focus();
 });
 
 document.querySelectorAll("[data-pago]").forEach((b) => b.onclick = () => {
@@ -288,24 +327,28 @@ document.querySelectorAll("[data-pago]").forEach((b) => b.onclick = () => {
 });
 
 $("gps").onclick = () => {
-  if (!navigator.geolocation) { $("gpsMsg").textContent = "Tu celular no deja mandar la ubicación. Escribí tu dirección abajo."; return; }
-  $("gps").textContent = "📍 Buscando…";
+  if (!navigator.geolocation) { $("gpsMsg").innerHTML = 'Tu celular no deja mandar la ubicación desde acá. <a href="https://wa.me/' + WHATSAPP + '">Escribinos por WhatsApp</a> y mandanos tu ubicación por ahí.'; return; }
+  $("gps").textContent = "📍 Buscando tu ubicación…";
   navigator.geolocation.getCurrentPosition((p) => {
     ubicacion = `https://maps.google.com/?q=${p.coords.latitude.toFixed(6)},${p.coords.longitude.toFixed(6)}`;
     km = kmDesdeCDE(p.coords.latitude, p.coords.longitude);
     $("gps").textContent = "✅ Ubicación lista"; $("gps").classList.add("listo");
     $("gpsMsg").textContent = km <= RADIO_KM
-      ? `Listo, estás a ${Math.round(km)} km del centro de CDE: llegamos. Igual podés escribir una referencia abajo.`
+      ? `✅ Listo, estás a ${Math.round(km)} km del centro de CDE: llegamos.`
       : `Estás a ${Math.round(km)} km de CDE. Por ahora entregamos solo hasta ${RADIO_KM} km. Escribinos por WhatsApp y te avisamos cuando lleguemos.`;
   }, () => {
-    $("gps").textContent = "📍 Mandar mi ubicación";
-    $("gpsMsg").textContent = "No se pudo. Activá la ubicación del celular o escribí tu dirección abajo.";
+    $("gps").textContent = "📍 Tocá de nuevo para mandar tu ubicación";
+    $("gpsMsg").innerHTML = "No se pudo. <b>1)</b> Bajá la barra de arriba del celular y prendé <b>Ubicación</b>. <b>2)</b> Tocá de nuevo el botón azul y elegí <b>“Permitir”</b>.";
   }, { enableHighAccuracy: true, timeout: 15000 });
 };
 
 $("enviar").onclick = () => {
   const nombre = $("nombre").value.trim(), dir = $("direccion").value.trim();
-  const falta = !nombre ? "Escribí tu nombre." : !ciudad ? "Tocá tu ciudad." : (km !== null && km > RADIO_KM) ? `Tu ubicación está a más de ${RADIO_KM} km de CDE. Por ahora no llegamos ahí.` : (!ubicacion && !dir) ? "Mandá tu ubicación o escribí tu dirección." : !pago ? "Elegí cómo vas a pagar." : "";
+  const zona = barrio || $("otroBarrio").value.trim();
+  const falta = !nombre ? "Escribí tu nombre." : !ciudad ? "Tocá tu ciudad." : !zona ? "Tocá tu barrio (o escribilo en “Otro barrio”)."
+    : !ubicacion ? "Falta tu ubicación: tocá el botón azul “📍 Tocá acá para mandar tu ubicación”. Sin ubicación no se puede completar el pedido."
+    : km > RADIO_KM ? `Tu ubicación está a más de ${RADIO_KM} km de CDE. Por ahora no llegamos ahí.` : !pago ? "Elegí cómo vas a pagar." : "";
+  if (falta && !ubicacion && nombre && ciudad && zona) $("gps").scrollIntoView({ behavior: "smooth", block: "center" });
   if (falta) { $("error").textContent = "⚠️ " + falta; $("error").hidden = false; return; }
   $("error").hidden = true;
   const texto = [
@@ -314,8 +357,9 @@ $("enviar").onclick = () => {
     `💰 Total: ${gs(elegido.precio * cantidad)} (envío incluido)`,
     `👤 Nombre: ${nombre}`,
     `🏙️ Ciudad: ${ciudad}`,
-    dir && `🏠 Dirección: ${dir}`,
-    ubicacion && `📍 Ubicación: ${ubicacion} (a ${Math.round(km)} km del centro)`,
+    `🏘️ Barrio: ${zona}`,
+    dir && `🏠 Referencia: ${dir}`,
+    `📍 Ubicación: ${ubicacion} (a ${Math.round(km)} km del centro)`,
     `💳 Pago: ${pago}`,
   ].filter(Boolean).join("\n");
   location.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
