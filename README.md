@@ -18,3 +18,5 @@ Se edita `publico/index.html` y se sube a la rama `main`: Cloudflare la publica 
 - 260 kits (`motor/src/kits.js`) con 308 productos de Seiva, Mega y Nissei (`motor/src/productos.js`).
 - Corre solo cada 10 minutos en https://motor-kits.gedepla.workers.dev y publica `/kits.csv`, `/kits.json` y `/reporte`.
 - Cada cambio en `motor/` que se sube a GitHub se publica solo.
+
+La carpeta `motor/` está conectada al Worker `motor-kits`: cada cambio ahí se publica solo.
