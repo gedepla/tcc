@@ -27,7 +27,11 @@
   .kit { display: flex; gap: 10px; min-height: 0; background: #fff; border: 2px solid var(--borde); border-radius: 14px; padding: 8px; overflow: hidden; }
   .kit.vacio { visibility: hidden; }
   .foto { position: relative; height: 100%; aspect-ratio: 1; flex-shrink: 0; max-width: 42%; border-radius: 10px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; }
-  .foto img { width: 100%; height: 100%; object-fit: contain; }
+  .foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .6s; }
+  .foto img.ver { opacity: 1; }
+  .puntos { position: absolute; bottom: 4px; left: 0; right: 0; display: flex; justify-content: center; gap: 4px; }
+  .puntos i { width: 7px; height: 7px; border-radius: 50%; background: #0003; }
+  .puntos i.ver { background: var(--verde); }
   .dibujo { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: clamp(34px, 9vh, 64px); }
   .info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 4px; }
   .info h3 { flex-shrink: 0; margin: 0; font-size: 17px; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -58,6 +62,9 @@
   .ayuda { color: var(--gris); font-size: 16px; margin: 6px 0 0; }
   .gps { background: #1565c0; }
   .gps.listo { background: var(--verde); }
+  .ciudades { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ciudades button { padding: 14px 6px; font-size: 18px; font-weight: 800; border-radius: 12px; border: 3px solid var(--borde); background: #fff; }
+  .ciudades button.si { border-color: var(--verde); background: #e8f7ee; }
   .pagos { display: flex; gap: 10px; }
   .pagos button { flex: 1; padding: 16px 8px; font-size: 19px; font-weight: 800; border-radius: 12px; border: 3px solid var(--borde); background: #fff; }
   .pagos button.si { border-color: var(--verde); background: #e8f7ee; }
@@ -75,7 +82,7 @@
     <a class="wa" href="https://wa.me/595992500100" target="_blank" rel="noopener">💬 0992 500 100</a>
   </div>
   <div class="cats" id="cats"></div>
-  <p class="aviso">🚚 Envío a todo el Paraguay incluido en el precio</p>
+  <p class="aviso">🚚 Delivery en CDE y hasta 20 km, incluido en el precio</p>
   <div id="kits"></div>
   <div class="paginas">
     <button id="ant">◀ Anteriores</button>
@@ -104,8 +111,9 @@
   <label for="nombre">1. Tu nombre</label>
   <input id="nombre" autocomplete="name" placeholder="Ej: María González">
 
-  <label for="ciudad">2. Tu ciudad</label>
-  <input id="ciudad" autocomplete="address-level2" placeholder="Ej: Luque">
+  <label>2. Tu ciudad</label>
+  <div class="ciudades" id="ciudades"></div>
+  <p class="ayuda">Por ahora entregamos solo en Ciudad del Este y hasta 20 km. Pronto a todo el país.</p>
 
   <label>3. ¿Dónde te entregamos?</label>
   <button type="button" class="boton gps" id="gps">📍 Mandar mi ubicación</button>
@@ -130,6 +138,16 @@ const CATALOGO = "https://motor-kits.gedepla.workers.dev/kits.csv";   // precios
 const RESPALDO = "id,destacado,categoria,nombre,productos,precio,etiqueta,foto1,foto2,foto3,foto4,activo\n1,si,longevidad,Kit Longevidad NAD+ y Resveratrol,NAD+ 120 cápsulas + resveratrol 120 cápsulas,229000,Más vendido,https://seiva.com.py/img/productos/nad120caps-resveratrol-120caps-combo.png,,,,si\n2,no,longevidad,Kit Longevidad Plus,NAD-Age 120 cápsulas | Resveratrol 120 cápsulas | Omega 3 60 cápsulas,369000,Recompra mensual,https://seiva.com.py/img/productos/nad-age-120-capsulas-500m-ue.jpg,https://seiva.com.py/img/productos/resveratrol-120-capsulas-500mg-ue.png,https://seiva.com.py/img/productos/omega-3-katigua-dpadhaala-1000mg-60-capsulas-kt.webp,,no\n3,si,longevidad,Kit Colágeno Belleza,Colágeno hidrolizado 120 cápsulas | Vitamina C y zinc,239000,Más vendido,https://seiva.com.py/img/productos/hero-1789431830164-63787ae5.webp,https://seiva.com.py/img/productos/hero-1790306475981-9aba8581.webp,,,si\n4,no,longevidad,Kit Rejuvenecedor 40+,Colágeno hidrolizado 120 cápsulas | NAD+ y resveratrol 120 cápsulas | Sérum de vitamina C 30 ml,379000,,https://seiva.com.py/img/productos/hero-1789431830164-63787ae5.webp,https://seiva.com.py/img/productos/nad-resveratrol-nicotinamide-500-mg-120-capsulas-ue.png,,,no\n5,no,longevidad,Kit Mujer 360,Colágeno hidrolizado 120 cápsulas | Biotina 60 cápsulas | Magnesio 60 cápsulas,339000,,https://seiva.com.py/img/productos/hero-1789431830164-63787ae5.webp,https://seiva.com.py/img/productos/biotina-60-capsulas-45ug-v7.webp,https://seiva.com.py/img/productos/hero-1790259267710-0188e69c.webp,,no\n6,no,longevidad,Kit Hombre Vital,Creatina monohidratada 300 g | Magnesio 60 cápsulas | Complejo B 60 cápsulas,389000,,https://seiva.com.py/img/productos/hero-1789394816527-1d06faf5.webp,https://seiva.com.py/img/productos/hero-1790259267710-0188e69c.webp,https://seiva.com.py/img/productos/complejo-b-polivitaminico-60-capsulas-mx.png,,no\n7,no,longevidad,Kit Antiestrés,Ashwagandha 120 cápsulas | Magnesio 60 cápsulas,239000,Tendencia,https://seiva.com.py/img/productos/ashwagandha-extracto-120-capsulas-ue.png,https://seiva.com.py/img/productos/hero-1790259267710-0188e69c.webp,,,si\n8,no,longevidad,Kit Sueño Profundo,Magnesio 60 cápsulas | Melatonina 60 cápsulas,219000,,https://seiva.com.py/img/productos/hero-1790259267710-0188e69c.webp,https://seiva.com.py/img/productos/melatonina-60-capsulas-v7.png,,,no\n9,no,longevidad,Kit Energía Diaria,Complejo B 60 cápsulas | Omega 3 60 cápsulas | Vitamina D3 + K2 60 cápsulas,349000,,https://seiva.com.py/img/productos/complejo-b-polivitaminico-60-capsulas-mx.png,https://seiva.com.py/img/productos/omega-3-katigua-dpadhaala-1000mg-60-capsulas-kt.webp,https://seiva.com.py/img/productos/hero-1790307371648-f73eb8e3.webp,,no\n10,no,longevidad,Kit Defensas,Vitamina C y zinc | Vitamina D3 + K2 60 cápsulas,229000,,https://seiva.com.py/img/productos/hero-1790306475981-9aba8581.webp,https://seiva.com.py/img/productos/hero-1790307371648-f73eb8e3.webp,,,si\n11,si,cabello,Kit Anticaída Mujer,Shampoo anticaída 500 ml | Sérum capilar 100 ml | Biotina 60 cápsulas,289000,Más vendido,https://resource.megaeletronicos.com/uploads/Product/new/1/5/4/4/6/8/154468/1762000692_1762000692.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/7/9/1/7/167917/1795026619_1795026619.webp,https://seiva.com.py/img/productos/biotina-60-capsulas-45ug-v7.webp,,no\n12,no,cabello,Kit Anticaída Hombre,Shampoo anticaída 500 ml | Tónico capilar 150 ml,299000,,https://resource.megaeletronicos.com/uploads/Product/new/1/5/4/4/6/8/154468/1762000692_1762000692.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/0/4/2/3/160423/1776086171_1776086171.webp,,,si\n13,no,cabello,Kit Crecimiento,Biotina 60 cápsulas | Colágeno hidrolizado 120 cápsulas | Aceite capilar 50 ml,289000,,https://seiva.com.py/img/productos/biotina-60-capsulas-45ug-v7.webp,https://seiva.com.py/img/productos/hero-1789431830164-63787ae5.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/4/9/5/0/1/149501/1778517132_1778517132.webp,,no\n14,no,cabello,Kit Cabello Fuerte,Shampoo 500 ml | Acondicionador 200 ml | Máscara capilar 100 ml,149000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/3/3/2/1/163321/1783700150_1783700150.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/3/3/6/3/163363/1784038965_1784038965.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/3/3/5/5/163355/1783783377_1783783377.webp,,si\n15,no,cabello,Kit Barba,Aceite para barba 40 ml | Shampoo 500 ml,159000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/7/9/1/8/167918/1795033687_1795033687.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/3/3/2/1/163321/1783700150_1783700150.webp,,,si\n16,no,cabello,Kit Uñas y Cabello,Biotina 60 cápsulas | Colágeno hidrolizado 120 cápsulas,239000,,https://seiva.com.py/img/productos/biotina-60-capsulas-45ug-v7.webp,https://seiva.com.py/img/productos/hero-1789431830164-63787ae5.webp,,,no\n17,no,cabello,Kit Reparación Capilar,Máscara capilar 200 ml | Aceite de argán 60 ml,139000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/3/3/5/9/163359/1783789838_1783789838.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/3/3/3/8/163338/1786016636_1786016636.webp,,,si\n18,no,cabello,Kit Canas y Brillo,Máscara matizadora 100 ml | Aceite capilar 50 ml | Biotina 60 cápsulas,229000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/3/3/2/6/163326/1783708860_1783708860.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/4/9/5/0/1/149501/1778517132_1778517132.webp,https://seiva.com.py/img/productos/biotina-60-capsulas-45ug-v7.webp,,no\n19,si,piel,Kit Antiarrugas Día y Noche,Sérum de retinol 30 ml | Crema de retinol 20 g | Protector solar facial SPF 50+,389000,Más vendido,https://resource.megaeletronicos.com/uploads/Product/new/1/6/3/4/5/6/163456/1782997927_1782997927.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/0/6/2/0/160620/1776162138_1776162138.webp,,,no\n20,no,piel,Kit Vitamina C,Sérum de vitamina C 30 ml | Contorno de ojos 30 g | Crema hidratante 30 ml,329000,,https://resource.megaeletronicos.com/uploads/Product/new/1/5/0/4/5/5/150455/1794422168_1794422168.webp,,,,no\n21,no,piel,Kit Manchas,Sérum para manchas 30 ml | Protector solar facial SPF 50+ | Tónico exfoliante 150 ml,379000,,https://resource.megaeletronicos.com/uploads/Product/new/1/5/8/2/7/5/158275/1773499582_1773499582.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/0/6/2/0/160620/1776162138_1776162138.webp,,,no\n22,no,piel,Kit Ojeras,Contorno de ojos 30 g | 2 x Mascarilla facial,169000,,https://resource.megaeletronicos.com/uploads/Product/new/1/5/0/4/5/5/150455/1794422168_1794422168.webp,,,,no\n23,no,piel,Kit Skincare Hombre,Gel limpiador 50 ml | Crema hidratante 30 ml | Contorno de ojos 30 g,269000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/0/3/8/3/160383/1775672480_1775672480.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/5/0/4/5/5/150455/1794422168_1794422168.webp,,,no\n24,no,piel,Kit Piel Grasa,Gel limpiador 50 ml | Sérum de niacinamida 30 ml | Crema hidratante 30 ml,309000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/0/3/8/3/160383/1775672480_1775672480.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/0/4/6/8/160468/1776337321_1776337321.webp,,,no\n25,no,piel,Kit Glow Coreano,Tónico facial 40 ml | 5 mascarillas en hoja,199000,Tendencia,https://resource.megaeletronicos.com/uploads/Product/new/1/5/0/3/4/4/150344/1757007619_1757007619.webp,,,,no\n26,no,piel,Kit Cuello y Escote,Loción reafirmante 150 ml | Colágeno hidrolizado 120 cápsulas,329000,,https://resource.megaeletronicos.com/uploads/Product/new/1/5/8/6/7/3/158673/1770315877_1770315877.webp,https://seiva.com.py/img/productos/hero-1789431830164-63787ae5.webp,,,no\n27,no,piel,Kit Spa en Casa,5 mascarillas hidratantes | Exfoliante corporal 500 g | Loción corporal perfumada 100 ml,209000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/2/6/8/5/162685/1783693220_1783693220.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/5/2/3/1/165231/1793891885_1793891885.webp,,,no\n28,no,piel,Kit Protección Solar,Protector solar facial SPF 50+ | Bálsamo labial,209000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/0/6/2/0/160620/1776162138_1776162138.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/4/0/4/4/9/140449/1721660870_1721660870.webp,,,si\n29,no,piel,Kit Labios,Lip oil + mascarilla labial | Bálsamo labial,149000,,https://resource.megaeletronicos.com/uploads/Product/new/1/4/9/8/5/0/149850/1753454828_1753454828.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/4/0/4/4/9/140449/1721660870_1721660870.webp,,,si\n30,no,piel,Kit Maquillaje Básico,BB cream con SPF 42 | Lip oil + mascarilla labial,199000,,https://resource.megaeletronicos.com/uploads/Product/new/1/5/2/6/2/4/152624/1759948462_1759948462.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/4/9/8/5/0/149850/1753454828_1753454828.webp,,,si\n31,si,perfumes,Kit 5 Perfumitos Árabes,5 x Perfume árabe 35 ml,89000,Más vendido,,,,,si\n32,no,perfumes,Kit Revendedor 10 Perfumitos,10 x Perfume árabe 35 ml,139000,Para revender,,,,,si\n33,no,perfumes,Kit Perfume Árabe 100 ml,Perfume árabe Al Wataniah Kayaan 100 ml | Body mist 30 ml,279000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/4/0/0/7/164007/1784746628_1784746628.webp,,,,si\n34,no,perfumes,Kit Pareja,Perfume árabe Al Wataniah Kayaan 100 ml | Perfume árabe Ahmed Al Maghribi Peachy Peach 100 ml,349000,,,,,,no\n35,no,perfumes,Kit Perfume y Cuidado,Perfume 30 ml | Loción corporal perfumada 100 ml,119000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/6/2/4/1/166241/1787139325_1787139325.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/5/2/3/1/165231/1793891885_1793891885.webp,,,si\n36,no,perfumes,Kit 3 Body Mist,3 x Body mist 30 ml,299000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/4/0/0/7/164007/1784746628_1784746628.webp,,,,si\n37,no,perfumes,Kit Regalo Mamá,Perfume 30 ml | Loción corporal perfumada 100 ml | Sérum de vitamina C 30 ml,239000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/6/2/4/1/166241/1787139325_1787139325.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/5/2/3/1/165231/1793891885_1793891885.webp,,,no\n38,no,perfumes,Kit Regalo Papá,Perfume Armaf Cool Ace 100 ml | Aceite para barba 40 ml,289000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/7/9/1/8/167918/1795033687_1795033687.webp,,,,si\n39,no,perfumes,Kit Aromas para Auto,3 x Aromatizante para auto,,,,,,,no\n40,no,perfumes,Kit Aroma Hogar,Difusor de aromas + 2 recargas,,,,,,,no\n41,no,perfumes,Kit Cumpleaños Sorpresa,Perfume 30 ml | Body mist 30 ml,169000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/6/2/4/1/166241/1787139325_1787139325.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/4/0/0/7/164007/1784746628_1784746628.webp,,,si\n42,no,perfumes,Kit San Valentín,Perfume 30 ml | Lip oil + mascarilla labial,139000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/6/2/4/1/166241/1787139325_1787139325.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/4/9/8/5/0/149850/1753454828_1753454828.webp,,,si\n43,no,perfumes,Kit Día de la Madre,Perfume 30 ml | Loción corporal perfumada 100 ml | 5 mascarillas hidratantes,199000,,https://resource.megaeletronicos.com/uploads/Product/new/1/6/6/2/4/1/166241/1787139325_1787139325.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/5/2/3/1/165231/1793891885_1793891885.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/2/6/8/5/162685/1783693220_1783693220.webp,,si\n44,si,perfumes,Kit Navidad,Perfume 30 ml | Body mist 30 ml,169000,Temporada,https://resource.megaeletronicos.com/uploads/Product/new/1/6/6/2/4/1/166241/1787139325_1787139325.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/6/4/0/0/7/164007/1784746628_1784746628.webp,,,si\n45,no,perfumes,Kit Amiga Secreta,Perfume 30 ml | Bálsamo labial | Mascarilla facial,149000,Temporada,https://resource.megaeletronicos.com/uploads/Product/new/1/6/6/2/4/1/166241/1787139325_1787139325.webp,https://resource.megaeletronicos.com/uploads/Product/new/1/4/0/4/4/9/140449/1721660870_1721660870.webp,,,no\n46,si,tecno,Kit Carga Rápida,Cargador rápido USB-C 20 W | Cable USB-C 1 m,99000,Más vendido,https://nissei.com/media/catalog/product/c/a/cargador_de_pared_xion_xi_cg20_usb_c_20_w_negro_130445_0000.jpg,https://nissei.com/media/catalog/product/c/a/cable-usb-total-usb-a-a-usb-c-1m-celeste_001.jpg,,,si\n47,no,tecno,Kit Soporte y Carga,Soporte con anillo | Cable USB-C 1 m,99000,,https://nissei.com/media/catalog/product/b/W/bWsYqYwwLhmgraUzNI2ybs2baq6VAMcGSgd.jpg,https://nissei.com/media/catalog/product/c/a/cable-usb-total-usb-a-a-usb-c-1m-celeste_001.jpg,,,si\n48,no,tecno,Kit Auriculares,Auriculares bluetooth con estuche cargador | Cable USB-C 1 m,129000,,https://nissei.com/media/catalog/product/R/G/RGA-KAB-624_001_rga-kab-624.jpg,https://nissei.com/media/catalog/product/c/a/cable-usb-total-usb-a-a-usb-c-1m-celeste_001.jpg,,,si\n49,no,tecno,Kit Power Bank,Power bank 10.000 mAh | Cable USB-C 1 m,159000,,https://nissei.com/media/catalog/product/c/a/cargador_portatil_g_tide_p1_10_000_mah_usb_usb_c_negro_147079_0000.jpg,https://nissei.com/media/catalog/product/c/a/cable-usb-total-usb-a-a-usb-c-1m-celeste_001.jpg,,,si\n50,no,tecno,Kit Auto,Cargador de auto USB + USB-C | Soporte magnético para auto | Cable USB-C 1 m,139000,,https://resource.megaeletronicos.com/uploads/Product/new/1/5/8/6/3/7/158637/1770400514_1770400514.webp,https://nissei.com/media/catalog/product/f/y/fybssOJgN1AHjNut3ueM3nKhlOcKvgzew6d.jpg,https://nissei.com/media/catalog/product/c/a/cable-usb-total-usb-a-a-usb-c-1m-celeste_001.jpg,,si\n51,no,tecno,Kit Creador de Contenido,Trípode con soporte para celular | Micrófono inalámbrico,289000,,https://nissei.com/media/catalog/product/s/o/soporte_de_tripode_k_y_f_para_celular_kf31_095_144278_0001.jpg,https://nissei.com/media/catalog/product/m/k/mk102.jpg,,,si\n52,no,tecno,Kit Smartwatch,Smartwatch G-Tide Aura | Cable USB-C 1 m,199000,,https://nissei.com/media/catalog/product/c/a/cable-usb-total-usb-a-a-usb-c-1m-celeste_001.jpg,,,,si\n53,si,tecno,Kit Tereré,Guampa + bombilla | Vaso térmico 530 ml,249000,Más vendido,https://nissei.com/media/catalog/product/k/i/kit_de_terere_indio_guampa_bombilla_plata_IND-7848003240183_0000.jpg,https://nissei.com/media/catalog/product/E/T/ET3CBEVwlh5KDKXU1ttRU0uesR8QKmovuQu.jpg,,,si\n54,no,tecno,Kit Tereré Premium,Termo 1 L | Guampa + bombilla,659000,,https://nissei.com/media/catalog/product/t/e/termo_de_mate_indio_skin_3_en_1_beige_1l_IND-7848003249070_0000.jpg,https://nissei.com/media/catalog/product/k/i/kit_de_terere_indio_guampa_bombilla_plata_IND-7848003240183_0000.jpg,,,no\n55,no,tecno,Kit 2 Vasos Térmicos,2 x Vaso térmico 530 ml,169000,,https://nissei.com/media/catalog/product/E/T/ET3CBEVwlh5KDKXU1ttRU0uesR8QKmovuQu.jpg,,,,si\n56,no,tecno,Kit Luces LED,Cinta LED RGB 5 m con control,199000,,https://nissei.com/media/catalog/product/k/i/kit-de-cinta-led-argo-12v-30-leds-rgb-5m_001.jpg,,,,si\n57,no,tecno,Kit Gamer,Mouse | Mousepad | Auricular gamer,149000,,https://nissei.com/media/catalog/product/f/X/fXzCx4ltC5WDlrjAmSEBNI79fe7wujMtCOa.jpg,https://nissei.com/media/catalog/product/R/G/RGA-KED-151_001_rga-ked-151.jpg,https://nissei.com/media/catalog/product/R/G/RGA-KGA-494_001_rga-kga-494.jpg,,si\n58,no,tecno,Kit Oficina,Soporte para notebook | Mouse inalámbrico | Hub USB,219000,,https://nissei.com/media/catalog/product/f/7/f7iBfGZsNpel0cK7x0D8dJcZEtHjfSTH4Rd.jpg,https://nissei.com/media/catalog/product/l/6/l6zP9SdMa1hztVmVpR1iuuXlQg499BdXgoS.jpg,https://nissei.com/media/catalog/product/c/e/celer_image_3_-_2026-01-12t074625.567_1.jpg,,si\n59,no,tecno,Kit Parlante,Parlante bluetooth resistente al agua | Cable USB-C 1 m,129000,,https://nissei.com/media/catalog/product/p/a/parlante-ftx-wave-sp-8sbk-8w-bluetooth-ipx7-negro_001.jpg,https://nissei.com/media/catalog/product/c/a/cable-usb-total-usb-a-a-usb-c-1m-celeste_001.jpg,,,si\n60,no,tecno,Kit Cámara Wi-Fi,Cámara Wi-Fi | Memoria micro SD 64 GB,279000,,https://resource.megaeletronicos.com/uploads/Product/new/1/3/4/1/6/8/134168/1692388426_1692388426.webp,https://nissei.com/media/catalog/product/m/e/memoria_micro_sd_4_0_lexar_high_performance_633x_100_45_mb_s_c10_64_gb_lms0633064g_bnnng_140179_0000_1.jpg,,,si\n";                                          // copia por si el motor no responde
 const POR_PAGINA = 3;
 
+// Zona de entrega: 20 km alrededor del centro de Ciudad del Este.
+const CENTRO = { lat: -25.5097, lng: -54.6111 };   // microcentro de CDE
+const RADIO_KM = 20;
+const CIUDADES = ["Ciudad del Este", "Presidente Franco", "Hernandarias", "Minga Guazú"];
+function kmDesdeCDE(lat, lng) {
+  const r = Math.PI / 180, dLat = (lat - CENTRO.lat) * r, dLng = (lng - CENTRO.lng) * r;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(CENTRO.lat * r) * Math.cos(lat * r) * Math.sin(dLng / 2) ** 2;
+  return 6371 * 2 * Math.asin(Math.sqrt(a));
+}
+
 // Categorías (en este orden). "vendidos" = los kits marcados como destacados en la planilla.
 const CATEGORIAS = [
   ["vendidos", "⭐ Más vendidos"], ["longevidad", "💊 Vitaminas"], ["cabello", "💇 Cabello"],
@@ -142,7 +160,7 @@ const DIBUJO = { longevidad: ["💊", "#e8f5e9"], cabello: ["💇", "#fff3e0"], 
 const $ = (id) => document.getElementById(id);
 const gs = (n) => n.toLocaleString("es-PY") + " Gs";
 let kits = [], categoria = "vendidos", pagina = 0;
-let elegido = null, cantidad = 1, pago = "", ubicacion = "";
+let elegido = null, cantidad = 1, pago = "", ubicacion = "", ciudad = "", km = null;
 
 // --- leer la planilla (CSV) ---
 function leerCSV(texto) {
@@ -166,7 +184,7 @@ function prepararKits(texto) {
       id: k.id, nombre: k.nombre, categoria: k.categoria, precio: Number(k.precio), etiqueta: k.etiqueta,
       destacado: /^(si|sí)$/i.test(k.destacado),
       trae: k.productos.split(/\s*[|+]\s*/).filter(Boolean),
-      foto: [k.foto1, k.foto2, k.foto3, k.foto4].find((f) => f && /^https?:/.test(f) && !FOTOS_BLOQUEADAS.some((b) => f.includes(b))) || "",
+      fotos: [k.foto1, k.foto2, k.foto3, k.foto4].filter((f) => f && /^https?:/.test(f) && !FOTOS_BLOQUEADAS.some((b) => f.includes(b))),
     }))
     .sort((a, b) => (b.destacado - a.destacado) || (a.precio - b.precio));
 }
@@ -185,14 +203,36 @@ function dibujo(k) {
   const [emoji, color] = DIBUJO[k.categoria] || ["🎁", "#eceff1"];
   return `<div class="dibujo" style="background:${color}">${emoji}</div>`;
 }
+const puntos = (n) => n > 1 ? `<div class="puntos">${Array.from({ length: n }, (_, i) => `<i class="${i ? "" : "ver"}"></i>`).join("")}</div>` : "";
+
+// Si una foto no carga, se saca; si no queda ninguna, va el dibujo.
+function fotoRota(img) {
+  const caja = img.parentNode; const eraVisible = img.classList.contains("ver"); img.remove();
+  const quedan = caja.querySelectorAll("img");
+  caja.querySelector(".puntos")?.remove();
+  if (!quedan.length) { caja.insertAdjacentHTML("afterbegin", dibujo(kits.find((k) => k.id === caja.dataset.id))); return; }
+  if (eraVisible) quedan[0].classList.add("ver");
+  if (quedan.length > 1) caja.insertAdjacentHTML("beforeend", puntos(quedan.length));
+}
+
+// Pasa solas las fotos de cada kit, como un slideshow (cada 2,5 segundos).
+setInterval(() => {
+  document.querySelectorAll("#kits .foto").forEach((caja) => {
+    const fotos = [...caja.querySelectorAll("img")]; if (fotos.length < 2) return;
+    const i = fotos.findIndex((f) => f.classList.contains("ver")), sig = (i + 1) % fotos.length;
+    fotos[i]?.classList.remove("ver"); fotos[sig].classList.add("ver");
+    caja.querySelectorAll(".puntos i").forEach((p, n) => p.classList.toggle("ver", n === sig));
+  });
+}, 2500);
+
 function mostrarPagina(direccion) {
   const lista = kitsDe(categoria), desde = pagina * POR_PAGINA;
   const tres = [0, 1, 2].map((n) => lista[desde + n]);
   $("kits").innerHTML = tres.map((k) => !k ? `<div class="kit vacio"></div>` : `
     <article class="kit">
-      <div class="foto">${k.etiqueta ? `<span class="etiqueta">${k.etiqueta}</span>` : ""}${k.foto
-        ? `<img src="${k.foto}" alt="" referrerpolicy="no-referrer" onerror="this.outerHTML=dibujo(kits.find(x=>x.id==='${k.id}'))">`
-        : dibujo(k)}</div>
+      <div class="foto" data-id="${k.id}">${k.fotos.length
+        ? k.fotos.map((f, n) => `<img src="${f}" alt="" class="${n ? "" : "ver"}" referrerpolicy="no-referrer" onerror="fotoRota(this)">`).join("") + puntos(k.fotos.length)
+        : dibujo(k)}${k.etiqueta ? `<span class="etiqueta">${k.etiqueta}</span>` : ""}</div>
       <div class="info">
         <h3>${k.nombre}</h3>
         <p class="precio">${gs(k.precio)}</p>
@@ -204,7 +244,7 @@ function mostrarPagina(direccion) {
   $("sig").disabled = pagina >= paginas() - 1;
   if (direccion) { const k = $("kits"); k.classList.remove("entra"); void k.offsetWidth; k.style.setProperty("--desde", direccion > 0 ? "40px" : "-40px"); k.classList.add("entra"); }
   // adelanta las fotos de la página siguiente para que aparezcan al instante
-  lista.slice(desde + 3, desde + 6).forEach((k) => { if (k.foto) new Image().src = k.foto; });
+  lista.slice(desde + 3, desde + 6).forEach((k) => k.fotos.forEach((f) => { new Image().src = f; }));
 }
 function irA(n) { if (n < 0 || n >= paginas() || n === pagina) return; const d = n > pagina ? 1 : -1; pagina = n; mostrarPagina(d); }
 $("ant").onclick = () => irA(pagina - 1);
@@ -236,6 +276,12 @@ function actualizarTotal() { $("cantidad").value = cantidad; $("total").textCont
 $("menos").onclick = () => { if (cantidad > 1) { cantidad--; actualizarTotal(); } };
 $("mas").onclick = () => { if (cantidad < 10) { cantidad++; actualizarTotal(); } };
 
+$("ciudades").innerHTML = CIUDADES.map((c) => `<button type="button" data-ciudad="${c}">${c}</button>`).join("");
+document.querySelectorAll("[data-ciudad]").forEach((b) => b.onclick = () => {
+  ciudad = b.dataset.ciudad;
+  document.querySelectorAll("[data-ciudad]").forEach((x) => x.classList.toggle("si", x === b));
+});
+
 document.querySelectorAll("[data-pago]").forEach((b) => b.onclick = () => {
   pago = b.dataset.pago;
   document.querySelectorAll("[data-pago]").forEach((x) => x.classList.toggle("si", x === b));
@@ -246,8 +292,11 @@ $("gps").onclick = () => {
   $("gps").textContent = "📍 Buscando…";
   navigator.geolocation.getCurrentPosition((p) => {
     ubicacion = `https://maps.google.com/?q=${p.coords.latitude.toFixed(6)},${p.coords.longitude.toFixed(6)}`;
+    km = kmDesdeCDE(p.coords.latitude, p.coords.longitude);
     $("gps").textContent = "✅ Ubicación lista"; $("gps").classList.add("listo");
-    $("gpsMsg").textContent = "Listo. Igual podés escribir una referencia abajo.";
+    $("gpsMsg").textContent = km <= RADIO_KM
+      ? `Listo, estás a ${Math.round(km)} km del centro de CDE: llegamos. Igual podés escribir una referencia abajo.`
+      : `Estás a ${Math.round(km)} km de CDE. Por ahora entregamos solo hasta ${RADIO_KM} km. Escribinos por WhatsApp y te avisamos cuando lleguemos.`;
   }, () => {
     $("gps").textContent = "📍 Mandar mi ubicación";
     $("gpsMsg").textContent = "No se pudo. Activá la ubicación del celular o escribí tu dirección abajo.";
@@ -255,8 +304,8 @@ $("gps").onclick = () => {
 };
 
 $("enviar").onclick = () => {
-  const nombre = $("nombre").value.trim(), ciudad = $("ciudad").value.trim(), dir = $("direccion").value.trim();
-  const falta = !nombre ? "Escribí tu nombre." : !ciudad ? "Escribí tu ciudad." : (!ubicacion && !dir) ? "Mandá tu ubicación o escribí tu dirección." : !pago ? "Elegí cómo vas a pagar." : "";
+  const nombre = $("nombre").value.trim(), dir = $("direccion").value.trim();
+  const falta = !nombre ? "Escribí tu nombre." : !ciudad ? "Tocá tu ciudad." : (km !== null && km > RADIO_KM) ? `Tu ubicación está a más de ${RADIO_KM} km de CDE. Por ahora no llegamos ahí.` : (!ubicacion && !dir) ? "Mandá tu ubicación o escribí tu dirección." : !pago ? "Elegí cómo vas a pagar." : "";
   if (falta) { $("error").textContent = "⚠️ " + falta; $("error").hidden = false; return; }
   $("error").hidden = true;
   const texto = [
@@ -266,13 +315,13 @@ $("enviar").onclick = () => {
     `👤 Nombre: ${nombre}`,
     `🏙️ Ciudad: ${ciudad}`,
     dir && `🏠 Dirección: ${dir}`,
-    ubicacion && `📍 Ubicación: ${ubicacion}`,
+    ubicacion && `📍 Ubicación: ${ubicacion} (a ${Math.round(km)} km del centro)`,
     `💳 Pago: ${pago}`,
   ].filter(Boolean).join("\n");
   location.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
 };
 // el aviso rojo se borra apenas la persona corrige algo
-document.querySelectorAll("#pedido input, #pedido textarea, [data-pago], #gps").forEach((e) => e.addEventListener(e.tagName === "BUTTON" ? "click" : "input", () => $("error").hidden = true));
+document.querySelectorAll("#pedido input, #pedido textarea, [data-pago], [data-ciudad], #gps").forEach((e) => e.addEventListener(e.tagName === "BUTTON" ? "click" : "input", () => $("error").hidden = true));
 
 // --- arranque: primero la copia de respaldo, después los precios del día ---
 function cargar(texto) {
