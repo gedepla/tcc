@@ -39,7 +39,8 @@
   .incluye li { padding-left: 1.1em; text-indent: -1.1em; }
   .incluye li::before { content: "✓ "; color: var(--verde); font-weight: 900; }
   .incluye li.mas { color: var(--verde); font-weight: 800; } .incluye li.mas::before { content: ""; }
-  .abajo { flex-shrink: 0; display: flex; align-items: center; gap: 6px; }
+  .abajo { flex-shrink: 0; display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .abajo .quiero { min-width: 0; }
   .etiqueta { position: absolute; top: 4px; left: 4px; background: #ffd54f; border-radius: 6px; padding: 1px 7px; font-size: 12px; font-weight: 800; }
   @media (max-height: 700px) {
     #lista { gap: 6px; padding-top: 6px; }
@@ -48,6 +49,7 @@
     .info h3 { -webkit-line-clamp: 1; } .incluye { font-size: 12.5px; line-height: 1.25; } .quiero { padding: 7px 4px !important; }
     .paginas button { padding: 10px 6px; font-size: 16px; } .kit { padding: 6px; }
   }
+  @media (max-width: 340px) { .quiero { font-size: 12px !important; letter-spacing: -0.2px; } .precio { font-size: 14.5px !important; } }
   /* celulares muy chicos: se achica lo de arriba para que entren 3 líneas de descripción */
   @media (max-height: 600px) {
     #lista { gap: 5px; padding: 5px 8px 6px; }
@@ -55,7 +57,7 @@
     .aviso { display: none; }
     .cats button { padding: 5px 2px; font-size: 12px; }
     .paginas button { padding: 8px 4px; font-size: 15px; }
-    .foto { max-width: 34%; } .precio { font-size: 16px; } .quiero { font-size: 14px; padding: 6px 4px !important; }
+    .foto { max-width: 34%; } .precio { font-size: 15px; } .quiero { font-size: 13px; padding: 6px 3px !important; }
     .info { gap: 2px; } .info h3 { font-size: 14px; } .incluye { font-size: 12px; line-height: 1.2; }
     .cats button { padding: 4px 2px; } .kit { padding: 5px; }
   }
@@ -63,7 +65,7 @@
   .quiero { flex: 1; border: 0; border-radius: 10px; background: var(--verde); color: #fff; font-size: 15px; font-weight: 800; padding: 9px 4px; white-space: nowrap; }
 
   .paginas { display: flex; align-items: center; gap: 8px; }
-  .paginas button { flex: 1; border: 0; border-radius: 12px; padding: 13px 6px; font-size: 18px; font-weight: 800; background: #1565c0; color: #fff; }
+  .paginas button { flex: 1; white-space: nowrap; border: 0; border-radius: 12px; padding: 13px 6px; font-size: 18px; font-weight: 800; background: #1565c0; color: #fff; }
   .paginas button:disabled { background: #d9d4cc; color: #8a857d; }
   .paginas span { font-weight: 800; color: var(--gris); min-width: 52px; text-align: center; }
 
@@ -108,14 +110,14 @@
 <!-- PANTALLA 1: categorías + 3 kits por vez -->
 <main id="lista">
   <div class="arriba">
-    <h1>🎁 Tu Centro<br>de Compras</h1>
+    <h1>🎁 Tu Centro <br>de Compras</h1>
     <a class="wa" href="https://wa.me/595992500100" target="_blank" rel="noopener">💬 0992 500 100</a>
   </div>
   <div class="cats" id="cats"></div>
   <p class="aviso">🚚 Delivery incluido · CDE y hasta 20 km</p>
   <div id="kits"></div>
   <div class="paginas">
-    <button id="ant">◀ Anteriores</button>
+    <button id="ant">◀ Atrás</button>
     <span id="num"></span>
     <button id="sig">Siguientes ▶</button>
   </div>
