@@ -74,6 +74,11 @@
   .boton { display: block; width: 100%; border: 0; border-radius: 14px; background: var(--verde); color: #fff; font-size: 21px; font-weight: 800; padding: 16px; }
   .boton.claro { background: #fff; color: var(--texto); border: 2px solid var(--borde); font-size: 19px; }
   .carrito-btn { background: #ff9800; color: #fff; border: 0; border-radius: 12px; padding: 9px 11px; font-size: 16px; font-weight: 900; white-space: nowrap; }
+  .mini { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 2px; border: 2px solid var(--verde); border-radius: 10px; background: #e8f7ee; padding: 2px; }
+  .mini button { flex-shrink: 0; width: 28px; height: 32px; padding: 0; border: 0; border-radius: 8px; background: var(--verde); color: #fff; font-size: 22px; font-weight: 900; line-height: 1; }
+  .mini output { font-size: 17px; font-weight: 900; color: var(--verde); white-space: nowrap; }
+  .arriba.con-pedido .wa .num { display: none; }
+  .aviso-toast { position: fixed; left: 50%; top: 58px; pointer-events: none; transform: translateX(-50%); background: #1d1d1f; color: #fff; padding: 12px 16px; border-radius: 12px; font-weight: 800; font-size: 16px; z-index: 9; max-width: 92vw; text-align: center; box-shadow: 0 6px 20px #0004; }
   .carrito-btn.salta { animation: salta .5s ease 2; }
   @keyframes salta { 50% { transform: scale(1.18); } }
   h2.tit { font-size: 23px; margin: 16px 0 8px; }
@@ -105,8 +110,8 @@
   .gps { font-size: 23px; padding: 20px; animation: late 1.6s ease-in-out infinite; }
   .gps.listo { animation: none; }
   @keyframes late { 50% { transform: scale(1.03); box-shadow: 0 0 0 6px #1565c033; } }
-  .pagos { display: flex; gap: 10px; }
-  .pagos button { flex: 1; padding: 16px 8px; font-size: 19px; font-weight: 800; border-radius: 12px; border: 3px solid var(--borde); background: #fff; }
+  .pagos { display: grid; gap: 10px; }
+  .pagos button { text-align: left; padding: 15px 16px; font-size: 19px; line-height: 1.2; font-weight: 800; border-radius: 12px; border: 3px solid var(--borde); background: #fff; }
   .pagos button.si { border-color: var(--verde); background: #e8f7ee; }
   .total { font-size: 26px; font-weight: 900; text-align: center; margin: 24px 0 10px; }
   .error { background: #fdecea; color: var(--rojo); border-radius: 12px; padding: 12px 14px; font-weight: 700; margin: 16px 0 0; }
@@ -119,8 +124,8 @@
 <main id="lista">
   <div class="arriba">
     <h1>🎁 Tu Centro <br>de Compras</h1>
-    <button class="carrito-btn" id="verCarrito" hidden>🛒 <span id="nCarrito">0</span></button>
-    <a class="wa" href="https://wa.me/595992500100" target="_blank" rel="noopener">💬 0992 500 100</a>
+    <button class="carrito-btn" id="verCarrito" hidden>🛒 <span id="nCarrito">0</span> · Terminar</button>
+    <a class="wa" href="https://wa.me/595992500100" target="_blank" rel="noopener">💬<span class="num"> 0992 500 100</span></a>
   </div>
   <div class="cats" id="cats"></div>
   <p class="aviso">🚚 Delivery incluido · CDE y hasta 20 km</p>
@@ -163,6 +168,7 @@
 
   <label>5. ¿Cómo vas a pagar?</label>
   <div class="pagos">
+    <button type="button" data-pago="Efectivo al recibir">💵 Efectivo al recibir</button>
     <button type="button" data-pago="Transferencia">🏦 Transferencia</button>
     <button type="button" data-pago="QR">📱 QR</button>
   </div>
@@ -170,7 +176,7 @@
   <div class="total" id="total"></div>
   <p class="error" id="error" hidden></p>
   <button class="boton" id="enviar" style="margin-top:12px">💬 Enviar pedido por WhatsApp</button>
-  <p class="pie">Te respondemos por WhatsApp con los datos para pagar.</p>
+  <p class="pie">Te respondemos por WhatsApp para confirmar tu pedido.</p>
 </main>
 
 <script>
@@ -281,7 +287,7 @@ function mostrarPagina(direccion) {
   const lista = kitsDe(categoria), desde = pagina * POR_PAGINA;
   const tres = [0, 1, 2].map((n) => lista[desde + n]);
   $("kits").innerHTML = tres.map((k) => !k ? `<div class="kit vacio"></div>` : `
-    <article class="kit">
+    <article class="kit" data-kit="${k.id}">
       <div class="foto" data-id="${k.id}">${k.fotos.length
         ? k.fotos.map((f, n) => `<img src="${f}" alt="" class="${n ? "" : "ver"}" referrerpolicy="no-referrer" onerror="fotoRota(this)">`).join("") + puntos(k.fotos.length)
         : dibujo(k)}${k.etiqueta ? `<span class="etiqueta">${k.etiqueta}</span>` : ""}</div>
@@ -290,7 +296,7 @@ function mostrarPagina(direccion) {
         <ul class="incluye">${k.trae.map((t) => `<li>${t}</li>`).join("")}</ul>
         <div class="abajo">
           <p class="precio">${gs(k.precio)}</p>
-          <button class="quiero" onclick="pedir('${k.id}')">Lo quiero</button>
+          ${botonKit(k.id)}
         </div>
       </div>
     </article>`).join("");
@@ -338,6 +344,7 @@ const totalCarrito = () => enCarrito().reduce((t, c) => t + c.kit.precio * c.can
 function pintarCarrito() {
   const lista = enCarrito(), n = lista.reduce((t, c) => t + c.cant, 0);
   $("nCarrito").textContent = n; $("verCarrito").hidden = n === 0;
+  document.querySelector(".arriba").classList.toggle("con-pedido", n > 0);
   $("items").innerHTML = lista.map((c) => `
     <div class="item">
       <h3>${c.kit.nombre}</h3>
@@ -359,15 +366,33 @@ function cambiar(id, d) {
   guardar(); pintarCarrito();
 }
 function abrirPedido() {
+  document.querySelector(".aviso-toast")?.remove();
   pintarCarrito(); $("error").hidden = true;
   if ($("pedido").hidden) { $("lista").hidden = true; $("pedido").hidden = false; history.pushState({ pedido: true }, ""); }
   scrollTo(0, 0);
 }
-function pedir(id) {
+// En la lista: "Lo quiero" suma el kit sin salir de la pantalla; después aparecen − cantidad +.
+function botonKit(id) {
   const c = carrito.find((x) => x.id === id);
-  if (c) c.cant = Math.min(10, c.cant + 1); else carrito.push({ id, cant: 1 });
-  guardar(); abrirPedido();
-  $("verCarrito").classList.remove("salta"); void $("verCarrito").offsetWidth; $("verCarrito").classList.add("salta");
+  return c ? `<div class="mini"><button type="button" onclick="enLista('${id}',-1)" aria-label="Uno menos">−</button><output>${c.cant}</output><button type="button" onclick="enLista('${id}',1)" aria-label="Uno más">+</button></div>`
+           : `<button class="quiero" onclick="pedir('${id}')">Lo quiero</button>`;
+}
+function enLista(id, d) {
+  if (d > 0 && !carrito.find((x) => x.id === id)) carrito.push({ id, cant: 0 });
+  const antes = carrito.reduce((t, c) => t + c.cant, 0);
+  cambiar(id, d);
+  document.querySelectorAll(`[data-kit="${id}"] .abajo`).forEach((a) => { a.lastElementChild.outerHTML = botonKit(id); });
+  if (carrito.reduce((t, c) => t + c.cant, 0) > antes) {
+    $("verCarrito").classList.remove("salta"); void $("verCarrito").offsetWidth; $("verCarrito").classList.add("salta");
+    avisar("✅ Agregado al pedido");
+  }
+}
+function pedir(id) { enLista(id, 1); }
+let avisoT;
+function avisar(texto) {
+  document.querySelector(".aviso-toast")?.remove(); clearTimeout(avisoT);
+  document.body.insertAdjacentHTML("beforeend", `<div class="aviso-toast">${texto}</div>`);
+  avisoT = setTimeout(() => document.querySelector(".aviso-toast")?.remove(), 2600);
 }
 $("verCarrito").onclick = abrirPedido;
 $("volver").onclick = $("agregarOtro").onclick = () => history.back();
