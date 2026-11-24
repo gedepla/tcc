@@ -16,8 +16,9 @@
   .arriba { display: flex; align-items: center; gap: 8px; }
   .arriba h1 { flex: 1; margin: 0; font-size: 19px; line-height: 1.15; }
   .wa { background: var(--verde); color: #fff; text-decoration: none; font-weight: 800; font-size: 16px; border-radius: 12px; padding: 9px 11px; white-space: nowrap; }
-  .cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-  .cats button { border: 2px solid var(--borde); background: #fff; border-radius: 12px; padding: 8px 4px; font-size: 15px; font-weight: 800; }
+  .cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+  .cats button.doble { grid-column: span 2; }
+  .cats button { border: 2px solid var(--borde); background: #fff; border-radius: 10px; padding: 6px 2px; font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: clip; }
   .cats button.si { background: var(--texto); border-color: var(--texto); color: #fff; }
   .aviso { margin: 0; text-align: center; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--gris); font-weight: 700; }
 
@@ -45,10 +46,11 @@
   @media (max-height: 700px) {
     #lista { gap: 6px; padding-top: 6px; }
     .arriba h1 { font-size: 17px; } .wa { padding: 7px 9px; font-size: 15px; }
-    .cats { gap: 5px; } .cats button { padding: 6px 2px; font-size: 13px; white-space: nowrap; }
+    .cats { gap: 4px; } .cats button { padding: 5px 1px; font-size: 12px; }
     .info h3 { -webkit-line-clamp: 1; } .incluye { font-size: 12.5px; line-height: 1.25; } .quiero { padding: 7px 4px !important; }
     .paginas button { padding: 10px 6px; font-size: 16px; } .kit { padding: 6px; }
   }
+  @media (max-width: 340px) { .cats button { font-size: 11px !important; letter-spacing: -0.3px; } }
   @media (max-width: 340px) { .quiero { font-size: 12px !important; letter-spacing: -0.2px; } .precio { font-size: 14.5px !important; } }
   /* celulares muy chicos: se achica lo de arriba para que entren 3 líneas de descripción */
   @media (max-height: 600px) {
@@ -208,12 +210,14 @@ function kmDesdeCDE(lat, lng) {
 
 // Categorías (en este orden). "vendidos" = los kits marcados como destacados en la planilla.
 const CATEGORIAS = [
-  ["vendidos", "⭐ Más vendidos"], ["longevidad", "💊 Vitaminas"], ["cabello", "💇 Cabello"],
-  ["piel", "🧴 Piel"], ["perfumes", "🌸 Perfumes"], ["tecno", "📱 Tecno"],
+  ["vendidos", "⭐ Más vendidos"], ["longevidad", "💊 Salud"], ["gym", "💪 Hombre"],
+  ["piel", "🧴 Piel"], ["cabello", "💇 Cabello"], ["perfumes", "🌸 Perfume"], ["tecno", "📱 Tecno"],
+  ["hogar", "🧉 Hogar"], ["mascotas", "🐶 Mascota"], ["bebe", "🍼 Bebé"], ["regalos", "🎁 Regalos"],
 ];
 // Fotos que la tienda del proveedor no deja mostrar en otras páginas: se usa el dibujo.
 const FOTOS_BLOQUEADAS = ["seiva.com.py"];
-const DIBUJO = { longevidad: ["💊", "#e8f5e9"], cabello: ["💇", "#fff3e0"], piel: ["🧴", "#fce4ec"], perfumes: ["🌸", "#f3e5f5"], tecno: ["📱", "#e3f2fd"] };
+const DIBUJO = { longevidad: ["💊", "#e8f5e9"], cabello: ["💇", "#fff3e0"], piel: ["🧴", "#fce4ec"], perfumes: ["🌸", "#f3e5f5"], tecno: ["📱", "#e3f2fd"],
+  gym: ["💪", "#e0f2f1"], hogar: ["🧉", "#f1f8e9"], mascotas: ["🐶", "#fff8e1"], bebe: ["🍼", "#e1f5fe"], regalos: ["🎁", "#fbe9e7"] };
 
 const $ = (id) => document.getElementById(id);
 const gs = (n) => n.toLocaleString("es-PY") + " Gs";
@@ -253,7 +257,7 @@ const paginas = () => Math.max(1, Math.ceil(kitsDe(categoria).length / POR_PAGIN
 
 function mostrarCategorias() {
   $("cats").innerHTML = CATEGORIAS.filter(([c]) => kitsDe(c).length)
-    .map(([c, t]) => `<button class="${c === categoria ? "si" : ""}" onclick="elegirCategoria('${c}')">${t}</button>`).join("");
+    .map(([c, t]) => `<button class="${c === categoria ? "si" : ""} ${c === "vendidos" ? "doble" : ""}" onclick="elegirCategoria('${c}')">${t}</button>`).join("");
 }
 function elegirCategoria(c) { categoria = c; pagina = 0; mostrarCategorias(); mostrarPagina(0); }
 
