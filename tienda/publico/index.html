@@ -451,7 +451,7 @@ $("enviar").onclick = () => {
   $("error").hidden = true;
   const texto = [
     "¡Hola! Quiero hacer este pedido:",
-    ...enCarrito().map((c) => `🎁 ${c.kit.nombre} x${c.cant} = ${gs(c.kit.precio * c.cant)}`),
+    ...enCarrito().map((c) => `🎁 #${c.kit.id} ${c.kit.nombre} x${c.cant} = ${gs(c.kit.precio * c.cant)}`),
     `💰 Total: ${gs(totalCarrito())} (envío incluido)`,
     `👤 Nombre: ${nombre}`,
     `🏙️ Ciudad: ${ciudad}`,

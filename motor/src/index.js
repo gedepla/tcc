@@ -5,7 +5,12 @@
 //  GET /kits.json    → lo mismo en JSON, con costo y ganancia
 //  GET /reporte      → página con lo que pasó en la última actualización
 //  GET /actualizar?clave=TU_CLAVE → corre el motor ahora
+//  GET /compras?clave=TU_CLAVE    → pegás un pedido y te dice qué comprar a cada proveedor
+//  GET /planilla.json?clave=TU_CLAVE → kits, productos y proveedores (para archivar)
 import { actualizar } from "./motor.js";
+import { paginaCompras, proveedorDe } from "./compras.js";
+import { PRODUCTOS } from "./productos.js";
+import { KITS } from "./kits.js";
 
 const CORS = { "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=300" };
 const gs = (n) => (n == null ? "–" : n.toLocaleString("es-PY") + " Gs");
@@ -47,6 +52,18 @@ export default {
       const r = JSON.parse((await env.CATALOGO.get("reporte")) || "null");
       const k = JSON.parse((await env.CATALOGO.get("catalogo.json")) || "[]");
       return new Response(paginaReporte(r, k), { headers: { "Content-Type": "text/html; charset=utf-8" } });
+    }
+    if (url.pathname === "/compras" || url.pathname === "/planilla.json") {
+      if (!env.CLAVE || url.searchParams.get("clave") !== env.CLAVE) return new Response("Clave incorrecta", { status: 401 });
+      const estado = JSON.parse((await env.CATALOGO.get("estado")) || "{}");
+      const catalogo = JSON.parse((await env.CATALOGO.get("catalogo.json")) || "[]");
+      const lecturas = estado.lecturas || {};
+      if (url.pathname === "/compras") {
+        return new Response(paginaCompras(env.CLAVE, url.searchParams.get("pedido") || "", lecturas, catalogo), { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
+      }
+      const productos = Object.keys(PRODUCTOS).map((c) => ({ clave: c, producto: PRODUCTOS[c].muestra, ...proveedorDe(c), costo: lecturas[c]?.precio ?? null, stock: lecturas[c]?.stock ?? null }));
+      const kits = catalogo.map((k) => ({ id: k.id, categoria: k.categoria, nombre: k.nombre, precio: k.precio, costo: k.costo, ganancia: k.ganancia, activo: k.activo, motivos: k.motivos, items: KITS.find((x) => x.id === k.id)?.items || [] }));
+      return Response.json({ actualizado: new Date().toISOString(), kits, productos });
     }
     if (url.pathname === "/actualizar") {
       if (!env.CLAVE || url.searchParams.get("clave") !== env.CLAVE) return new Response("Clave incorrecta", { status: 401 });
