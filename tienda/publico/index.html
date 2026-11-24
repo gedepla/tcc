@@ -152,7 +152,7 @@
 
   <label>2. Tu ciudad</label>
   <div class="ciudades" id="ciudades"></div>
-  <p class="ayuda">Por ahora entregamos solo en Ciudad del Este y hasta 20 km. Pronto a todo el país.</p>
+  <p class="ayuda">Delivery incluido en Ciudad del Este y hasta 20 km. Más lejos también enviamos: pagás tus productos por transferencia y el envío al recibir.</p>
 
   <div id="pasoBarrio" hidden>
     <label>3. Tu barrio, colonia o km</label>
@@ -174,6 +174,7 @@
     <button type="button" data-pago="Transferencia">🏦 Transferencia</button>
     <button type="button" data-pago="QR">📱 QR</button>
   </div>
+  <p class="obligatorio" id="avisoLejos" hidden style="margin-top:10px;font-weight:700"></p>
 
   <div class="total" id="total"></div>
   <p class="error" id="error" hidden></p>
@@ -223,6 +224,7 @@ const $ = (id) => document.getElementById(id);
 const gs = (n) => n.toLocaleString("es-PY") + " Gs";
 let kits = [], categoria = "vendidos", pagina = 0;
 let carrito = [], pago = "", ubicacion = "", ciudad = "", barrio = "", km = null;
+const lejos = () => km != null && km > RADIO_KM;   // fuera de la zona de envío incluido
 
 // --- leer la planilla (CSV) ---
 function leerCSV(texto) {
@@ -361,7 +363,7 @@ function pintarCarrito() {
       </div>
       <button type="button" class="quitar" onclick="cambiar('${c.id}',-99)">🗑 Quitar</button>
     </div>`).join("") || `<p class="vacio-msg">Todavía no elegiste ningún kit.</p>`;
-  $("total").innerHTML = n ? `Total: ${gs(totalCarrito())}<div class="incl" style="font-size:16px">🚚 envío incluido</div>` : "";
+  $("total").innerHTML = n ? `Total: ${gs(totalCarrito())}<div class="incl" style="font-size:16px">${lejos() ? "🚚 + envío, se paga al recibir" : "🚚 envío incluido"}</div>` : "";
 }
 function cambiar(id, d) {
   const c = carrito.find((x) => x.id === id); if (!c) return;
@@ -419,7 +421,19 @@ $("barrios").addEventListener("click", (e) => {
   $("otroBarrio").hidden = !otro; if (otro) $("otroBarrio").focus();
 });
 
+// Fuera de los 20 km: solo transferencia de los productos y el envío se paga al recibir.
+function aplicarZona() {
+  const l = lejos();
+  document.querySelectorAll("[data-pago]").forEach((x) => { x.hidden = l && x.dataset.pago !== "Transferencia"; });
+  if (l) { pago = "Transferencia"; document.querySelectorAll("[data-pago]").forEach((x) => x.classList.toggle("si", x.dataset.pago === "Transferencia")); }
+  else if (pago === "Transferencia" && aplicarZona.forzado) { pago = ""; document.querySelectorAll("[data-pago]").forEach((x) => x.classList.remove("si")); }
+  aplicarZona.forzado = l;
+  $("avisoLejos").hidden = !l;
+  if (l) $("avisoLejos").innerHTML = `📦 Estás a ${Math.round(km)} km de CDE.<br>1) Pagás tus productos por <b>transferencia</b> antes del envío.<br>2) El <b>envío</b> lo abonás al recibir.`;
+  pintarCarrito();
+}
 document.querySelectorAll("[data-pago]").forEach((b) => b.onclick = () => {
+  if (lejos() && b.dataset.pago !== "Transferencia") return;
   pago = b.dataset.pago;
   document.querySelectorAll("[data-pago]").forEach((x) => x.classList.toggle("si", x === b));
 });
@@ -433,7 +447,8 @@ $("gps").onclick = () => {
     $("gps").textContent = "✅ Ubicación lista"; $("gps").classList.add("listo");
     $("gpsMsg").textContent = km <= RADIO_KM
       ? `✅ Listo, estás a ${Math.round(km)} km del centro de CDE: llegamos.`
-      : `Estás a ${Math.round(km)} km de CDE. Por ahora entregamos solo hasta ${RADIO_KM} km. Escribinos por WhatsApp y te avisamos cuando lleguemos.`;
+      : `📦 Estás a ${Math.round(km)} km de CDE: igual te lo enviamos. Pagás tus productos por transferencia y el envío al recibir.`;
+    aplicarZona();
   }, () => {
     $("gps").textContent = "📍 Tocá de nuevo para mandar tu ubicación";
     $("gpsMsg").innerHTML = "No se pudo. <b>1)</b> Bajá la barra de arriba del celular y prendé <b>Ubicación</b>. <b>2)</b> Tocá de nuevo el botón azul y elegí <b>“Permitir”</b>.";
@@ -445,20 +460,24 @@ $("enviar").onclick = () => {
   const zona = barrio || $("otroBarrio").value.trim();
   const falta = !enCarrito().length ? "Tu pedido está vacío. Tocá “➕ Agregar otro kit”." : !nombre ? "Escribí tu nombre." : !ciudad ? "Tocá tu ciudad." : !zona ? "Tocá tu barrio (o escribilo en “Otro barrio”)."
     : !ubicacion ? "Falta tu ubicación: tocá el botón azul “📍 Tocá acá para mandar tu ubicación”. Sin ubicación no se puede completar el pedido."
-    : km > RADIO_KM ? `Tu ubicación está a más de ${RADIO_KM} km de CDE. Por ahora no llegamos ahí.` : !pago ? "Elegí cómo vas a pagar." : "";
+    : !pago ? "Elegí cómo vas a pagar." : "";
   if (falta && !ubicacion && nombre && ciudad && zona) $("gps").scrollIntoView({ behavior: "smooth", block: "center" });
   if (falta) { $("error").textContent = "⚠️ " + falta; $("error").hidden = false; return; }
   $("error").hidden = true;
   const texto = [
     "¡Hola! Quiero hacer este pedido:",
     ...enCarrito().map((c) => `🎁 #${c.kit.id} ${c.kit.nombre} x${c.cant} = ${gs(c.kit.precio * c.cant)}`),
-    `💰 Total: ${gs(totalCarrito())} (envío incluido)`,
+    ...(lejos() ? [
+      `💰 Total productos: ${gs(totalCarrito())}`,
+      `🏦 Pago de productos: TRANSFERENCIA antes del envío`,
+      `🚚 Envío: fuera de la zona de ${RADIO_KM} km, se abona AL RECIBIR`,
+    ] : [`💰 Total: ${gs(totalCarrito())} (envío incluido)`]),
     `👤 Nombre: ${nombre}`,
     `🏙️ Ciudad: ${ciudad}`,
     `🏘️ Barrio: ${zona}`,
     dir && `🏠 Referencia: ${dir}`,
     `📍 Ubicación: ${ubicacion} (a ${Math.round(km)} km del centro)`,
-    `💳 Pago: ${pago}`,
+    lejos() ? `💳 Pago: transferencia de los productos + envío al recibir` : `💳 Pago: ${pago}`,
   ].filter(Boolean).join("\n");
   carrito = []; guardar();   // el pedido ya salió: el carrito queda vacío para la próxima
   location.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
