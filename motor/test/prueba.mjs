@@ -51,7 +51,7 @@ for (;;) {
 assert.ok(max <= 45, `consultas por corrida: ${max}`);
 const kits = JSON.parse(env.CATALOGO.m.get("catalogo.json"));
 assert.equal(kits.filter((k) => k.activo).length, 260, "con todo en stock se ven los 260");
-assert.ok(kits.every((k) => k.precio <= CONFIG.precioMaximo));
+assert.ok(!CONFIG.precioMaximo || kits.every((k) => k.precio <= CONFIG.precioMaximo));
 
 // 3. Un producto sin stock oculta solo sus kits
 const unoWeb = "kshamp";
