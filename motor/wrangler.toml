@@ -1,4 +1,4 @@
-# Motor de precios de Tu Centro de Compras (lee proveedores y arma /kits.csv)
+# Motor de precios de Tu Centro de Compras (lee proveedores y arma /kits.csv). Carpeta: motor/
 name = "motor-kits"
 main = "src/index.js"
 compatibility_date = "2026-06-01"
