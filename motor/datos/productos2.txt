@@ -1,0 +1,68 @@
+# ---------- NISSEI: hogar, mate y cocina ----------
+guampatram|ni|guampa-tramontina-exata-240ml|Guampa Tramontina 240 ml|63
+guampainox|ni|guampa-tramontina-acero-inoxidable-240ml|Guampa de acero inoxidable 240 ml|71
+kitterere|ni|kit-de-terere-guampa-bombilla-plata|Guampa + bombilla para tereré Indio|113
+kitmate|ni|kit-de-mate-indio-guampa-bombilla-plata|Guampa + bombilla para mate Indio|113
+bombalpaca|ni|bombilla-de-alpaca-para-terere-plateado|Bombilla de alpaca para tereré|85
+bombyerba|ni|bombilla-indio-yerba-temate-150gr|Bombilla Indio + yerba Temate 150 g|79
+portatermo|ni|porta-termo-fiore-f8167|Porta termo Fiore|118
+vasomelitta|ni|vaso-termico-de-cafe-melitta-250ml|Vaso térmico para café Melitta 250 ml|97
+cuchtram6|ni|set-de-cuchillos-tramontina-dynamic-inox-6-piezas|Set de 6 cuchillos Tramontina|30
+cuchasado|ni|set-de-cuchillos-para-asado-tramontina-tradicional-12-piezas|Set de 12 cuchillos para asado Tramontina|59
+cuchchurr|ni|set-de-cuchillos-tramontina-churrasco-21198915-6-piezas|Set de 6 cuchillos para churrasco Tramontina|48
+tablateca|ni|tabla-para-servir-tramontina-con-mango-teca-13367-051-70-x-15-cm|Tabla para servir Tramontina de teca|85
+sarten|ni|sarten-tramontina-loreto-203800-negro|Sartén antiadherente Tramontina|29
+sartenes3|ni|set-de-sartenes-tramontina-loreto-3-piezas|Set de 3 sartenes Tramontina|70
+taper3|ni|set-de-taperes-rubbermaid-twist-seal-2165291-apilable-3-x-473ml|Set de 3 táperes Rubbermaid|47
+tuppers10|ni|juego-de-tuppers-para-cocina-10-piezas-decakila-ele-134692|Juego de 10 tuppers|61
+cubiertos|ni|juego-de-cubiertos-25-pzas-tramontina-leme-bandeja-azul|Juego de 25 cubiertos Tramontina|66
+tazas2|ni|set-de-tazas-tramontina-t647604-200ml-2-piezas|Set de 2 tazas Tramontina|65
+tetera|ni|tetera-danny-home-miscelaneo-bw22-16-con-relieve-1000ml|Tetera Danny Home 1 L|52
+tazasplat|ni|set-de-tazas-platillos-danny-home-cpk-070-blanco-6-piezas|Set de tazas con platillos Danny Home|90
+organizador3|ni|juego-de-organizadores-transparentes-3-pzs-wadfow-ele-126283|3 organizadores transparentes|46
+lamparas4|ni|pack-de-4-lamparas-led-bulbo-vce-12w-e27-3000k|Pack de 4 lámparas LED luz cálida|46
+lamparargb|ni|lampara-philips-smart-a60-e27-rgb|Lámpara inteligente Philips de colores|72
+fundaterc|ni|funda-para-almohada-danny-home-terciopelo-50-x-50-cm|Funda de almohadón de terciopelo|31
+humidif|ni|humidificador-nappo-nev-277-ultrasonico-difusor-de-aromas|Humidificador y difusor de aromas Nappo|137
+antimosq|ni|lampara-antimosquitos-20-w-decakila-ele-134703|Lámpara antimosquitos|131
+# ---------- NISSEI: mascotas ----------
+comedero|ni|comedero-p-mascotas-21cm-s000305|Comedero para mascotas 21 cm|31
+collar2|ni|collar-p-perro-2-5x51cm-s000415|Collar para perro 51 cm|45
+collar1|ni|collar-p-perro-1-5x38cm-s000413|Collar para perro 38 cm|28
+correa|ni|correa-p-perro-2-5x120cm-s000640|Correa para perro 120 cm|34
+correach|ni|correa-p-perro-1-5x110cm-s000928|Correa para perro chico 110 cm|32
+cama|ni|cama-oval-para-mascota-k49026-4-52-x-39-x-11-cm|Cama oval para mascota|55
+pelota|ni|juguete-pelota-p-perro-duraball-grande-ref-11504-arg-7898652692536|Pelota para perro Duraball|93
+snackbacon|ni|snack-monello-diversion-perros-bacon-300gr|Snack Monello sabor bacon 300 g|30
+patitas|ni|patitas-de-pollo-deshidratadas-petchef-para-perro|Patitas de pollo deshidratadas PetChef|73
+pechuga|ni|pechuga-de-pollo-deshidratadas-petchef-para-perros-y-gatos|Pechuga de pollo deshidratada PetChef|116
+cuero|ni|cuero-de-pescado-petchef-para-perros-y-gatos|Cuero de pescado PetChef|26
+shampooperro|ni|shampoo-antiparasitario-agrofield-pulgafin-020-695-300-300ml|Shampoo antipulgas Pulgafin 300 ml|21
+shampooseco|ni|shampoo-seco-pispas-tropical-scent-200ml|Shampoo en seco PisPás 200 ml|63
+shampoogato|ni|beeps-cat-care-shampoo-502-ml-arg-7898574023814|Shampoo para gatos Beeps 502 ml|48
+arenagato|ni|arena-sanitaria-biokitty-para-gato-lavanda|Arena sanitaria BioKitty lavanda|54
+monellogato|ni|alimento-balanceado-monello-gatos-adultos-salmon-y-pollo|Alimento Monello gatos salmón y pollo|41
+monelloperro|ni|alimento-balanceado-monello-tradicional-perros-adultos-pollo|Alimento Monello perros adultos pollo|29
+monellocach|ni|alimento-balanceado-monello-perros-cachorros-pollo|Alimento Monello cachorros pollo|51
+bites|ni|alimento-balanceado-monello-bites-gatos-castrados-80gr|Snack Monello Bites para gatos 80 g|17
+rascador|ni|juguete-rascador-durapets-azul-ref-44938-arg-7898652690716|Juguete rascador para gatos|129
+# ---------- NISSEI: bebé ----------
+chupbuba|ni|chupete-buba-comfort-6-18m|Chupete Buba Comfort|35
+chupalim|ni|chupete-alimentador-munchkin-mu43124-azul|Chupete alimentador Munchkin|50
+cucharadent|ni|cuchara-de-denticion-munchkin-the-baby-toon-2-en-1|Cuchara de dentición Munchkin|50
+termoaspen|ni|termometro-digital-aspen-dmt-2031|Termómetro digital Aspen|36
+biberon120|ni|biberon-anticolico-dr-brown-s-natural-flow-options-sb43005-0m-120ml|Biberón anticólico Dr. Brown's 120 ml|75
+biberon250|ni|biberon-anticolico-dr-brown-s-natural-flow-options-sb81005-0m-250ml|Biberón anticólico Dr. Brown's 250 ml|87
+babero|ni|babero-para-bebe-buba-gumy-con-bolsillo-3m|Babero Buba con bolsillo|65
+portachup|ni|porta-chupete-petu-petu-7-x-20-cm|Porta chupete Petú Petú|72
+tijera|ni|tijera-de-unas-para-bebe-dr-brown-s-safe-squeeze-hg087-gris|Tijera de uñas para bebé Dr. Brown's|53
+compresa|ni|set-de-compresa-fria-dr-brown-s-hg082-2-piezas|Mordillo frío para dentición Dr. Brown's|72
+sonajero|ni|sonajero-mordedor-bright-starts-rattle-teethe-wrist-pals-kd12092|Sonajero mordedor Bright Starts|75
+jirafa|ni|peluche-bright-starts-jirafa-con-mordillo-snuggle-n-teethe|Peluche jirafa con mordillo|70
+lalaboom|ni|set-de-juguetes-educativos-para-bebe-lalaboom-bl690-10-piezas|Juguetes educativos Lalaboom 10 piezas|40
+patitos|ni|juego-de-bano-2273-3-patitos-cjx-008-2273|Juego de baño 3 patitos|52
+cucharababero|ni|juego-infantil-cuchara-y-babero-silicona-tramontina-le-petit-rosado|Cuchara y babero de silicona|67
+mordedor|ni|juguete-mordedor-bright-starts-juicy-chews-multicolor|Mordedor Bright Starts|40
+botellabuba|ni|botella-buba-animal-fun-12085-con-pajita-12m-unicornio-320ml|Botella Buba con pajita (unicornio)|65
+botellaleon|ni|botella-buba-animal-fun-12088-con-pajita-12m-leon-320ml|Botella Buba con pajita (león)|65
+termoinfra|mg|1255096|Termómetro infrarrojo Hyundai|35

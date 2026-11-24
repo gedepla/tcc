@@ -1,0 +1,275 @@
+# clave|fuente|referencia|nombre que ve el cliente|costo aprox (miles de Gs)
+# fuente: sv = Seiva (id de su API), mg = Mega Eletrônicos (código), ni = Nissei (dirección)
+# ---------- SEIVA: suplementos ----------
+nadres|sv|51|NAD+ 120 cápsulas + resveratrol 120 cápsulas|150
+nadage|sv|122|NAD-Age 120 cápsulas|85
+nadresv|sv|37|NAD + resveratrol 120 cápsulas|85
+resv|sv|132|Resveratrol 120 cápsulas|85
+resv25|sv|214|Resveratrol 2,5 g 120 cápsulas|100
+colageno|sv|219|Colágeno hidrolizado 120 cápsulas|85
+colII|sv|143|Mega colágeno tipo II + vitaminas E y C|95
+colcurc|sv|109|Colágeno tipo II + cúrcuma 120 cápsulas|85
+matcha|sv|168|Matcha con colágeno y vitamina C|85
+vitczinc|sv|226|Vitamina C y zinc|75
+vitclipo|sv|31|Vitamina C liposomal 120 cápsulas|85
+d3k2|sv|228|Vitamina D3 + K2 60 cápsulas|75
+d3k2g|sv|32|Vitamina D3 + K2 120 cápsulas|85
+d3|sv|115|Vitamina D3 5000 UI 120 cápsulas|85
+multi|sv|172|Multivitamínico de la A a la Z|75
+compb|sv|18|Complejo B 120 cápsulas|85
+b12|sv|162|Vitamina B12 60 cápsulas|90
+mag7|sv|11|7 magnesios 120 cápsulas|85
+bisgli|sv|119|Bisglicinato de magnesio 120 cápsulas|85
+glicinato|sv|137|Glicinato de magnesio 120 cápsulas|85
+treonato|sv|135|L-treonato de magnesio 120 cápsulas|85
+magcit|sv|184|Citrato de magnesio 120 cápsulas|85
+magbistreo|sv|21|Bisglicinato + treonato de magnesio (2 frascos)|150
+magpot|sv|26|Citrato de magnesio + potasio (2 frascos)|150
+potasio|sv|158|Citrato de potasio 120 cápsulas|85
+omega3|sv|111|Omega 3 120 cápsulas|100
+omega369|sv|147|Omega 3-6-9 120 cápsulas|100
+omegakt|sv|36|Omega 3 Katigua 1400 mg 120 cápsulas|120
+omegamag|sv|15|Omega 3 + citrato de magnesio (2 frascos)|170
+ashwa|sv|43|Ashwagandha 120 cápsulas|85
+teanina|sv|206|L-teanina 60 cápsulas|85
+maca|sv|22|Maca peruana negra 120 cápsulas|85
+shilajit|sv|7|Shilajit 120 cápsulas|85
+tongkat|sv|120|Shilajit + tongkat ali 120 cápsulas|85
+testo|sv|139|Testosterona Power 120 cápsulas|85
+testo600|sv|186|+Testo 600 mg 60 cápsulas|75
+creatina|sv|209|Creatina monohidratada 300 g|120
+creacaps|sv|215|Creatina 60 cápsulas|80
+glutamina|sv|218|L-glutamina 120 cápsulas|120
+colostro|sv|188|Colostro bovino 60 cápsulas|60
+q10|sv|225|Coenzima Q10 + vitamina E 60 cápsulas|90
+nac|sv|207|NAC 120 cápsulas|100
+luteina|sv|204|Luteína + zeaxantina 60 cápsulas|119
+curcuma|sv|4|Cúrcuma con pimienta negra 120 cápsulas|85
+curcumina|sv|12|Curcumina pura 60 cápsulas|85
+glucosamina|sv|216|Glucosamina 120 cápsulas|100
+berberina|sv|48|Berberina 120 cápsulas|85
+cromo|sv|5|Picolinato de cromo 60 cápsulas|75
+psyllium|sv|25|Psyllium 60 cápsulas|85
+zeolita|sv|58|Zeolita 120 cápsulas|85
+espirulina|sv|29|Espirulina 150 cápsulas|150
+oregano|sv|17|Aceite de orégano 120 cápsulas|130
+zinc|sv|9|Zinc 60 cápsulas|75
+selenio|sv|145|Selenio quelado 60 cápsulas|75
+silicio|sv|69|Silicio orgánico 30 cápsulas|85
+acoco|sv|150|Aceite de coco 60 cápsulas|75
+ajo|sv|151|Aceite de ajo 60 cápsulas|75
+# ---------- MEGA: piel ----------
+cxsnail|mg|1503180|Crema COSRX Snail 92 (100 g)|132
+cxgel|mg|1503197|Gel de limpieza COSRX Good Morning 150 ml|78
+cxgelm|mg|1603835|Gel de limpieza COSRX Good Morning 50 ml|47
+cxgalac|mg|1514049|Esencia COSRX Galactomyces 100 ml|132
+cxsali|mg|1514056|Limpiador COSRX ácido salicílico|85
+cxmucin|mg|1518801|Esencia COSRX Snail 96 Mucin 100 ml|116
+cxaha|mg|1518825|Exfoliante COSRX AHA 7 100 ml|147
+cxhialu|mg|1520699|Sérum COSRX ácido hialurónico 20 ml|116
+cxparche|mg|1603811|Parches para granitos COSRX Pimple Master|35
+cxpads|mg|1520668|Almohadillas COSRX One Step|116
+anuatonm|mg|1503449|Tónico Anua Heartleaf 77 (40 ml)|48
+anualimp|mg|1504361|Limpiador Anua ácido hialurónico 150 ml|126
+anuamask|mg|1518412|Mascarilla Anua Heartleaf panthenol|48
+anuapeachm|mg|1628098|Mascarilla Anua Peach niacinamida|48
+anuapeachs|mg|1518467|Sérum Anua Peach niacinamida 30 ml|145
+anuacrema|mg|1503470|Crema Anua 3 ceramidas 100 ml|145
+s1004crema|mg|1504828|Crema SKIN1004 Centella 75 ml|126
+s1004cremam|mg|1625066|Crema SKIN1004 Centella 30 ml|87
+s1004ton|mg|1625059|Tónico SKIN1004 Centella 30 ml|58
+s1004pads|mg|1505054|Almohadillas calmantes SKIN1004 Centella|96
+s1004parche|mg|1526820|Parches para granitos SKIN1004|34
+s1004limp|mg|1604658|Limpiador SKIN1004 BHA|106
+rlimp|mg|1504965|Limpiador Round Lab Dokdo 150 ml|78
+rton|mg|1504972|Tónico Round Lab Dokdo 200 ml|93
+rsol|mg|1603958|Protector solar Round Lab Birch|116
+ragua|mg|1638967|Agua de limpieza Round Lab 400 ml|78
+banila|mg|1504378|Bálsamo desmaquillante Banila Co 100 ml|93
+bojexf|mg|1513790|Exfoliante Beauty of Joseon damasco 100 ml|101
+bojojos|mg|1500301|Sérum de ojos Beauty of Joseon 30 ml|147
+mmojos|mg|1504552|Crema de ojos Mary&May 30 g|78
+hhojos|mg|1514513|Crema de ojos Haruharu arroz negro|85
+hhsol|mg|1603712|Protector solar Haruharu arroz negro|116
+mcmask|mg|1518399|Mascarilla Medicube colágeno lifting|19
+mcpdrnm|mg|1534139|Mascarilla Medicube PDRN Pink|29
+mcgluta|mg|1518429|Sérum Medicube glutatión 30 g|97
+mcretinol|mg|1518504|Sérum Medicube retinol 30 ml|94
+mccolser|mg|1503289|Sérum Medicube triple colágeno 55 ml|97
+mccolton|mg|1518436|Tónico Medicube triple colágeno 140 ml|116
+mccolcre|mg|1586824|Crema Medicube triple colágeno 50 ml|121
+mcsol|mg|1652178|Protector solar Medicube PDRN Tone Up|116
+mcporeton|mg|1590692|Tónico Medicube Zero Pore 250 ml|106
+mcporepad|mg|1591682|Almohadillas Medicube Zero Pore|106
+mclabios|mg|1518535|Mascarilla de labios Medicube PDRN 10 g|96
+numbuzin|mg|1600919|Mascarilla Numbuzin No. 4 hidratante|29
+alth15|mg|1611915|Crema Dr. Althea 345 Relief 15 ml|87
+altserm|mg|1664195|Sérum Dr. Althea 345 Relief 15 ml|58
+altmask|mg|1650495|Mascarilla Dr. Althea Vita Glow|97
+retinal20|mg|1690781|Sérum Meditherapy retinal 20 ml|70
+dexenegra|mg|1683189|Mascarilla Dexe negra 120 g|39
+dexeoro|mg|1683202|Mascarilla Dexe dorada 120 g|39
+missha|mg|1526240|BB cream Missha SPF 42|78
+nvsolfac|mg|1434934|Protector solar facial NIVEA SPF 50|116
+nvsol|mg|1434958|Protector solar NIVEA SPF 50 200 ml|116
+nvsolkids|mg|1434965|Protector solar NIVEA Kids SPF 60|101
+nvcrema30|mg|1504163|Crema NIVEA 30 ml|14
+nvlata|mg|969031|Crema NIVEA lata 400 ml|78
+nvlabial|mg|1648546|Bálsamo labial NIVEA vainilla|39
+nvexpress|mg|1648652|Crema corporal NIVEA Express 100 ml|35
+nvsoft|mg|1648676|Crema NIVEA Soft Milk 220 ml|50
+nvq10|mg|1648690|Crema reafirmante NIVEA Q10 250 ml|62
+nvmen|mg|1648478|Crema NIVEA Men 150 ml|47
+nvafter|mg|1648997|Bálsamo after shave NIVEA Men 100 ml|101
+nvtoall|mg|1669145|Toallitas desmaquillantes NIVEA|46
+lipkit|mg|1498486|Kit aceite de labios + mascarilla labial de miel|46
+vtlabios|mg|1612370|Voluminizador de labios VT Reedle Shot|77
+s1004corp|mg|1597400|Exfoliante corporal SKIN1004 Centella|116
+cremayara|mg|1605013|Crema corporal Lattafa Yara 310 g|74
+cremaasad|mg|1605006|Crema corporal Lattafa Asad 280 g|74
+cremakham|mg|1605020|Crema corporal Lattafa Khamrah 300 g|74
+# ---------- MEGA: cabello ----------
+kshamp|mg|1633214|Shampoo Karseell Maca 500 ml|39
+kacond|mg|1633221|Acondicionador Karseell Maca 500 ml|46
+kmascol|mg|1493412|Máscara Karseell colágeno 500 ml|43
+kmasvio|mg|1493405|Máscara matizadora Karseell violeta 500 ml|66
+kaceite|mg|1495010|Aceite Karseell Maca 50 ml|35
+kargan|mg|1633382|Aceite de argán Karseell 60 ml|46
+kmasargan|mg|1633450|Máscara Karseell argán y colágeno 160 ml|46
+kleavein|mg|1532029|Leave-in Karseell en crema 200 ml|39
+kspray|mg|1496895|Leave-in Karseell en spray 200 ml|46
+smcoco|mg|1509557|Shampoo Silicon Mix coco 473 ml|38
+smperla|mg|1509564|Shampoo Silicon Mix perla 473 ml|43
+smbrillo|mg|1642278|Gotas de brillo Silicon Mix 118 ml|62
+smrizosm|mg|1642414|Máscara Silicon Mix rizos 295 g|47
+smrizosl|mg|1642391|Leave-in Silicon Mix rizos 251 ml|69
+smrizosg|mg|1644203|Gel Silicon Mix rizos 295 g|54
+smperlal|mg|1642810|Leave-in Silicon Mix perla 236 ml|61
+tsushamp|mg|1578058|Shampoo Tsubaki Premium 450 ml|85
+tsuacond|mg|1578072|Acondicionador Tsubaki Premium 450 ml|85
+tsumasc|mg|1537512|Máscara Tsubaki Premium 180 g|85
+finoshamp|mg|1537499|Shampoo Fino Premium Touch 550 ml|97
+finoacond|mg|1537505|Acondicionador Fino Premium Touch 550 ml|101
+finomasc|mg|1584813|Máscara Fino Premium Touch 230 g|78
+finoaceite|mg|1537482|Aceite Fino Premium Touch 70 ml|74
+dexeacond|mg|1683158|Acondicionador Dexe argán 400 ml|47
+dexemasc|mg|1683165|Máscara Dexe argán|47
+dexeaceite|mg|1683141|Aceite Dexe argán 50 ml|47
+moevshamp|mg|1604214|Shampoo Moev anticaída 300 ml|87
+moevaceite|mg|1604368|Aceite Moev Annurcatin 80 ml|97
+moevguasha|mg|1644807|Cepillo masajeador gua sha para cuero cabelludo|53
+moevcepillo|mg|1644760|Cepillo masajeador de cuero cabelludo Moev|68
+mcsoyx|mg|1603613|Shampoo anticaída Medicube Soyxidil 490 ml|154
+mcromacond|mg|1607789|Acondicionador Medicube romero 250 ml|116
+mcrommasc|mg|1631845|Máscara Medicube romero 200 ml|116
+gkacond|mg|1633702|Acondicionador GKhair Gold 250 ml|54
+secador|mg|1329629|Secador de pelo MegaStar 1000 W|58
+secadorq|mg|1423990|Secador de pelo Quanta compacto|58
+secviaje|mg|1546507|Secador de viaje Britania|97
+plancha|mg|655316|Planchita para cabello Mondial|85
+planchaw|mg|1274967|Planchita para cabello Aiwa|85
+planchams|mg|1569803|Planchita MegaStar 230 °C|108
+rizador|mg|1360097|Rizador Quanta 19 mm|62
+rizadorsp|mg|655521|Rizador espiral Mondial|81
+cepelec|mg|1355925|Cepillo eléctrico alisador Prosper|124
+# ---------- MEGA: perfumes ----------
+pameerat|mg|1473858|Perfume Lattafa Ameerat Al Arab 100 ml|105
+padeeb|mg|1527209|Perfume Lattafa Adeeb 80 ml|85
+prave|mg|1527155|Perfume Lattafa Rave Now 100 ml|101
+pasad|mg|1399974|Perfume Lattafa Asad 100 ml|151
+pyara|mg|1399967|Perfume Lattafa Yara 100 ml|178
+pfakhar|mg|1416435|Perfume Lattafa Fakhar 100 ml|147
+pmaahir|mg|1441307|Perfume Lattafa Maahir 100 ml|140
+pjouri|mg|1637663|Perfume Lattafa Jouri 100 ml|155
+pbellis|mg|1646108|Perfume Nasma Bellissima 100 ml|105
+paline|mg|1646115|Perfume Nasma Aline 100 ml|107
+psalma|mg|1688221|Perfume Nasma Salma 100 ml|109
+psherif|mg|1646122|Perfume Nasma Sherif 100 ml|101
+psalem|mg|1668841|Perfume Nasma Salem 100 ml|101
+pfiras|mg|1690705|Perfume Nasma Firas 100 ml|109
+pfaraon|mg|1668858|Perfume Nasma Faraón 100 ml|113
+ppharaoh|mg|1636352|Perfume Rayhaan Pharaoh 100 ml|109
+punbeat|mg|1646153|Perfume Arqus Unbeatable 100 ml|122
+pshouq|mg|1532128|Perfume Al Wataniah Shouq 100 ml|109
+ppistacho|mg|1662528|Perfume Maison Alhambra Pistacho Chocolate 100 ml|93
+pchocolat|mg|1502565|Perfume Armaf Dubai Chocolat 100 ml|78
+ptubbes|mg|1558661|Perfume infantil Tubbes chocolate 50 ml|54
+mangham|mg|1622881|Body mist Lattafa Angham 250 ml|62
+msehr|mg|1622966|Body mist Lattafa Sehr 250 ml|62
+mteriaq|mg|1622973|Body mist Lattafa Teriaq 250 ml|62
+mclub|mg|1652291|Body mist Armaf Club de Nuit Woman 250 ml|43
+mceles|mg|1625295|Body mist Armaf Celestial 250 ml|62
+mhoney|mg|1359381|Body mist Stella Dustin Honey Dream 250 ml|58
+mvsgelato|mg|1635966|Body mist Victoria's Secret Gelato Oasis|85
+mvspitaya|mg|1641288|Body mist Victoria's Secret Pitaya Paradise|85
+mariana|mg|1686289|Body mist Ariana Grande Cloud 236 ml|93
+dameerat|mg|1662153|Desodorante Lattafa Ameerat Al Arab 200 ml|23
+dcandid|mg|1662177|Desodorante Maison Alhambra So Candid 200 ml|23
+dlavoie|mg|1662191|Desodorante Maison Alhambra La Voie 200 ml|23
+dnvmen|mg|1404418|Desodorante NIVEA Men Black & White|25
+dnvprot|mg|1404463|Desodorante NIVEA Protect & Care|23
+dnvpearl|mg|1404708|Desodorante NIVEA Pearl & Beauty|23
+dnvrollm|mg|1648782|Desodorante roll-on NIVEA Men|35
+dnvrollw|mg|1648904|Desodorante roll-on NIVEA Pearl|35
+ambhaya|mg|1662078|Aromatizante de ambiente Lattafa Haya 300 ml|31
+aceiteyara|mg|1507218|Aceite corporal perfumado Lattafa Yara 20 ml|69
+cfrozen|mg|1631692|Colonia infantil Frozen 200 ml|74
+cmickey|mg|1631708|Colonia infantil Mickey 200 ml|74
+cstitch|mg|1631739|Colonia infantil Stitch 200 ml|74
+cprincess|mg|1631722|Colonia infantil Princesas 200 ml|74
+# ---------- MEGA: tecno ----------
+cablec|mg|1659047|Cable USB-C 1 m|12
+cablel|mg|1659030|Cable USB-C a Lightning (iPhone) 1 m|14
+cable2m|mg|1354218|Cable USB-C 2 m reforzado|22
+cargador20|mg|1676051|Cargador 20 W + cable|19
+cargador30|mg|1237832|Cargador rápido 30 W doble|27
+cargadorhye|mg|1340204|Cargador 22,5 W + cable USB-C|66
+cargadorip|mg|1466430|Cargador 22,5 W + cable para iPhone|66
+aurbt|mg|1347425|Auriculares bluetooth Prosper|50
+mibro|mg|1485073|Auriculares inalámbricos Mibro 5|62
+mibrorosa|mg|1485080|Auriculares inalámbricos Mibro 5 rosa|62
+hyeh2|mg|1623413|Auriculares inalámbricos HYE H2 Pro|70
+gtide|mg|1487732|Auriculares G-TiDE Clip con cancelación de ruido|89
+qcy|mg|1517798|Auriculares inalámbricos QCY Buds|101
+aurcable|mg|1668759|Auriculares con micrófono G-TiDE|54
+parlante|mg|1569728|Parlante bluetooth con radio Quanta|43
+parlantemox|mg|1590043|Parlante bluetooth MOX 10 W|93
+relojx5|mg|1490701|Reloj inteligente Audisat X5 Pro|85
+relojx6|mg|1674187|Reloj inteligente Audisat X6 Pro|108
+mouse|mg|1290417|Mouse USB|18
+mouseinal|mg|1351910|Mouse inalámbrico|27
+teclado|mg|1106701|Teclado USB en español|35
+logik120|mg|424103|Teclado Logitech K120|58
+hub|mg|1337556|Hub USB 3 puertos|35
+pendrive64|mg|1289916|Pendrive 64 GB Kingston|44
+pendrive32|mg|1171310|Pendrive 32 GB SanDisk|51
+microsd|mg|1129649|Memoria micro SD 32 GB SanDisk|74
+luzrgb|mg|1669428|Luz LED portátil RGB|50
+luztri|mg|1669497|Luz LED portátil 3 tonos|47
+tripode|mg|1669459|Trípode para celular con luz y micrófono|116
+micro|mg|1590982|Micrófono MegaStar|58
+microdeh|mg|664127|Micrófono MegaStar con soporte|37
+camip|mg|1341683|Cámara Wi-Fi Satellite|85
+camip2|mg|1381191|Cámara Wi-Fi con micrófono|89
+lampled|mg|906173|Lámpara LED giratoria|16
+powerbank|mg|1434354|Power bank Xiaomi 10.000 mAh|132
+# ---------- MEGA: hombre ----------
+cortadora|mg|1112306|Máquina de cortar cabello Quanta|52
+cortadorams|mg|1638998|Máquina de cortar cabello portátil MegaStar|54
+cortadorap|mg|1158977|Máquina de cortar cabello Prosper recargable|93
+cortadora2130|mg|1453522|Máquina de cortar cabello Prosper P-2130|109
+cortadorab|mg|1253702|Máquina de cortar cabello Britania|85
+recortador|mg|1057348|Recortador portátil Mondial|93
+recortador5|mg|1366372|Recortador 5 en 1 Prosper|109
+afeitadora|mg|1649529|Afeitadora portátil Krab|47
+mochila|mg|1315653|Mochila Xiaomi|50
+mochilaazul|mg|1447200|Mochila Xiaomi azul|50
+# ---------- MEGA: regalos y hogar ----------
+whorse|mg|1431537|Whisky White Horse 1 L|78
+redlabel|mg|1431704|Whisky Johnnie Walker Red Label 1 L|101
+blonde|mg|1479546|Whisky Johnnie Walker Blonde 750 ml|97
+freixenet|mg|970990|Espumante Freixenet Mía Moscato|62
+freixfruit|mg|1034783|Espumante Freixenet Mía Fruity|62
+pava|mg|1495485|Pava eléctrica MOX 2 L|54
+pavakrab|mg|1547511|Pava eléctrica Krab 2 L|43
+sandwichera|mg|1498325|Sandwichera MOX|70

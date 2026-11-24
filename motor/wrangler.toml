@@ -1,0 +1,14 @@
+# Motor de precios de Tu Centro de Compras (lee proveedores y arma /kits.csv)
+name = "motor-kits"
+main = "src/index.js"
+compatibility_date = "2026-06-01"
+keep_vars = true
+
+# Base de datos donde el motor guarda el catálogo, el reporte y las últimas lecturas.
+[[kv_namespaces]]
+binding = "CATALOGO"
+id = "b8cd18ddab964487a8f8f594889d263b"
+
+# Corre cada 10 minutos: lee 40 tiendas por vez, así los 308 productos se actualizan cada hora.
+[triggers]
+crons = ["*/10 * * * *"]

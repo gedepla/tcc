@@ -1,0 +1,216 @@
+# categoria|nombre|productos (clave o clave*cantidad)|etiqueta (MV = Más vendido)
+longevidad|Kit Longevidad NAD+ y Resveratrol|nadres|MV
+longevidad|Kit Antiedad Celular|nadage resv|
+longevidad|Kit NAD Diario|nadresv d3k2|
+longevidad|Kit Corazón Sano|omega3 q10|
+longevidad|Kit Colágeno Belleza|colageno vitczinc|MV
+longevidad|Kit Articulaciones|colII glucosamina|
+longevidad|Kit Articulaciones Plus|colcurc curcuma|
+longevidad|Kit Defensas|vitczinc d3k2|MV
+longevidad|Kit Defensas Plus|vitclipo zinc|
+longevidad|Kit Energía Diaria|compb b12|
+longevidad|Kit Multivitamínico|multi omega369|
+longevidad|Kit Sueño Profundo|glicinato teanina|
+longevidad|Kit Antiestrés|ashwa mag7|
+longevidad|Kit Calma y Foco|teanina treonato|
+longevidad|Kit Magnesio Completo|magbistreo|
+longevidad|Kit Calambres Fuera|magpot|
+longevidad|Kit Omega + Magnesio|omegamag|
+longevidad|Kit Hígado y Detox|nac zeolita|
+longevidad|Kit Digestión|psyllium curcuma|
+longevidad|Kit Azúcar Controlada|berberina cromo|
+longevidad|Kit Vista Cansada|luteina zinc|
+longevidad|Kit Antiinflamatorio|curcumina omega3|
+longevidad|Kit Huesos Fuertes|d3k2g mag7|
+longevidad|Kit Piel desde Adentro|colageno silicio|
+longevidad|Kit Cabello y Uñas Fuertes|silicio zinc|
+longevidad|Kit Tiroides y Defensas|selenio zinc|
+longevidad|Kit Matcha Glow|matcha vitczinc|
+longevidad|Kit Superalimento|espirulina|
+longevidad|Kit Limpieza Intestinal|zeolita psyllium|
+longevidad|Kit Corazón Plus|omegakt ajo|
+longevidad|Kit Inmunidad Natural|oregano zinc|
+longevidad|Kit Antioxidante|q10 resv|
+longevidad|Kit Memoria y Concentración|treonato omega3|
+longevidad|Kit Mujer 40+|colII d3k2|
+longevidad|Kit Mujer Radiante|colageno vitclipo|
+longevidad|Kit Hombre 40+|q10 zinc|
+longevidad|Kit Longevidad Premium|resv25 q10|
+longevidad|Kit Equilibrio Hormonal|maca mag7|
+longevidad|Kit Metabolismo Activo|cromo acoco|
+longevidad|Kit Vitaminas Esenciales|d3 compb|
+gym|Kit Fuerza|creatina colostro|MV
+gym|Kit Recuperación Muscular|glutamina colostro|
+gym|Kit Creatina Práctica|creacaps multi|
+gym|Kit Testosterona Natural|testo zinc|MV
+gym|Kit Vigor Masculino|tongkat maca|
+gym|Kit Energía Hombre|shilajit compb|
+gym|Kit Testo Plus|testo600 d3|
+gym|Kit Rendimiento|creacaps magcit|
+gym|Kit Articulaciones del Deportista|glucosamina colcurc|
+gym|Kit Barbería en Casa|cortadora afeitadora|MV
+gym|Kit Barba Perfecta|recortador nvafter|
+gym|Kit Corte Pro|cortadora2130 dnvmen|
+gym|Kit Hombre Fresco|dnvmen dnvrollm nvmen|
+gym|Kit Perfume y Desodorante Hombre|pfiras dnvmen|
+gym|Kit Hombre Elegante|pasad dlavoie|
+gym|Kit Mochila Deportiva|mochila dnvrollm nvmen|
+gym|Kit Recortador 5 en 1|recortador5 dnvmen|
+gym|Kit Viaje Hombre|afeitadora dnvrollm nvmen|
+gym|Kit Cortes en Casa|cortadorab dnvmen|
+gym|Kit Hombre Activo|testo600 creacaps|
+piel|Kit Rutina Coreana Básica|cxgelm anuatonm s1004cremam|MV
+piel|Kit Glow Coreano|cxmucin numbuzin*2|
+piel|Kit Granitos Fuera|cxsali cxparche|MV
+piel|Kit Acné Control|s1004limp s1004parche s1004ton|
+piel|Kit Piel Hidratada|rlimp rton|
+piel|Kit Protección Solar Diaria|rsol rlimp|
+piel|Kit Doble Limpieza|banila cxgelm|
+piel|Kit Doble Limpieza Plus|banila rlimp|
+piel|Kit Ojeras Fuera|mmojos mcmask*3|
+piel|Kit Mirada Joven|hhojos numbuzin*2|
+piel|Kit Colágeno Medicube|mccolser mcmask*2|MV
+piel|Kit Triple Colágeno|mccolton mcmask*3|
+piel|Kit Antiarrugas Noche|mcretinol alth15|
+piel|Kit Manchas Fuera|mcgluta anuapeachm*2|
+piel|Kit Poros Cerrados|mcporeton mcmask*2|
+piel|Kit Piel Sensible|alth15 altserm|
+piel|Kit Centella Calmante|s1004cremam s1004ton s1004parche|
+piel|Kit 6 Mascarillas Coreanas|mcmask*2 mcpdrnm*2 numbuzin*2|
+piel|Kit Spa Facial|dexenegra dexeoro cxgelm|
+piel|Kit Puntos Negros|dexenegra cxsali|
+piel|Kit Labios Perfectos|lipkit nvlabial|
+piel|Kit Labios Voluminosos|vtlabios nvlabial|
+piel|Kit Labios PDRN|mclabios nvlabial|
+piel|Kit Exfoliación Suave|bojexf anuatonm|
+piel|Kit Peeling en Casa|cxaha cxgelm|
+piel|Kit Hidratación Profunda|cxhialu numbuzin*2|
+piel|Kit Sérum Retinal|retinal20 nvsolfac|
+piel|Kit Sol y Playa|nvsol nvlabial|
+piel|Kit Sol para Niños|nvsolkids nvlabial|
+piel|Kit Maquillaje Natural|missha nvlabial|
+piel|Kit Cuerpo Suave|nvsoft nvexpress nvlabial|
+piel|Kit Reafirmante|nvq10 s1004corp|
+piel|Kit Crema Clásica|nvlata nvlabial nvcrema30|
+piel|Kit Desmaquillado Fácil|nvtoall ragua|
+piel|Kit Cuerpo Perfumado Yara|cremayara aceiteyara|
+piel|Kit Cuerpo Árabe|cremakham mteriaq|
+piel|Kit Anua Peach Glow|anuapeachs anuapeachm|
+piel|Kit Anua Calmante|anuamask*2 anuatonm|
+piel|Kit Pads Coreanos|s1004pads numbuzin*2|
+piel|Kit Vitamina Glow|altmask anuatonm|
+piel|Kit Barrera Reparadora|anuacrema numbuzin|
+piel|Kit Piel Grasa|mcporepad cxparche|
+piel|Kit Belleza de Viaje|cxgelm s1004ton nvcrema30 nvlabial|
+piel|Kit Belleza desde Adentro|colageno mccolser|
+piel|Kit Glow Total|cxgalac mcmask*2|
+cabello|Kit Karseell Completo|kshamp kacond kmascol|MV
+cabello|Kit Reparación Maca|kmascol kaceite|
+cabello|Kit Rubias Perfectas|kmasvio kshamp|
+cabello|Kit Argán Nutritivo|kargan kmasargan kacond|
+cabello|Kit Sin Frizz|kleavein kaceite kshamp|
+cabello|Kit Leave-in Doble|kspray kleavein|
+cabello|Kit Silicon Mix Coco|smcoco smbrillo|
+cabello|Kit Rizos Definidos|smrizosm smrizosl smrizosg|MV
+cabello|Kit Brillo Perla|smperla smperlal|
+cabello|Kit Tsubaki Japonés|tsushamp tsuacond|
+cabello|Kit Tsubaki Reparación|tsushamp tsumasc|
+cabello|Kit Fino Premium|finoshamp finoacond|
+cabello|Kit Fino Reparación|finomasc finoaceite|
+cabello|Kit Argán Dexe|dexeacond dexemasc dexeaceite|
+cabello|Kit Anticaída Natural|moevshamp moevguasha|MV
+cabello|Kit Anticaída Pro|mcsoyx kaceite|
+cabello|Kit Romero Medicube|mcromacond moevguasha|
+cabello|Kit Cuero Cabelludo Sano|moevcepillo moevshamp|
+cabello|Kit Aceite Moev|moevaceite moevguasha|
+cabello|Kit Secado Rápido|secador kaceite|
+cabello|Kit Lacio Perfecto|plancha kaceite|
+cabello|Kit Planchita Pro|planchams smbrillo|
+cabello|Kit Rulos Fáciles|rizador kspray|
+cabello|Kit Rizos Espiral|rizadorsp smrizosg|
+cabello|Kit Secador de Viaje|secviaje kleavein|
+cabello|Kit Cepillo Alisador|cepelec kaceite|
+cabello|Kit Peinado Completo|secadorq plancha|
+cabello|Kit Cabello Fuerte desde Adentro|silicio kshamp|
+cabello|Kit GKhair Gold|gkacond kshamp kaceite|
+cabello|Kit Máscara Doble|kmascol kmasargan|
+cabello|Kit Aceites Capilares|kaceite kargan dexeaceite|
+cabello|Kit Cabello Teñido|kmasvio kacond kaceite|
+cabello|Kit Salón en Casa|secador plancha kmascol|
+cabello|Kit Hidratación Extrema|finomasc kmascol kaceite|
+cabello|Kit Cabello y Uñas|colageno kmascol|
+perfumes|Kit Yara|pyara dnvpearl|
+perfumes|Kit Ameerat Al Arab|pameerat dameerat|MV
+perfumes|Kit Árabe para Él|pasad dnvmen|
+perfumes|Kit Dúo Árabe Pareja|padeeb pameerat|MV
+perfumes|Kit Fakhar Hombre|pfakhar dlavoie|
+perfumes|Kit Maahir Unisex|pmaahir dcandid|
+perfumes|Kit Jouri Mujer|pjouri dcandid|
+perfumes|Kit Nasma Bellissima|pbellis mclub|
+perfumes|Kit Nasma Aline|paline mceles|
+perfumes|Kit Nasma Salma|psalma dnvpearl|
+perfumes|Kit Nasma Sherif|psherif dnvmen|
+perfumes|Kit Salem Hombre|psalem dnvrollm|
+perfumes|Kit Firas Hombre|pfiras dlavoie|
+perfumes|Kit Faraón|pfaraon dnvmen|
+perfumes|Kit Pharaoh|ppharaoh dlavoie|
+perfumes|Kit Unbeatable|punbeat dnvmen|
+perfumes|Kit Shouq Mujer|pshouq mhoney|
+perfumes|Kit Pistacho Gourmand|ppistacho mclub|MV
+perfumes|Kit Chocolate de Dubái|pchocolat msehr|
+perfumes|Kit 3 Body Mist Árabes|mangham msehr mteriaq|
+perfumes|Kit Dúo Body Mist|mclub mceles|
+perfumes|Kit Victoria's Secret|mvsgelato mvspitaya|
+perfumes|Kit Ariana Cloud|mariana dnvpearl|
+perfumes|Kit Body Mist y Crema|msehr cremayara|
+perfumes|Kit Niña Perfumada|cfrozen ptubbes|
+perfumes|Kit Colonias Infantiles|cmickey cstitch|
+perfumes|Kit Princesas|cprincess nvlabial|
+perfumes|Kit Casa Perfumada|ambhaya*2 mclub|
+perfumes|Kit 3 Desodorantes Hombre|dnvmen dlavoie dnvrollm|
+perfumes|Kit 3 Desodorantes Mujer|dnvpearl dcandid dnvrollw|
+tecno|Kit Carga Rápida|cargador30 cablec*2|MV
+tecno|Kit Carga iPhone|cargador20 cablel*2|
+tecno|Kit Carga Total|cargadorhye cable2m|
+tecno|Kit Power Bank Viajero|powerbank cablec|
+tecno|Kit Música Bluetooth|aurbt parlante|MV
+tecno|Kit Auriculares Mibro|mibro cablec|
+tecno|Kit Auriculares Rosa|mibrorosa cablec|
+tecno|Kit HYE Pro|hyeh2 cargador20|
+tecno|Kit Silencio Total|gtide cablec|
+tecno|Kit QCY Buds|qcy cargador20|
+tecno|Kit Oficina en Casa|mouseinal teclado hub|MV
+tecno|Kit Oficina Logitech|logik120 mouseinal|
+tecno|Kit Estudiante|mouse pendrive64 hub|
+tecno|Kit Respaldo de Fotos|pendrive32 microsd|
+tecno|Kit Reloj Inteligente|relojx5 cargador20|
+tecno|Kit Reloj X6 Pro|relojx6 cablec|
+tecno|Kit Creador de Contenido|tripode micro|
+tecno|Kit Streaming|luzrgb microdeh|
+tecno|Kit Luz para Fotos|luztri luzrgb|
+tecno|Kit Seguridad Casa|camip microsd|
+tecno|Kit Seguridad Plus|camip2 microsd|
+tecno|Kit Fiesta|parlantemox luzrgb|
+tecno|Kit Gamer Inicial|aurcable mouse hub|
+tecno|Kit Escritorio LED|lampled mouseinal hub|
+tecno|Kit Llamadas|aurcable cargador30|
+tecno|Kit Viaje Tech|powerbank aurbt|
+tecno|Kit Celular Completo|cargadorhye aurbt|
+tecno|Kit Karaoke|micro parlante|
+tecno|Kit Dos Cámaras|camip*2|
+tecno|Kit Cables de Repuesto|cablec*2 cablel cable2m|
+tecno|Kit Música y Carga|parlante cargador30 cablec|
+tecno|Kit Teletrabajo|aurcable mouseinal teclado|
+tecno|Kit Fotos Pro|tripode luztri|
+tecno|Kit Reloj + Auriculares|relojx5 mibro|
+tecno|Kit Regalo Tech|mibro parlante cablec|
+regalos|Kit Para Él Clásico|whorse dnvmen|
+regalos|Kit Whisky Red Label|redlabel dlavoie|
+regalos|Kit Whisky Blonde|blonde dnvmen|
+regalos|Kit Brindis|freixenet*2|MV
+regalos|Kit Brindis Dulce|freixenet freixfruit|
+regalos|Kit Para Ella|pameerat freixenet|
+regalos|Kit Perfume y Whisky|psherif whorse|
+regalos|Kit Día de la Madre|nvlata mhoney nvlabial|
+regalos|Kit Novios|pchocolat freixfruit|
+regalos|Kit Amiga Secreta|lipkit mclub|

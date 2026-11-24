@@ -1,0 +1,45 @@
+hogar|Kit Tereré Completo|kitterere bombyerba|MV
+hogar|Kit Mate Completo|kitmate bombyerba|
+hogar|Kit Guampa y Bombilla|guampatram bombalpaca|
+hogar|Kit 2 Guampas Inox|guampainox*2|
+hogar|Kit Termo y Guampa|portatermo guampatram|
+hogar|Kit Café para Dos|vasomelitta tazas2|
+hogar|Kit Asado Completo|cuchasado tablateca|MV
+hogar|Kit Parrillero|cuchchurr tablateca|
+hogar|Kit Cocina Básica|cuchtram6 sarten tuppers10|
+hogar|Kit Sartenes y Cuchillos|sartenes3 cuchtram6|
+hogar|Kit Orden en la Cocina|taper3 tuppers10 organizador3|
+hogar|Kit Mesa Lista|cubiertos tazasplat|
+hogar|Kit Té de la Tarde|tetera tazas2|
+hogar|Kit Casa Iluminada|lamparas4 lamparargb|
+hogar|Kit Living Acogedor|fundaterc*2 ambhaya|
+hogar|Kit Aromaterapia|humidif ambhaya|MV
+hogar|Kit Mate Eléctrico|pava guampatram|
+hogar|Kit Noches de Verano|antimosq lamparas4|
+mascotas|Kit Perro Feliz|collar2 correa pelota|MV
+mascotas|Kit Paseo Perruno|collar1 correach snackbacon|
+mascotas|Kit Perro Limpio|shampooperro shampooseco comedero|
+mascotas|Kit Snacks Perrunos|patitas cuero snackbacon|
+mascotas|Kit Cachorro Nuevo|monellocach comedero collar1|MV
+mascotas|Kit Descanso Perruno|cama pelota|
+mascotas|Kit Gato Feliz|rascador bites*2|
+mascotas|Kit Gato Limpio|arenagato shampoogato|
+mascotas|Kit Gato Bien Comido|monellogato bites*2 comedero|
+mascotas|Kit Perro Gourmet|pechuga monelloperro|
+bebe|Kit Recién Nacido|biberon120 chupbuba babero|MV
+bebe|Kit Dentición|compresa cucharadent mordedor|
+bebe|Kit Hora de Comer|cucharababero biberon250|
+bebe|Kit Baño Divertido|patitos tijera|
+bebe|Kit Chupete Seguro|chupbuba portachup|
+bebe|Kit Bebé Sano|termoaspen tijera compresa|
+bebe|Kit Juegos para Bebé|lalaboom sonajero|
+bebe|Kit Jirafa Mordillo|jirafa mordedor|
+bebe|Kit Primeros Sorbos|botellabuba cucharadent|
+bebe|Kit 2 Biberones|biberon120 biberon250|
+bebe|Kit Bebé de Paseo|chupalim botellaleon portachup|
+bebe|Kit Baby Shower|sonajero babero chupbuba|MV
+gym|Kit Pre-Entreno|creacaps compb|
+gym|Kit Masa Muscular|creatina multi|
+gym|Kit Defensas del Deportista|glutamina vitczinc|
+gym|Kit Hombre Saludable|omega3 zinc|
+gym|Kit Afeitado Completo|afeitadora nvafter|

@@ -13,3 +13,8 @@ Cómo funciona para el cliente:
 
 ## Cómo publicar un cambio
 Se edita `publico/index.html` y se sube a la rama `main`: Cloudflare la publica sola en 1 o 2 minutos.
+
+## Motor de precios (carpeta `motor/`)
+- 260 kits (`motor/src/kits.js`) con 308 productos de Seiva, Mega y Nissei (`motor/src/productos.js`).
+- Corre solo cada 10 minutos en https://motor-kits.gedepla.workers.dev y publica `/kits.csv`, `/kits.json` y `/reporte`.
+- Cada cambio en `motor/` que se sube a GitHub se publica solo.
