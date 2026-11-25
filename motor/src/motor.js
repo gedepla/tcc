@@ -51,8 +51,8 @@ export function leerDescripcion(html) {
   // Visão VIP (Next.js): texto + especificaciones dentro de los datos de la página
   const plano = html.replace(/\\"/g, '"');
   m = plano.match(/"productComents":"((?:[^"\\]|\\.)*)"/);
-  if (m) {
-    const texto = aTexto(jsonTexto(m[1]));
+  if (m || /"specificationName"/.test(plano)) {
+    const texto = m ? aTexto(jsonTexto(m[1])) : "";
     const specs = [...plano.matchAll(/"specificationName":"((?:[^"\\]|\\.)*)","specificationValue":"((?:[^"\\]|\\.)*)"/g)]
       .slice(0, 14).map(([, n, v]) => `• ${jsonTexto(n).charAt(0) + jsonTexto(n).slice(1).toLowerCase()}: ${jsonTexto(v)}`);
     const t = [texto, specs.length ? "Características:\n" + specs.join("\n") : ""].filter(Boolean).join("\n");
@@ -223,7 +223,9 @@ export function calcularKits(lecturas, anteriores = {}, imagenes = {}) {
 // Si una tienda no publica descripción, se usa la que está cargada a mano en productos.js (desc).
 export function descripcionDe(clave, descripciones = {}) {
   const p = PRODUCTOS[clave] || {};
-  return p.desc || descripciones[clave] || `${p.muestra || clave}. Producto original, comprado en tiendas de Ciudad del Este y entregado sellado.`;
+  const leida = descripciones[clave];
+  if (leida && leida.length >= 80) return leida;   // la de la tienda, si es completa
+  return p.desc || leida || `${p.muestra || clave}. Producto original, comprado en tiendas de Ciudad del Este y entregado sellado.`;
 }
 export function detalleTienda(descripciones) {
   const usados = new Set(KITS.flatMap((k) => k.items.map(([c]) => c)));
