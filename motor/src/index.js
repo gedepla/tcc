@@ -7,10 +7,13 @@
 //  GET /actualizar?clave=TU_CLAVE → corre el motor ahora
 //  GET /compras?clave=TU_CLAVE    → pegás un pedido y te dice qué comprar a cada proveedor
 //  GET /planilla.json?clave=TU_CLAVE → kits, productos y proveedores (para archivar)
+//  GET /planilla?clave=TU_CLAVE   → los 260 kits con foto, proveedor y códigos (en vivo)
+//  GET /planilla.csv?clave=TU_CLAVE → lo mismo para Excel
 import { actualizar } from "./motor.js";
 import { paginaCompras, proveedorDe } from "./compras.js";
 import { PRODUCTOS } from "./productos.js";
 import { KITS } from "./kits.js";
+import { filasPlanilla, paginaPlanilla, planillaCSV } from "./planilla.js";
 
 const CORS = { "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=300" };
 const gs = (n) => (n == null ? "–" : n.toLocaleString("es-PY") + " Gs");
@@ -73,6 +76,18 @@ export default {
       return new Response(paginaReporte(r, k), { headers: { "Content-Type": "text/html; charset=utf-8" } });
     }
     if (url.pathname === "/foto") return foto(url, ctx);
+    if (url.pathname === "/planilla" || url.pathname === "/planilla.csv") {
+      if (!env.CLAVE || url.searchParams.get("clave") !== env.CLAVE) return new Response("Clave incorrecta", { status: 401 });
+      const estado = JSON.parse((await env.CATALOGO.get("estado")) || "{}");
+      const catalogo = JSON.parse((await env.CATALOGO.get("catalogo.json")) || "[]");
+      const rep = JSON.parse((await env.CATALOGO.get("reporte")) || "null");
+      const filas = filasPlanilla(catalogo, estado.lecturas || {}, estado.imagenes || {});
+      if (url.pathname === "/planilla.csv") {
+        return new Response(planillaCSV(filas, url.origin), { headers: { "Content-Type": "text/csv; charset=utf-8", "Content-Disposition": 'attachment; filename="kits-tu-centro-de-compras.csv"', "Cache-Control": "no-store" } });
+      }
+      const cuando = rep ? new Date(rep.actualizado).toLocaleString("es-PY", { timeZone: "America/Asuncion" }) : "–";
+      return new Response(paginaPlanilla(filas, env.CLAVE, url.origin, cuando), { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
+    }
     if (url.pathname === "/compras" || url.pathname === "/planilla.json") {
       if (!env.CLAVE || url.searchParams.get("clave") !== env.CLAVE) return new Response("Clave incorrecta", { status: 401 });
       const estado = JSON.parse((await env.CATALOGO.get("estado")) || "{}");
