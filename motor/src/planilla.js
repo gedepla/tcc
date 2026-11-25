@@ -3,9 +3,9 @@
 // ============================================================
 //  GET /planilla?clave=TU_CLAVE      → página con todos los kits (se actualiza sola)
 //  GET /planilla.csv?clave=TU_CLAVE  → lo mismo para abrir en Excel
-import { KITS } from "./kits.js";
+import { TODOS as KITS } from "./sueltos.js";
 import { PRODUCTOS } from "./productos.js";
-import { proveedorDe } from "./compras.js";
+import { proveedorDe, tiendaTexto } from "./compras.js";
 import { arreglarFoto } from "./motor.js";
 
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -24,7 +24,7 @@ export function filasPlanilla(catalogo, lecturas, imagenes) {
       return { cant: n, producto: PRODUCTOS[c]?.muestra || c, ref: p.ref, link: p.link, costo: lecturas[c]?.precio ?? null, stock: lecturas[c]?.stock, foto: arreglarFoto(lecturas[c]?.imagen || imagenes[c]) || null };
     });
     return {
-      id: kit.id, nombre: kit.nombre, categoria: CAT[kit.categoria] || kit.categoria, masVendido: kit.destacado,
+      id: kit.id, nombre: kit.nombre, categoria: CAT[kit.categoria] || kit.categoria, masVendido: kit.destacado, tipo: kit.suelto ? "Producto suelto" : "Kit",
       proveedor: [...new Set(kit.items.map(([c]) => proveedorDe(c).proveedor))].join(" + "),
       precio: v.precio ?? null, costo: v.costo ?? null, ganancia: v.ganancia ?? null,
       visible: !!v.activo, motivo: (v.motivos || []).join("; "), fotos: [...new Set((v.fotos?.length ? v.fotos : items.map((i) => i.foto)).map(arreglarFoto).filter(Boolean))], items,
@@ -35,9 +35,9 @@ export function filasPlanilla(catalogo, lecturas, imagenes) {
 const celda = (v) => { const s = v == null ? "" : String(v); return /[";\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
 
 export function planillaCSV(filas, origen) {
-  const cab = ["Código", "Kit", "Categoría", "Proveedor", "Precio", "Costo", "Ganancia", "Estado", "Cantidad", "Producto", "Código en el proveedor", "Costo unidad", "Link del producto", "Foto"];
+  const cab = ["Código", "Tipo", "Kit / producto", "Categoría", "Tienda donde comprar", "Precio", "Costo", "Ganancia", "Estado", "Cantidad", "Producto", "Código en el proveedor", "Costo unidad", "Link del producto", "Foto"];
   const out = [cab];
-  for (const f of filas) for (const i of f.items) out.push([f.id, f.nombre, f.categoria, f.proveedor, f.precio, f.costo, f.ganancia, f.visible ? "Visible" : "Oculto: " + f.motivo, i.cant, i.producto, i.ref, i.costo, i.link, fotoVisible(origen, i.foto)]);
+  for (const f of filas.filter((f) => f.tipo === "Kit" || !/suelto: cuesta menos/.test(f.motivo))) for (const i of f.items) out.push([f.id, f.tipo, f.nombre, f.categoria, tiendaTexto(f.proveedor), f.precio, f.costo, f.ganancia, f.visible ? "Visible" : "Oculto: " + f.motivo, i.cant, i.producto, i.ref, i.costo, i.link, fotoVisible(origen, i.foto)]);
   // punto y coma: Excel en español lo abre directo en columnas
   return "﻿" + out.map((r) => r.map(celda).join(";")).join("\r\n") + "\r\n";
 }
@@ -45,12 +45,12 @@ export function planillaCSV(filas, origen) {
 export function paginaPlanilla(filas, clave, origen, actualizado) {
   const provs = [...new Set(filas.map((f) => f.proveedor))].sort();
   const visibles = filas.filter((f) => f.visible).length;
-  const tarjetas = filas.map((f) => `
-<article data-prov="${esc(f.proveedor)}" data-vis="${f.visible ? 1 : 0}" data-txt="${esc((f.id + " " + f.nombre + " " + f.categoria + " " + f.items.map((i) => i.producto + " " + i.ref).join(" ")).toLowerCase())}" class="${f.visible ? "" : "off"}">
+  const tarjetas = filas.filter((f) => f.tipo === "Kit" || !/suelto: cuesta menos/.test(f.motivo)).map((f) => `
+<article data-tipo="${esc(f.tipo)}" data-prov="${esc(f.proveedor)}" data-vis="${f.visible ? 1 : 0}" data-txt="${esc((f.id + " " + f.nombre + " " + f.categoria + " " + f.items.map((i) => i.producto + " " + i.ref).join(" ")).toLowerCase())}" class="${f.visible ? "" : "off"}">
   <div class="fotos">${f.fotos.slice(0, 4).map((u) => `<img loading="lazy" src="${esc(fotoVisible(origen, u))}" alt="" referrerpolicy="no-referrer">`).join("") || '<div class="sinfoto">Sin foto</div>'}</div>
   <div class="info">
     <h2><span class="cod">#${f.id}</span> ${esc(f.nombre)}${f.masVendido ? ' <span class="mv">Más vendido</span>' : ""}</h2>
-    <p class="meta"><b class="prov">${esc(f.proveedor)}</b> · ${esc(f.categoria)} · ${f.visible ? '<span class="ok">Visible</span>' : '<span class="no">Oculto: ' + esc(f.motivo) + "</span>"}</p>
+    <p class="meta">🏪 Comprar en <b class="prov">${esc(tiendaTexto(f.proveedor))}</b> · ${esc(f.tipo)} · ${esc(f.categoria)} · ${f.visible ? '<span class="ok">Visible</span>' : '<span class="no">Oculto: ' + esc(f.motivo) + "</span>"}</p>
     <p class="plata">Precio <b>${gs(f.precio)}</b> · Costo ${gs(f.costo)} · Ganancia <b>${gs(f.ganancia)}</b></p>
     <ul>${f.items.map((i) => `<li><b>${i.cant} ×</b> ${esc(i.producto)} <small>— ${esc(i.ref)} · ${gs(i.costo)}${i.stock === false ? ' · <span class="no">sin stock</span>' : ""}</small>${i.link && !/^https:\/\/seiva\.com\.py$/.test(i.link) ? ` <a href="${esc(i.link)}" target="_blank" rel="noopener">ver ↗</a>` : ""}</li>`).join("")}</ul>
   </div>
@@ -72,15 +72,16 @@ article.off{background:#fff7ed}.fotos{display:grid;grid-template-columns:1fr 1fr
 ul{margin:6px 0 0;padding-left:1.1em;font-size:.88rem}li{margin:3px 0}small{color:#64748b}a{color:#2563eb}
 </style></head><body>
 <header><h1>📋 Planilla de kits</h1>
-<p class="res">${filas.length} kits · ${visibles} visibles · ${filas.length - visibles} ocultos por stock · actualizado ${esc(actualizado)}</p>
+<p class="res">${filas.filter((f) => f.tipo === "Kit").length} kits (${filas.filter((f) => f.tipo === "Kit" && f.visible).length} visibles) · ${filas.filter((f) => f.tipo !== "Kit" && f.visible).length} productos sueltos a la venta (desde 120.000 Gs de costo) · actualizado ${esc(actualizado)}</p>
 <div class="filtros"><input id="q" placeholder="Buscar código, kit o producto"><select id="p"><option value="">Todos los proveedores</option>${provs.map((p) => `<option>${esc(p)}</option>`).join("")}</select>
+<select id="t"><option value="">Kits y sueltos</option><option>Kit</option><option>Producto suelto</option></select>
 <select id="v"><option value="">Visibles y ocultos</option><option value="1">Solo visibles</option><option value="0">Solo ocultos</option></select>
 <a href="/planilla.csv?clave=${encodeURIComponent(clave)}">⬇️ Bajar Excel</a></div></header>
 <main id="lista">${tarjetas}</main>
 <script>
-const q=document.getElementById('q'),p=document.getElementById('p'),v=document.getElementById('v');
-function filtrar(){const t=q.value.trim().toLowerCase();document.querySelectorAll('article').forEach(a=>{a.hidden=(t&&!a.dataset.txt.includes(t))||(p.value&&a.dataset.prov!==p.value)||(v.value&&a.dataset.vis!==v.value)})}
-[q,p,v].forEach(e=>e.addEventListener('input',filtrar));
+const q=document.getElementById('q'),p=document.getElementById('p'),v=document.getElementById('v'),tt=document.getElementById('t');
+function filtrar(){const t=q.value.trim().toLowerCase();document.querySelectorAll('article').forEach(a=>{a.hidden=(t&&!a.dataset.txt.includes(t))||(p.value&&a.dataset.prov!==p.value)||(v.value&&a.dataset.vis!==v.value)||(tt.value&&a.dataset.tipo!==tt.value)})}
+[q,p,v,tt].forEach(e=>e.addEventListener('input',filtrar));
 document.querySelectorAll('.fotos img').forEach(i=>i.addEventListener('error',()=>{i.remove()}));
 </script></body></html>`;
 }

@@ -16,6 +16,9 @@ export const CONFIG = {
   costoPublicidad: 0,     // publicidad promedio por venta
 
   // Frenos automáticos
+  // Productos sueltos: se venden solos si cuestan desde este monto (por el costo del envío).
+  minimoSuelto: 120000,
+
   precioMaximo: 0,        // 0 = sin tope. Si ponés un monto (ej. 300000), los kits más caros se ocultan
   alertaSubida: 0.2,      // si un producto sube más de 20 % de un día a otro, el kit se oculta ese día
 

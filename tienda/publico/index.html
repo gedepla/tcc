@@ -151,8 +151,10 @@
   <input id="nombre" autocomplete="name" placeholder="Ej: María González">
 
   <label>2. Tu ciudad</label>
+  <p class="ayuda" style="margin-top:0">🚚 Delivery incluido (CDE y hasta 20 km):</p>
   <div class="ciudades" id="ciudades"></div>
-  <p class="ayuda">Delivery incluido en Ciudad del Este y hasta 20 km. Más lejos también enviamos: pagás tus productos por transferencia y el envío al recibir.</p>
+  <p class="ayuda" style="margin-top:14px">📦 Resto del país: pagás tus productos por <b>transferencia</b> y el <b>envío al recibir</b>.</p>
+  <div class="ciudades" id="ciudadesPais"></div>
 
   <div id="pasoBarrio" hidden>
     <label>3. Tu barrio, colonia o km</label>
@@ -203,6 +205,13 @@ const BARRIOS = {
   "Minga Guazú": ["Km 14", "Km 15", "Km 16", "Km 17 lado Acaray", "Km 17 lado Monday", "Km 18", "Km 19", "Km 20", "Minga Poty"],
 };
 const CIUDADES = Object.keys(BARRIOS);
+// Resto del país: solo transferencia de los productos y el envío se paga al recibir.
+const CIUDADES_PAIS = ["Asunción", "Luque", "San Lorenzo", "Capiatá", "Lambaré", "Fernando de la Mora", "Limpio", "Ñemby",
+  "Mariano Roque Alonso", "Villa Elisa", "San Antonio", "Itauguá", "Areguá", "Ypacaraí", "Caacupé", "Encarnación",
+  "Coronel Oviedo", "Caaguazú", "Villarrica", "Pedro Juan Caballero", "Concepción", "Salto del Guairá", "Santa Rita",
+  "San Estanislao (Santaní)", "Curuguaty", "Pilar", "San Juan Bautista", "Paraguarí", "Ayolas", "San Pedro de Ycuamandiyú",
+  "Hohenau", "Obligado", "Bella Vista", "Katueté", "Juan E. O'Leary", "Santa Rosa del Monday", "Los Cedrales", "Naranjal",
+  "Filadelfia", "Otra ciudad"];
 function kmDesdeCDE(lat, lng) {
   const r = Math.PI / 180, dLat = (lat - CENTRO.lat) * r, dLng = (lng - CENTRO.lng) * r;
   const a = Math.sin(dLat / 2) ** 2 + Math.cos(CENTRO.lat * r) * Math.cos(lat * r) * Math.sin(dLng / 2) ** 2;
@@ -213,7 +222,7 @@ function kmDesdeCDE(lat, lng) {
 const CATEGORIAS = [
   ["vendidos", "⭐ Más vendidos"], ["longevidad", "💊 Salud"], ["gym", "💪 Hombre"],
   ["piel", "🧴 Piel"], ["cabello", "💇 Cabello"], ["perfumes", "🌸 Perfume"], ["tecno", "📱 Tecno"],
-  ["hogar", "🧉 Hogar"], ["mascotas", "🐶 Mascota"], ["bebe", "🍼 Bebé"], ["regalos", "🎁 Regalos"],
+  ["hogar", "🧉 Hogar"], ["mascotas", "🐶 Mascota"], ["bebe", "🍼 Bebé"], ["regalos", "🎁 Regalos"], ["sueltos", "🛍️ Sueltos"],
 ];
 // Fotos que la tienda del proveedor no deja mostrar en otras páginas: se usa el dibujo.
 // Seiva no deja mostrar sus fotos en otras páginas: pasan por el motor, que las entrega.
@@ -226,7 +235,7 @@ const $ = (id) => document.getElementById(id);
 const gs = (n) => n.toLocaleString("es-PY") + " Gs";
 let kits = [], categoria = "vendidos", pagina = 0;
 let carrito = [], pago = "", ubicacion = "", ciudad = "", barrio = "", km = null;
-const lejos = () => km != null && km > RADIO_KM;   // fuera de la zona de envío incluido
+const lejos = () => CIUDADES_PAIS.includes(ciudad) || (km != null && km > RADIO_KM);   // fuera de la zona de envío incluido
 
 // --- leer la planilla (CSV) ---
 function leerCSV(texto) {
@@ -248,7 +257,7 @@ function prepararKits(texto) {
     .filter((k) => /^(si|sí|true|1)$/i.test(k.activo) && Number(k.precio) > 0)
     .map((k) => ({
       id: k.id, nombre: k.nombre, categoria: k.categoria, precio: Number(k.precio), etiqueta: k.etiqueta,
-      destacado: /^(si|sí)$/i.test(k.destacado),
+      destacado: /^(si|sí)$/i.test(k.destacado), suelto: k.tipo === "producto",
       trae: k.productos.split(/\s*\|\s*/).filter(Boolean),
       fotos: [k.foto1, k.foto2, k.foto3, k.foto4].filter((f) => f && /^https?:/.test(f)).map(fotoUrl),
     }))
@@ -256,7 +265,7 @@ function prepararKits(texto) {
 }
 
 // --- categorías y páginas de a 3 ---
-const kitsDe = (cat) => cat === "vendidos" ? kits.filter((k) => k.destacado) : kits.filter((k) => k.categoria === cat);
+const kitsDe = (cat) => cat === "vendidos" ? kits.filter((k) => k.destacado) : cat === "sueltos" ? kits.filter((k) => k.suelto) : kits.filter((k) => k.categoria === cat);
 const paginas = () => Math.max(1, Math.ceil(kitsDe(categoria).length / POR_PAGINA));
 
 function mostrarCategorias() {
@@ -407,11 +416,15 @@ $("volver").onclick = $("agregarOtro").onclick = () => history.back();
 addEventListener("popstate", () => { $("pedido").hidden = true; $("lista").hidden = false; pintarCarrito(); mostrarPagina(0); });
 
 $("ciudades").innerHTML = CIUDADES.map((c) => `<button type="button" data-ciudad="${c}">${c}</button>`).join("");
+$("ciudadesPais").innerHTML = CIUDADES_PAIS.map((c) => `<button type="button" data-ciudad="${c}">${c}</button>`).join("");
 document.querySelectorAll("[data-ciudad]").forEach((b) => b.onclick = () => {
   ciudad = b.dataset.ciudad; barrio = "";
   document.querySelectorAll("[data-ciudad]").forEach((x) => x.classList.toggle("si", x === b));
-  $("barrios").innerHTML = [...BARRIOS[ciudad], "✏️ Otro barrio"].map((n) => `<button type="button" data-barrio="${n}">${n}</button>`).join("");
-  $("otroBarrio").hidden = true; $("otroBarrio").value = ""; $("pasoBarrio").hidden = false; $("barrios").scrollTop = 0;
+  const pais = !BARRIOS[ciudad];
+  $("barrios").innerHTML = pais ? "" : [...BARRIOS[ciudad], "✏️ Otro barrio"].map((n) => `<button type="button" data-barrio="${n}">${n}</button>`).join("");
+  barrio = ""; $("otroBarrio").hidden = !pais; $("otroBarrio").value = "";
+  $("otroBarrio").placeholder = ciudad === "Otra ciudad" ? "Escribí tu ciudad y barrio" : "Escribí tu barrio o dirección";
+  aplicarZona(); $("pasoBarrio").hidden = false; $("barrios").scrollTop = 0;
   $("pasoBarrio").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 $("barrios").addEventListener("click", (e) => {
@@ -431,7 +444,7 @@ function aplicarZona() {
   else if (pago === "Transferencia" && aplicarZona.forzado) { pago = ""; document.querySelectorAll("[data-pago]").forEach((x) => x.classList.remove("si")); }
   aplicarZona.forzado = l;
   $("avisoLejos").hidden = !l;
-  if (l) $("avisoLejos").innerHTML = `📦 Estás a ${Math.round(km)} km de CDE.<br>1) Pagás tus productos por <b>transferencia</b> antes del envío.<br>2) El <b>envío</b> lo abonás al recibir.`;
+  if (l) $("avisoLejos").innerHTML = `📦 ${CIUDADES_PAIS.includes(ciudad) ? (ciudad === "Otra ciudad" ? "Envío al interior." : "Envío a " + ciudad + ".") : "Estás a " + Math.round(km) + " km de CDE."}<br>1) Pagás tus productos por <b>transferencia</b> antes del envío.<br>2) El <b>envío</b> lo abonás al recibir.`;
   pintarCarrito();
 }
 document.querySelectorAll("[data-pago]").forEach((b) => b.onclick = () => {
@@ -472,7 +485,7 @@ $("enviar").onclick = () => {
     ...(lejos() ? [
       `💰 Total productos: ${gs(totalCarrito())}`,
       `🏦 Pago de productos: TRANSFERENCIA antes del envío`,
-      `🚚 Envío: fuera de la zona de ${RADIO_KM} km, se abona AL RECIBIR`,
+      `🚚 Envío: fuera de la zona de ${RADIO_KM} km de CDE, se abona AL RECIBIR`,
     ] : [`💰 Total: ${gs(totalCarrito())} (envío incluido)`]),
     `👤 Nombre: ${nombre}`,
     `🏙️ Ciudad: ${ciudad}`,

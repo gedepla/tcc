@@ -5,20 +5,31 @@
 //  GET /compras?clave=TU_CLAVE&pedido=...     → lista de compras por proveedor
 //  El pedido se pega tal cual llega por WhatsApp. Cada línea de kit trae su
 //  código (#46) y la cantidad (x2). Si falta el código, se busca por el nombre.
-import { KITS } from "./kits.js";
+import { TODOS as KITS } from "./sueltos.js";
 import { PRODUCTOS } from "./productos.js";
 import { NOMBRES_SEIVA } from "./nombres-seiva.js";
 
 const gs = (n) => (n == null ? "–" : Math.round(n).toLocaleString("es-PY") + " Gs");
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
+// Tiendas donde se compra cada producto (nombre y web, para quien va a buscarlo)
+export const TIENDAS = {
+  "Seiva": { web: "seiva.com.py" },
+  "Mega Eletrônicos": { web: "megaeletronicos.com" },
+  "Nissei": { web: "nissei.com" },
+  "Visão VIP": { web: "visaovip.com" },
+};
+export const tiendaTexto = (prov) => prov + (TIENDAS[prov] ? " (" + TIENDAS[prov].web + ")" : "");
+
 export function proveedorDe(clave) {
   const p = PRODUCTOS[clave] || {};
   if (p.fuente === "seiva") return { proveedor: "Seiva", ref: `Código ${p.id} · ${NOMBRES_SEIVA[p.id] || p.muestra}`, link: "https://seiva.com.py" };
   if (p.fuente === "web") {
     const host = new URL(p.url).hostname;
-    const proveedor = /mega/.test(host) ? "Mega Eletrônicos" : /nissei/.test(host) ? "Nissei" : host.replace(/^www\./, "");
-    const ref = /mega/.test(host) ? "Código " + (p.url.match(/producto\/(\d+)/) || [])[1] : decodeURIComponent(p.url.split("/").pop());
+    const proveedor = /mega/.test(host) ? "Mega Eletrônicos" : /nissei/.test(host) ? "Nissei" : /visaovip/.test(host) ? "Visão VIP" : host.replace(/^www\./, "");
+    const ref = /mega/.test(host) ? "Código " + (p.url.match(/producto\/(\d+)/) || [])[1]
+      : /visaovip/.test(host) ? "Código " + (p.url.match(/\/(\d+)\/?$/) || [])[1]
+      : decodeURIComponent(p.url.split("/").pop());
     return { proveedor, ref, link: p.url };
   }
   return { proveedor: p.proveedor || "Manual", ref: p.ref || "", link: p.url || "" };
@@ -76,12 +87,13 @@ export function paginaCompras(clave, texto, lecturas, catalogo) {
 
   const kitsHtml = pedido.map((p) => `<li><b>#${p.kit.id}</b> ${esc(p.kit.nombre)} × ${p.cant}</li>`).join("");
   const gruposHtml = grupos.map((g, gi) => {
-    const textoCopiar = [`Pedido para ${g.proveedor}:`, ...g.items.map((i) => `- ${i.cant} x ${i.producto}${i.ref ? " (" + i.ref + ")" : ""}`)].join("\n");
+    const textoCopiar = [`Pedido para ${tiendaTexto(g.proveedor)}:`, ...g.items.map((i) => `- ${i.cant} x ${i.producto}${i.ref ? " (" + i.ref + ")" : ""}`)].join("\n");
     const filas = g.items.map((i) => `<tr${i.stock === false ? ' class="off"' : ""}>
       <td class="n">${i.cant}</td>
       <td><b>${esc(i.producto)}</b><br><small>${esc(i.ref)}</small>${i.link && !/^https:\/\/seiva\.com\.py$/.test(i.link) ? `<br><a href="${esc(i.link)}" target="_blank" rel="noopener">Ver en la tienda ↗</a>` : ""}${i.stock === false ? '<br><b class="alerta">⚠️ Sin stock en la última lectura</b>' : ""}</td>
       <td class="d">${gs(i.costo)}<br><small>${esc(i.kits.join(" "))}</small></td></tr>`).join("");
-    return `<section><h2>${esc(g.proveedor)} <span>${gs(g.total)}</span></h2>
+    return `<section><h2>🏪 ${esc(g.proveedor)} <span>${gs(g.total)}</span></h2>
+      <p class="tienda">Tienda: <b>${esc(tiendaTexto(g.proveedor))}</b></p>
       <table>${filas}</table>
       <textarea id="t${gi}" readonly>${esc(textoCopiar)}</textarea>
       <button onclick="copiar(${gi})">📋 Copiar lista para ${esc(g.proveedor)}</button></section>`;
@@ -98,7 +110,7 @@ table{width:100%;border-collapse:collapse}td{padding:8px 6px;border-bottom:1px s
 td.n{font-size:1.3rem;font-weight:800;width:2.2em;text-align:center}td.d{text-align:right;white-space:nowrap}small{color:#64748b}
 tr.off td{background:#fff7ed}.alerta{color:#b45309}section textarea{height:5.5em;margin-top:10px;font-size:.85rem;background:#f8fafc}
 .res{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.res div{background:#fff;border-radius:12px;padding:10px;text-align:center}.res b{display:block;font-size:1.05rem}
-a{color:#2563eb}ul{padding-left:1.2em}.vacio{background:#fff7ed;padding:12px;border-radius:10px}</style></head><body>
+a{color:#2563eb}.tienda{margin:-4px 0 8px;color:#475569}ul{padding-left:1.2em}.vacio{background:#fff7ed;padding:12px;border-radius:10px}</style></head><body>
 <h1>🧾 ¿Qué comprar y a quién?</h1>
 <form method="get"><input type="hidden" name="clave" value="${esc(clave)}">
 <textarea id="pedido" name="pedido" placeholder="Pegá acá el pedido completo como llegó por WhatsApp">${esc(texto || "")}</textarea>

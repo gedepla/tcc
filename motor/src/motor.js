@@ -3,7 +3,7 @@
 // ============================================================
 import { CONFIG } from "./config.js";
 import { PRODUCTOS } from "./productos.js";
-import { KITS } from "./kits.js";
+import { TODOS as KITS } from "./sueltos.js";
 
 const UA = "Mozilla/5.0 (compatible; TuCentroDeCompras-precios/1.0)";
 const SEIVA = "https://seiva.com.py";
@@ -57,8 +57,10 @@ export function leerSchemaOrg(html) {
   for (const l of leidos) if (!l.imagen) l.imagen = og;
   if (leidos.length) return leidos.find((l) => l.stock) || leidos[0];
   // Respaldo: meta product:price:amount
-  const meta = html.match(/product:price:amount"\s+content="([\d.]+)"/i);
-  if (meta) return { precio: Math.round(parseFloat(meta[1])), stock: !/Sin stock|Agotado|OutOfStock/i.test(html), imagen: og };
+  // Respaldo: metas de producto (Visão VIP publica el precio con IVA en product:sale_price, en guaraníes)
+  const meta = html.match(/product:sale_price:amount"\s+content="([\d.]+)"/i) || html.match(/product:price:amount"\s+content="([\d.]+)"/i) || html.match(/product:original_price:amount"\s+content="([\d.]+)"/i);
+  const disp = (html.match(/og:availability"\s+content="([^"]+)"/i) || [])[1];
+  if (meta) return { precio: Math.round(parseFloat(meta[1])), stock: disp ? /^in ?stock$/i.test(disp.trim()) : !/Sin stock|Agotado|OutOfStock/i.test(html), imagen: og };
   return null;
 }
 
@@ -156,13 +158,14 @@ export function calcularKits(lecturas, anteriores = {}, imagenes = {}) {
       if (foto && !fotos.includes(foto)) fotos.push(foto);
     }
     const precio = motivos.some((m) => /no se pudo|no está|no definido|falta|no existe|no publica|respondió|tardó|todavía|subrequests/.test(m)) ? null : precioDeVenta(costo, kit.categoria);
+    if (kit.suelto && costo < (CONFIG.minimoSuelto || 0)) motivos.push(`suelto: cuesta menos de ${CONFIG.minimoSuelto}`);
     if (precio && CONFIG.precioMaximo && precio > CONFIG.precioMaximo) motivos.push(`precio ${precio} supera el máximo de ${CONFIG.precioMaximo}`);
     const activo = motivos.length === 0;
-    if (!activo) alertas.push({ kit: kit.id, nombre: kit.nombre, motivos });
+    if (!activo && !(kit.suelto && motivos.every((m) => m.startsWith("suelto:")))) alertas.push({ kit: kit.id, nombre: kit.nombre, motivos });
     const ganancia = precio ? precio - costo - fijos() : null;
     const misFotos = kit.fotos.length ? kit.fotos : CONFIG.fotosDeProveedores ? fotos : [];
     return {
-      id: kit.id, destacado: kit.destacado, categoria: kit.categoria, nombre: kit.nombre,
+      id: kit.id, destacado: kit.destacado, categoria: kit.categoria, nombre: kit.nombre, suelto: !!kit.suelto,
       productos: kit.items.map(([c, n]) => nombreItem(c, n)),
       costo, precio, ganancia, etiqueta: kit.etiqueta, fotos: misFotos.slice(0, 4), activo, motivos,
     };
@@ -178,10 +181,10 @@ const celda = (v) => {
 };
 
 export function aCSV(kits) {
-  const cab = ["id", "destacado", "categoria", "nombre", "productos", "precio", "etiqueta", "foto1", "foto2", "foto3", "foto4", "activo"];
+  const cab = ["id", "destacado", "categoria", "nombre", "productos", "precio", "etiqueta", "foto1", "foto2", "foto3", "foto4", "activo", "tipo"];
   const filas = kits.map((k) => [
     k.id, k.destacado ? "si" : "no", k.categoria, k.nombre, k.productos.join(" | "), k.precio ?? "",
-    k.etiqueta, k.fotos[0], k.fotos[1], k.fotos[2], k.fotos[3], k.activo ? "si" : "no",
+    k.etiqueta, k.fotos[0], k.fotos[1], k.fotos[2], k.fotos[3], k.activo ? "si" : "no", k.suelto ? "producto" : "kit",
   ]);
   return [cab, ...filas].map((f) => f.map(celda).join(",")).join("\n") + "\n";
 }

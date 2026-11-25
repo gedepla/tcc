@@ -9,6 +9,7 @@
 
 const MEGA = "https://www.megaeletronicos.com/producto/";
 const NISSEI = "https://nissei.com/py/";
+const VISAO = "https://www.visaovip.com/es/prod/";
 
 export const PRODUCTOS = {
   // ---------- SEIVA: suplementos ----------
@@ -261,7 +262,7 @@ export const PRODUCTOS = {
   blonde: { fuente: "web", url: MEGA + "1479546/kit", muestra: "Whisky Johnnie Walker Blonde 750 ml" },
   freixenet: { fuente: "web", url: MEGA + "970990/kit", muestra: "Espumante Freixenet Mía Moscato" },
   freixfruit: { fuente: "web", url: MEGA + "1034783/kit", muestra: "Espumante Freixenet Mía Fruity" },
-  pava: { fuente: "web", url: MEGA + "1495485/kit", muestra: "Pava eléctrica MOX 2 L" },
+  pava: { cat: "hogar", fuente: "web", url: MEGA + "1495485/kit", muestra: "Pava eléctrica MOX 2 L" },
   // ---------- NISSEI: hogar, mate y cocina ----------
   jarraxion: { fuente: "web", url: NISSEI + "jarra-electrica-xion-xi-gl15-2200-w-220v-1-7l-pc-111013", muestra: "Jarra eléctrica Xion 1,7 L" },
   guampatram: { fuente: "web", url: NISSEI + "guampa-tramontina-exata-240ml", muestra: "Guampa Tramontina 240 ml" },
@@ -330,4 +331,35 @@ export const PRODUCTOS = {
   mordedor: { fuente: "web", url: NISSEI + "juguete-mordedor-bright-starts-juicy-chews-multicolor", muestra: "Mordedor Bright Starts" },
   botellabuba: { fuente: "web", url: NISSEI + "botella-buba-animal-fun-12085-con-pajita-12m-unicornio-320ml", muestra: "Botella Buba con pajita (unicornio)" },
   botellaleon: { fuente: "web", url: NISSEI + "botella-buba-animal-fun-12088-con-pajita-12m-leon-320ml", muestra: "Botella Buba con pajita (león)" },
+  // ---------- VISÃO VIP: informática y tecnología (agregar siempre al final: el orden da el código de los sueltos) ----------
+  vjbl520: { fuente: "web", url: VISAO + "auriculares-y-accesorios/auricular-jbl-tune-520c-con-cable-azul/54319/", muestra: "Auricular JBL Tune 520C con cable", cat: "tecno" },
+  vjbl310: { fuente: "web", url: VISAO + "auriculares-y-accesorios/auricular-jbl-tune-310c-con-cable-negro/46631/", muestra: "Auricular JBL Tune 310C con cable", cat: "tecno" },
+  vjblt520bt: { fuente: "web", url: VISAO + "auriculares-y-accesorios/auricular-jbl-tune-t520bt-pure-bass-bluetooth-negro/39686/", muestra: "Auricular JBL Tune 520BT bluetooth", cat: "tecno" },
+  vjblwavebuds: { fuente: "web", url: VISAO + "auriculares-y-accesorios/auricular-jbl-wave-buds-2-perfect-fit-tws-bluetooth-blanco/48949/", muestra: "Auriculares JBL Wave Buds 2 inalámbricos", cat: "tecno" },
+  vjblwaveflex: { fuente: "web", url: VISAO + "auriculares-y-accesorios/auricular-jbl-wave-flex-perfect-fit-tws-bluetooth-negro/39170/", muestra: "Auriculares JBL Wave Flex inalámbricos", cat: "tecno" },
+  vjblwavebeam: { fuente: "web", url: VISAO + "auriculares-y-accesorios/auricular-jbl-wave-beam-2-perfect-fit-tws-bluetooth-negro/49072/", muestra: "Auriculares JBL Wave Beam 2 inalámbricos", cat: "tecno" },
+  vjblrace: { fuente: "web", url: VISAO + "auriculares-y-accesorios/auricular-jbl-endurance-race-2-waterproof-tws-bluetooth-negro/49745/", muestra: "Auriculares JBL Endurance Race 2 deportivos", cat: "tecno" },
+  vjbltunebuds: { fuente: "web", url: VISAO + "auriculares-y-accesorios/auricular-jbl-tune-buds-2-perfect-fit-tws-bluetooth-negro/49901/", muestra: "Auriculares JBL Tune Buds 2 inalámbricos", cat: "tecno" },
+  vjbl680: { fuente: "web", url: VISAO + "auriculares-y-accesorios/auricular-jbl-tune-680nc-bluetooth-blanco/58949/", muestra: "Auricular JBL Tune 680NC con cancelación de ruido", cat: "tecno" },
+  vhaylouneo: { fuente: "web", url: VISAO + "reloj-inteligente/reloj-inteligente-haylou-solar-neo-hf008-negro/52122/", muestra: "Reloj inteligente Haylou Solar Neo", cat: "tecno" },
+  vredmiactive: { fuente: "web", url: VISAO + "reloj-inteligente/reloj-inteligente-xiaomi-redmi-watch-5-active-m2351w1-matte-plata/47821/", muestra: "Reloj inteligente Xiaomi Redmi Watch 5 Active", cat: "tecno" },
+  vredmilite: { fuente: "web", url: VISAO + "reloj-inteligente/reloj-inteligente-xiaomi-redmi-watch-5-lite-m2352w1-negro/48335/", muestra: "Reloj inteligente Xiaomi Redmi Watch 5 Lite", cat: "tecno" },
+  vmibroa3: { fuente: "web", url: VISAO + "reloj-inteligente/reloj-inteligente-mibro-watch-a3-xpaw022-dark-gris/52677/", muestra: "Reloj inteligente Mibro Watch A3", cat: "tecno" },
+  vhaylou5: { fuente: "web", url: VISAO + "reloj-inteligente/reloj-inteligente-haylou-solar-5-hf004-negro/52116/", muestra: "Reloj inteligente Haylou Solar 5", cat: "tecno" },
+  vamazbip6: { fuente: "web", url: VISAO + "reloj-inteligente/reloj-inteligente-amazfit-bip-6-a2435-blue-negro/53231/", muestra: "Reloj inteligente Amazfit Bip 6", cat: "tecno" },
+  vpbxiaomi: { fuente: "web", url: VISAO + "cargadores-baterias-y-pilas/caregador-portatil-xiaomi-ultra-slim-power-bank-pb0520mi-5000mah-usb-c-20w-space-gris/52866/", muestra: "Power bank Xiaomi Ultra Slim 5.000 mAh", cat: "tecno" },
+  vpen64: { fuente: "web", url: VISAO + "pendrive/pendrive-kingston-exodia-s-64gb-usb-3-2-negro-dtxs-64gb/52043/", muestra: "Pendrive Kingston 64 GB", cat: "tecno" },
+  vpen128: { fuente: "web", url: VISAO + "pendrive/pendrive-kingston-exodia-m-128gb-usb-3-2-rosa-kc-u2l128-7ln/52764/", muestra: "Pendrive Kingston 128 GB", cat: "tecno" },
+  vpeng46: { fuente: "web", url: VISAO + "pendrive/pendrive-sandisk-g46-phone-drive-64gb-usb-c-usb-3-2-negro-sdddc6-064g-g46/54902/", muestra: "Pendrive SanDisk 64 GB para celular (USB-C)", cat: "tecno" },
+  vpen256: { fuente: "web", url: VISAO + "pendrive/pendrive-kingston-exodia-s-256gb-usb-3-2-negro-naranja-dtxs-256gb/52044/", muestra: "Pendrive Kingston 256 GB", cat: "tecno" },
+  vc270: { fuente: "web", url: VISAO + "webcam/webcam-logitech-c270-720p-hd-960-000694/12263/", muestra: "Cámara web Logitech C270 HD", cat: "tecno" },
+  vbrio300: { fuente: "web", url: VISAO + "webcam/webcam-logitech-brio-300-1080p-fhd-negro-960-001413/38134/", muestra: "Cámara web Logitech Brio 300 Full HD", cat: "tecno" },
+  vssd256: { fuente: "web", url: VISAO + "ssd-2-5/ssd-macrovip-256gb-2-5-sata-3-mv256gb/48319/", muestra: "Disco SSD 256 GB", cat: "tecno" },
+  vssd512: { fuente: "web", url: VISAO + "ssd-2-5/ssd-macrovip-512gb-2-5-sata-3-mv512gb/48320/", muestra: "Disco SSD 512 GB", cat: "tecno" },
+  vssd500sd: { fuente: "web", url: VISAO + "ssd-2-5/ssd-sandisk-500gb-g28-plus-2-5-sata-3-sdssda-500g-g28/54427/", muestra: "Disco SSD SanDisk 500 GB", cat: "tecno" },
+  vrouterhw: { fuente: "web", url: VISAO + "router-y-repetidor/router-huawei-ws5203-ax1-ac1200-dual-band-2-4ghz-5ghz-blanco/51854/", muestra: "Router Wi-Fi Huawei doble banda", cat: "tecno" },
+  vrepxiaomi: { fuente: "web", url: VISAO + "router-y-repetidor/repetidor-de-senal-xiaomi-rc04-dvb4350us-mi-wifi-range-ac1200-dual-band-1200mbps-negro/52915/", muestra: "Repetidor de Wi-Fi Xiaomi", cat: "tecno" },
+  vroutertp: { fuente: "web", url: VISAO + "router-y-repetidor/router-tp-link-aginet-x521-ax3000-dual-band-2-4ghz-5ghz-wi-fi-6/54387/", muestra: "Router TP-Link Wi-Fi 6", cat: "tecno" },
+  vmeshxiaomi: { fuente: "web", url: VISAO + "router-y-repetidor/router-xiaomi-rd13-dvb4451gl-mesh-system-ac1200-dual-band-2-4ghz-5ghz-300mbps-blanco-kit-con-2/49796/", muestra: "Wi-Fi Mesh Xiaomi (2 equipos)", cat: "tecno" },
+  vrouter4g: { fuente: "web", url: VISAO + "router-y-repetidor/router-tp-link-tl-mr100-3g-4g-2-antenas-negro/50553/", muestra: "Router 4G TP-Link con chip", cat: "tecno" },
 };

@@ -32,8 +32,15 @@ const kv = () => { const m = new Map(); return { get: async (k) => m.get(k) ?? n
 assert.equal(redondear(141000), 149000);
 assert.equal(precioDeVenta(150000, "longevidad"), redondear(150000 * 1.3 + 30000));
 assert.equal(leerSchemaOrg(html(94144)).precio, 94144);
-assert.equal(KITS.length, 260);
-assert.equal(new Set(KITS.map((k) => k.id)).size, 260, "ids únicos");
+const N = KITS.length;
+assert.equal(N, 269);
+import { TODOS, SUELTOS } from "../src/sueltos.js";
+assert.equal(new Set(TODOS.map((k) => k.id)).size, TODOS.length, "ids únicos (kits y sueltos)");
+assert.equal(SUELTOS.length, Object.keys(PRODUCTOS).length);
+// Visão VIP: precio con IVA en product:sale_price y stock en og:availability
+const vv = leerSchemaOrg('<meta property="og:availability" content="instock"/><meta property="product:original_price:amount" content="108900"/><meta property="product:sale_price:amount" content="71874"/><meta property="og:image" content="https://cdn.visaovip.com/a.jpg"/>');
+assert.deepEqual(vv, { precio: 71874, stock: true, imagen: "https://cdn.visaovip.com/a.jpg" });
+assert.equal(leerSchemaOrg('<meta property="og:availability" content="outofstock"/><meta property="product:sale_price:amount" content="5000"/>').stock, false);
 for (const k of KITS) for (const [c] of k.items) assert.ok(PRODUCTOS[c], `kit ${k.id}: producto ${c} no existe`);
 for (const c of Object.keys(PRODUCTOS)) assert.ok(costo[c], `sin costo de referencia: ${c}`);
 
@@ -45,21 +52,26 @@ for (;;) {
   const r = await actualizar(env, (u, o) => { n++; return f(u, o); });
   corridas++; max = Math.max(max, n);
   const pend = JSON.parse(env.CATALOGO.m.get("catalogo.json")).filter((k) => k.motivos.some((m) => /todavía/.test(m))).length;
-  if (!pend) { console.log(`Todo leído en ${corridas} corridas · máximo ${max} consultas por corrida · visibles ${r.kitsActivos} de 260`); break; }
+  if (!pend) { console.log(`Todo leído en ${corridas} corridas · máximo ${max} consultas por corrida · visibles ${r.kitsActivos} de ${TODOS.length} (kits + sueltos)`); break; }
   assert.ok(corridas < 12, "demasiadas corridas para leer todo");
 }
 assert.ok(max <= 45, `consultas por corrida: ${max}`);
-const kits = JSON.parse(env.CATALOGO.m.get("catalogo.json"));
-assert.equal(kits.filter((k) => k.activo).length, 260, "con todo en stock se ven los 260");
+const todo = JSON.parse(env.CATALOGO.m.get("catalogo.json"));
+const kits = todo.filter((k) => !k.suelto);
+assert.equal(kits.filter((k) => k.activo).length, N, "con todo en stock se ven todos los kits");
+// sueltos: solo los que cuestan desde el mínimo
+const sueltos = todo.filter((k) => k.suelto);
+assert.ok(sueltos.every((s) => s.activo === (s.costo >= CONFIG.minimoSuelto)), "sueltos según costo mínimo");
+console.log(`Sueltos a la venta: ${sueltos.filter((s) => s.activo).length} de ${sueltos.length}`);
 assert.ok(!CONFIG.precioMaximo || kits.every((k) => k.precio <= CONFIG.precioMaximo));
 
 // 3. Un producto sin stock oculta solo sus kits
 const unoWeb = "kshamp";
 for (let i = 0; i < 8; i++) await actualizar(env, crearFetch({ sinStock: [unoWeb] }));
-const k3 = JSON.parse(env.CATALOGO.m.get("catalogo.json"));
+const k3 = JSON.parse(env.CATALOGO.m.get("catalogo.json")).filter((k) => !k.suelto);
 const afectados = KITS.filter((k) => k.items.some(([c]) => c === unoWeb)).map((k) => k.id);
 assert.ok(afectados.every((id) => !k3.find((k) => k.id === id).activo), "kits con el producto sin stock quedan ocultos");
-assert.equal(k3.filter((k) => k.activo).length, 260 - afectados.length);
+assert.equal(k3.filter((k) => k.activo).length, N - afectados.length);
 console.log(`Sin stock "${unoWeb}": se ocultan ${afectados.length} kits, el resto sigue visible.`);
 console.log("Todas las pruebas pasaron.");
 

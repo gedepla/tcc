@@ -12,7 +12,7 @@
 import { actualizar } from "./motor.js";
 import { paginaCompras, proveedorDe } from "./compras.js";
 import { PRODUCTOS } from "./productos.js";
-import { KITS } from "./kits.js";
+import { TODOS as KITS } from "./sueltos.js";
 import { filasPlanilla, paginaPlanilla, planillaCSV } from "./planilla.js";
 
 const CORS = { "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=300" };

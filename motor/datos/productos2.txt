@@ -67,3 +67,33 @@ botellabuba|ni|botella-buba-animal-fun-12085-con-pajita-12m-unicornio-320ml|Bote
 botellaleon|ni|botella-buba-animal-fun-12088-con-pajita-12m-leon-320ml|Botella Buba con pajita (león)|65
 termoinfra|mg|1255096|Termómetro infrarrojo Hyundai|35
 jarraxion|ni|jarra-electrica-xion-xi-gl15-2200-w-220v-1-7l-pc-111013|Jarra eléctrica Xion 1,7 L|98
+vjbl520|vv|auriculares-y-accesorios/auricular-jbl-tune-520c-con-cable-azul/54319/|Auricular JBL Tune 520C con cable|130.68
+vjbl310|vv|auriculares-y-accesorios/auricular-jbl-tune-310c-con-cable-negro/46631/|Auricular JBL Tune 310C con cable|87.12
+vjblt520bt|vv|auriculares-y-accesorios/auricular-jbl-tune-t520bt-pure-bass-bluetooth-negro/39686/|Auricular JBL Tune 520BT bluetooth|203.28
+vjblwavebuds|vv|auriculares-y-accesorios/auricular-jbl-wave-buds-2-perfect-fit-tws-bluetooth-blanco/48949/|Auriculares JBL Wave Buds 2 inalámbricos|246.84
+vjblwaveflex|vv|auriculares-y-accesorios/auricular-jbl-wave-flex-perfect-fit-tws-bluetooth-negro/39170/|Auriculares JBL Wave Flex inalámbricos|239.58
+vjblwavebeam|vv|auriculares-y-accesorios/auricular-jbl-wave-beam-2-perfect-fit-tws-bluetooth-negro/49072/|Auriculares JBL Wave Beam 2 inalámbricos|283.14
+vjblrace|vv|auriculares-y-accesorios/auricular-jbl-endurance-race-2-waterproof-tws-bluetooth-negro/49745/|Auriculares JBL Endurance Race 2 deportivos|333.96
+vjbltunebuds|vv|auriculares-y-accesorios/auricular-jbl-tune-buds-2-perfect-fit-tws-bluetooth-negro/49901/|Auriculares JBL Tune Buds 2 inalámbricos|377.52
+vjbl680|vv|auriculares-y-accesorios/auricular-jbl-tune-680nc-bluetooth-blanco/58949/|Auricular JBL Tune 680NC con cancelación de ruido|340.494
+vhaylouneo|vv|reloj-inteligente/reloj-inteligente-haylou-solar-neo-hf008-negro/52122/|Reloj inteligente Haylou Solar Neo|119.79
+vredmiactive|vv|reloj-inteligente/reloj-inteligente-xiaomi-redmi-watch-5-active-m2351w1-matte-plata/47821/|Reloj inteligente Xiaomi Redmi Watch 5 Active|232.32
+vredmilite|vv|reloj-inteligente/reloj-inteligente-xiaomi-redmi-watch-5-lite-m2352w1-negro/48335/|Reloj inteligente Xiaomi Redmi Watch 5 Lite|326.7
+vmibroa3|vv|reloj-inteligente/reloj-inteligente-mibro-watch-a3-xpaw022-dark-gris/52677/|Reloj inteligente Mibro Watch A3|232.32
+vhaylou5|vv|reloj-inteligente/reloj-inteligente-haylou-solar-5-hf004-negro/52116/|Reloj inteligente Haylou Solar 5|326.7
+vamazbip6|vv|reloj-inteligente/reloj-inteligente-amazfit-bip-6-a2435-blue-negro/53231/|Reloj inteligente Amazfit Bip 6|500.94
+vpbxiaomi|vv|cargadores-baterias-y-pilas/caregador-portatil-xiaomi-ultra-slim-power-bank-pb0520mi-5000mah-usb-c-20w-space-gris/52866/|Power bank Xiaomi Ultra Slim 5.000 mAh|130.68
+vpen64|vv|pendrive/pendrive-kingston-exodia-s-64gb-usb-3-2-negro-dtxs-64gb/52043/|Pendrive Kingston 64 GB|41.382
+vpen128|vv|pendrive/pendrive-kingston-exodia-m-128gb-usb-3-2-rosa-kc-u2l128-7ln/52764/|Pendrive Kingston 128 GB|71.544
+vpeng46|vv|pendrive/pendrive-sandisk-g46-phone-drive-64gb-usb-c-usb-3-2-negro-sdddc6-064g-g46/54902/|Pendrive SanDisk 64 GB para celular (USB-C)|87.12
+vpen256|vv|pendrive/pendrive-kingston-exodia-s-256gb-usb-3-2-negro-naranja-dtxs-256gb/52044/|Pendrive Kingston 256 GB|153.186
+vc270|vv|webcam/webcam-logitech-c270-720p-hd-960-000694/12263/|Cámara web Logitech C270 HD|127.05
+vbrio300|vv|webcam/webcam-logitech-brio-300-1080p-fhd-negro-960-001413/38134/|Cámara web Logitech Brio 300 Full HD|363.0
+vssd256|vv|ssd-2-5/ssd-macrovip-256gb-2-5-sata-3-mv256gb/48319/|Disco SSD 256 GB|177.87
+vssd512|vv|ssd-2-5/ssd-macrovip-512gb-2-5-sata-3-mv512gb/48320/|Disco SSD 512 GB|344.85
+vssd500sd|vv|ssd-2-5/ssd-sandisk-500gb-g28-plus-2-5-sata-3-sdssda-500g-g28/54427/|Disco SSD SanDisk 500 GB|434.874
+vrouterhw|vv|router-y-repetidor/router-huawei-ws5203-ax1-ac1200-dual-band-2-4ghz-5ghz-blanco/51854/|Router Wi-Fi Huawei doble banda|129.228
+vrepxiaomi|vv|router-y-repetidor/repetidor-de-senal-xiaomi-rc04-dvb4350us-mi-wifi-range-ac1200-dual-band-1200mbps-negro/52915/|Repetidor de Wi-Fi Xiaomi|159.72
+vroutertp|vv|router-y-repetidor/router-tp-link-aginet-x521-ax3000-dual-band-2-4ghz-5ghz-wi-fi-6/54387/|Router TP-Link Wi-Fi 6|188.76
+vmeshxiaomi|vv|router-y-repetidor/router-xiaomi-rd13-dvb4451gl-mesh-system-ac1200-dual-band-2-4ghz-5ghz-300mbps-blanco-kit-con-2/49796/|Wi-Fi Mesh Xiaomi (2 equipos)|254.1
+vrouter4g|vv|router-y-repetidor/router-tp-link-tl-mr100-3g-4g-2-antenas-negro/50553/|Router 4G TP-Link con chip|272.25

@@ -290,4 +290,14 @@ export const KITS = [
   k(258, "bebe", "Kit 2 Biberones", [["biberon120", 1], ["biberon250", 1]]),
   k(259, "bebe", "Kit Bebé de Paseo", [["chupalim", 1], ["botellaleon", 1], ["portachup", 1]]),
   k(260, "bebe", "Kit Baby Shower", [["sonajero", 1], ["babero", 1], ["chupbuba", 1]], MV),
+  // ---------- Visão VIP (tecnología) ----------
+  k(261, "tecno", "Kit Clases Online", [["vc270", 1], ["vjblt520bt", 1]]),
+  k(262, "tecno", "Kit Estudiante", [["vpen128", 1], ["vjbl310", 1]]),
+  k(263, "tecno", "Kit Fitness Pro", [["vredmiactive", 1], ["vjblrace", 1]]),
+  k(264, "tecno", "Kit Wi-Fi en Toda la Casa", [["vrouterhw", 1], ["vrepxiaomi", 1]], MV),
+  k(265, "tecno", "Kit Respaldo de Fotos", [["vpeng46", 1], ["vpen256", 1]]),
+  k(266, "tecno", "Kit Reloj y Carga", [["vhaylouneo", 1], ["vpbxiaomi", 1]]),
+  k(267, "tecno", "Kit PC Más Rápida", [["vssd512", 1], ["vpen64", 1]]),
+  k(268, "tecno", "Kit Regalo Tecno", [["vjblwavebuds", 1], ["vmibroa3", 1]]),
+  k(269, "tecno", "Kit Home Office Pro", [["vbrio300", 1], ["vjbl520", 1]]),
 ];
