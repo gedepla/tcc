@@ -376,7 +376,7 @@ function kmDesdeCDE(lat, lng) {
 const CATEGORIAS = [
   ["vendidos", "⭐ Más vendidos"], ["longevidad", "💊 Salud"], ["gym", "💪 Hombre"],
   ["piel", "🧴 Piel"], ["cabello", "💇 Cabello"], ["perfumes", "🌸 Perfume"], ["tecno", "📱 Tecno"],
-  ["hogar", "🧉 Hogar"], ["mascotas", "🐶 Mascota"], ["bebe", "🍼 Bebé"], ["regalos", "🎁 Regalos"], ["sueltos", "🛍️ Sueltos"],
+  ["hogar", "🧉 Hogar"], ["mascotas", "🐶 Mascota"], ["bebe", "🍼 Bebé"], ["regalos", "🎁 Regalos"],
 ];
 // Fotos que la tienda del proveedor no deja mostrar en otras páginas: se usa el dibujo.
 // Seiva no deja mostrar sus fotos en otras páginas: pasan por el motor, que las entrega.
@@ -419,7 +419,7 @@ function prepararKits(texto) {
 }
 
 // --- categorías y páginas de a 3 ---
-const kitsDe = (cat) => cat === "vendidos" ? kits.filter((k) => k.destacado) : cat === "sueltos" ? kits.filter((k) => k.suelto) : kits.filter((k) => k.categoria === cat);
+const kitsDe = (cat) => cat === "vendidos" ? kits.filter((k) => k.destacado) : kits.filter((k) => k.categoria === cat);
 const paginas = () => Math.max(1, Math.ceil(kitsDe(categoria).length / POR_PAGINA));
 
 function mostrarCategorias() {
