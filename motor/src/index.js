@@ -66,6 +66,10 @@ export default {
       const csv = await env.CATALOGO.get("catalogo.csv");
       return new Response(csv || "", { headers: { ...CORS, "Content-Type": "text/csv; charset=utf-8" } });
     }
+    if (url.pathname === "/detalle.json") {
+      const j = await env.CATALOGO.get("detalle.json");
+      return new Response(j || '{"kits":{},"productos":{}}', { headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } });
+    }
     if (url.pathname === "/kits.json") {
       const j = await env.CATALOGO.get("catalogo.json");
       return new Response(j || "[]", { headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } });

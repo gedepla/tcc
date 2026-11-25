@@ -24,6 +24,49 @@ async function conTiempo(fetchFn, url, ms = 15000, accept = "text/html,applicati
 // la misma foto está en resource.megaeletronicos.com.
 export const arreglarFoto = (u) => (u ? String(u).replace(/^https?:\/\/(www\.)?megaeletronicos\.com\/uploads\//, "https://resource.megaeletronicos.com/uploads/") : u);
 
+// ---------- Descripciones ----------
+const ENT = { "&nbsp;": " ", "&amp;": "&", "&quot;": '"', "&#39;": "'", "&lt;": "<", "&gt;": ">", "&aacute;": "á", "&eacute;": "é", "&iacute;": "í", "&oacute;": "ó", "&uacute;": "ú", "&ntilde;": "ñ", "&Ntilde;": "Ñ", "&uuml;": "ü", "&deg;": "°", "&reg;": "®", "&trade;": "™" };
+// HTML → texto con renglones (las listas quedan con "• ")
+export function aTexto(html) {
+  if (!html) return "";
+  let t = String(html)
+    .replace(/<\s*(script|style)[^>]*>[\s\S]*?<\/\s*\1\s*>/gi, " ")
+    .replace(/<\s*li[^>]*>/gi, "\n• ")
+    .replace(/<\s*(br|\/p|\/div|\/h\d|\/li|\/tr|\/ul)[^>]*>/gi, "\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+    .replace(/&[a-z]+;/gi, (e) => ENT[e.toLowerCase()] ?? " ");
+  t = t.split("\n").map((l) => l.replace(/[ \t\r]+/g, " ").trim()).filter(Boolean).join("\n");
+  return t.length > 1500 ? t.slice(0, 1500).replace(/\s+\S*$/, "") + "…" : t;
+}
+const jsonTexto = (s) => { try { return JSON.parse('"' + s + '"'); } catch { return s; } };
+// Busca la descripción completa en la página del producto (Mega, Nissei, Visão VIP u otras)
+export function leerDescripcion(html) {
+  // Mega Eletrônicos
+  let m = html.match(/class="product-description-box"[^>]*>([\s\S]*?)(?:<!--\s*=====|<\/section>)/i);
+  if (m) { const t = aTexto(m[1]); if (t.length > 30) return t; }
+  // Nissei (Magento): pestaña "Descripción"
+  m = html.match(/product attribute description"[^>]*>\s*<div class="value"[^>]*>([\s\S]*?)<\/div>\s*<\/div>/i);
+  if (m) { const t = aTexto(m[1]); if (t.length > 30) return t; }
+  // Visão VIP (Next.js): texto + especificaciones dentro de los datos de la página
+  const plano = html.replace(/\\"/g, '"');
+  m = plano.match(/"productComents":"((?:[^"\\]|\\.)*)"/);
+  if (m) {
+    const texto = aTexto(jsonTexto(m[1]));
+    const specs = [...plano.matchAll(/"specificationName":"((?:[^"\\]|\\.)*)","specificationValue":"((?:[^"\\]|\\.)*)"/g)]
+      .slice(0, 14).map(([, n, v]) => `• ${jsonTexto(n).charAt(0) + jsonTexto(n).slice(1).toLowerCase()}: ${jsonTexto(v)}`);
+    const t = [texto, specs.length ? "Características:\n" + specs.join("\n") : ""].filter(Boolean).join("\n");
+    if (t.length > 30) return t;
+  }
+  // Estándar schema.org (si no viene cortada con "...")
+  for (const b of html.matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)) {
+    const d = (b[1].match(/"description"\s*:\s*"((?:[^"\\]|\\.)*)"/) || [])[1];
+    if (d) { const t = aTexto(jsonTexto(d)); if (t.length > 40) return t; }
+  }
+  m = html.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i);
+  return m ? aTexto(m[1]) : "";
+}
+
 // Lee el precio, el stock y la foto que la página publica con el estándar schema.org.
 export function leerSchemaOrg(html) {
   const bloques = [...html.matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)].map((m) => m[1]);
@@ -75,7 +118,7 @@ async function leerSeiva(fetchFn) {
     const p = porId.get(Number(id));
     if (!p) return { error: "no está en el catálogo de Seiva" };
     const img = p.imagen ? (p.imagen.startsWith("/") ? SEIVA + p.imagen : SEIVA + "/img/productos/" + p.imagen) : null;
-    return { precio: Math.round(Number(p.precio)), stock: p.activo !== false && Number(p.stock) > 0, imagen: img };
+    return { precio: Math.round(Number(p.precio)), stock: p.activo !== false && Number(p.stock) > 0, imagen: img, descripcion: aTexto(p.descripcion_larga || p.descripcion || p.seo_descripcion || "") };
   };
 }
 
@@ -110,8 +153,9 @@ export async function leerProductos(fetchFn, claves) {
       const r = await conTiempo(fetchFn, PRODUCTOS[c].url);
       if (r.status === 404) return (res[c] = { error: "la página ya no existe", stock: false });
       if (!r.ok) return (res[c] = { error: "la tienda respondió " + r.status });
-      const d = leerSchemaOrg(await r.text());
-      res[c] = d || { error: "la página no publica el precio" };
+      const html = await r.text();
+      const d = leerSchemaOrg(html);
+      res[c] = d ? { ...d, descripcion: leerDescripcion(html) } : { error: "la página no publica el precio" };
     } catch (e) {
       res[c] = { error: e.name === "AbortError" ? "la tienda tardó demasiado" : e.message };
     }
@@ -175,6 +219,20 @@ export function calcularKits(lecturas, anteriores = {}, imagenes = {}) {
 
 // ---------- Salida para la tienda ----------
 
+// Para la ficha de cada kit en la tienda: qué productos lleva y la descripción completa de cada uno.
+// Si una tienda no publica descripción, se usa la que está cargada a mano en productos.js (desc).
+export function descripcionDe(clave, descripciones = {}) {
+  const p = PRODUCTOS[clave] || {};
+  return p.desc || descripciones[clave] || `${p.muestra || clave}. Producto original, comprado en tiendas de Ciudad del Este y entregado sellado.`;
+}
+export function detalleTienda(descripciones) {
+  const usados = new Set(KITS.flatMap((k) => k.items.map(([c]) => c)));
+  return {
+    kits: Object.fromEntries(KITS.map((k) => [k.id, k.items])),
+    productos: Object.fromEntries([...usados].map((c) => [c, { n: PRODUCTOS[c]?.muestra || c, d: descripcionDe(c, descripciones) }])),
+  };
+}
+
 const celda = (v) => {
   const s = v == null ? "" : String(v);
   return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
@@ -226,6 +284,8 @@ export async function actualizar(env, fetchFn = fetch) {
   for (const [c, l] of Object.entries(nuevas)) if (l.precio && !l.error) lecturasGuardadas[c] = { precio: l.precio, stock: l.stock, imagen: l.imagen || null, ts: ahora };
   const precios = { ...anteriores };
   const imagenes = { ...(estado.imagenes || {}) };
+  const descripciones = { ...(estado.descripciones || {}) };
+  for (const [c, l] of Object.entries(nuevas)) if (l.descripcion) descripciones[c] = l.descripcion;
   for (const [c, l] of Object.entries(nuevas)) {
     if (l.precio && !l.aviso && !l.error) precios[c] = l.precio;
     if (l.imagen) imagenes[c] = l.imagen;
@@ -245,6 +305,7 @@ export async function actualizar(env, fetchFn = fetch) {
   await env.CATALOGO.put("catalogo.csv", aCSV(kits));
   await env.CATALOGO.put("catalogo.json", JSON.stringify(kits));
   await env.CATALOGO.put("reporte", JSON.stringify(reporte));
-  await env.CATALOGO.put("estado", JSON.stringify({ precios, imagenes, lecturas: lecturasGuardadas }));
+  await env.CATALOGO.put("estado", JSON.stringify({ precios, imagenes, descripciones, lecturas: lecturasGuardadas }));
+  await env.CATALOGO.put("detalle.json", JSON.stringify(detalleTienda(descripciones)));
   return reporte;
 }

@@ -4,120 +4,183 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Tu Centro de Compras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0b3b2e">
 <style>
-  :root { --verde:#14a44d; --fondo:#fff8ef; --texto:#1d1d1f; --gris:#5f5f66; --borde:#e6dccd; --rojo:#c62828; }
-  * { box-sizing: border-box; }
+  :root {
+    --marca:#0b3b2e; --marca2:#14532d; --verde:#16a34a; --verde2:#22c55e; --verdeclaro:#e8f7ee;
+    --fondo:#f4f6f5; --tarjeta:#ffffff; --texto:#13201b; --gris:#5b6b64; --borde:#e3e9e6; --rojo:#c62828; --oro:#f5b301;
+    --sombra:0 1px 2px rgba(16,40,30,.06), 0 6px 18px rgba(16,40,30,.07); --radio:18px;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   [hidden] { display: none !important; }
-  html, body { margin:0; background:var(--fondo); color:var(--texto); font: 18px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
-  button { font: inherit; cursor: pointer; }
+  html, body { margin:0; background:var(--fondo); color:var(--texto); font: 500 17px/1.4 "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  button { font: inherit; cursor: pointer; color: inherit; }
+  button:active { transform: scale(.97); }
 
   /* ===== PANTALLA 1: todo entra en la pantalla, sin bajar ===== */
-  #lista { height: 100vh; height: 100dvh; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; padding: 8px 12px 10px; gap: 8px; overflow: hidden; }
+  #lista { height: 100vh; height: 100dvh; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; padding: 10px 12px 10px; gap: 8px; overflow: hidden; }
   .arriba { display: flex; align-items: center; gap: 8px; }
-  .arriba h1 { flex: 1; margin: 0; font-size: 19px; line-height: 1.15; }
-  .wa { background: var(--verde); color: #fff; text-decoration: none; font-weight: 800; font-size: 16px; border-radius: 12px; padding: 9px 11px; white-space: nowrap; }
-  .cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+  .marca { flex: 1; min-width: 0; display: flex; align-items: center; gap: 9px; }
+  .logo { width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; display: grid; place-items: center; font-size: 21px; background: linear-gradient(135deg, var(--marca2), var(--marca)); box-shadow: 0 4px 12px rgba(11,59,46,.25); }
+  .marca h1 { margin: 0; font-size: 17px; line-height: 1.1; font-weight: 800; letter-spacing: -.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .marca small { display: block; color: var(--gris); font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .wa { flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: #25d366; box-shadow: 0 4px 12px rgba(37,211,102,.35); }
+  .wa svg { width: 23px; height: 23px; fill: #fff; }
+  .wa .num { display: none; }
+  .carrito-btn { flex-shrink: 0; display: flex; align-items: center; gap: 6px; background: var(--marca); color: #fff; border: 0; border-radius: 999px; padding: 9px 13px 9px 10px; font-size: 14.5px; font-weight: 800; white-space: nowrap; box-shadow: 0 4px 14px rgba(11,59,46,.3); }
+  .carrito-btn b { background: var(--verde2); color: var(--marca); border-radius: 999px; min-width: 22px; height: 22px; display: grid; place-items: center; font-size: 13px; padding: 0 6px; }
+  .confianza-barra { display: flex; gap: 6px; overflow: hidden; white-space: nowrap; }
+  .confianza-barra span { flex-shrink: 0; font-size: 11.5px; font-weight: 700; color: var(--marca2); background: #e2f1e8; border-radius: 999px; padding: 4px 9px; }
+  .cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
   .cats button.doble { grid-column: span 2; }
-  .cats button { border: 2px solid var(--borde); background: #fff; border-radius: 10px; padding: 6px 2px; font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: clip; }
-  .cats button.si { background: var(--texto); border-color: var(--texto); color: #fff; }
-  .aviso { margin: 0; text-align: center; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--gris); font-weight: 700; }
+  .cats button { border: 1px solid var(--borde); background: #fff; border-radius: 999px; padding: 7px 2px; font-size: 12.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: clip; box-shadow: 0 1px 2px rgba(0,0,0,.04); transition: background .15s, color .15s; }
+  .cats button.si { background: var(--marca); border-color: var(--marca); color: #fff; box-shadow: 0 3px 10px rgba(11,59,46,.25); }
+  .aviso { display: none; }
 
-  #kits { flex: 1; min-height: 0; display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 8px; touch-action: pan-y; }
-  #kits.entra { animation: entra .25s ease-out; }
+  #kits { flex: 1; min-height: 0; display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 10px; touch-action: pan-y; }
+  #kits.entra { animation: entra .28s ease-out; }
   @keyframes entra { from { opacity: 0; transform: translateX(var(--desde, 30px)); } to { opacity: 1; transform: none; } }
-  .kit { display: flex; gap: 10px; min-height: 0; background: #fff; border: 2px solid var(--borde); border-radius: 14px; padding: 8px; overflow: hidden; }
+  .kit { display: flex; gap: 11px; min-height: 0; background: var(--tarjeta); border: 1px solid var(--borde); border-radius: var(--radio); padding: 9px; overflow: hidden; box-shadow: var(--sombra); }
   .kit.vacio { visibility: hidden; }
-  .foto { position: relative; height: 100%; aspect-ratio: 1; flex-shrink: 0; max-width: 42%; border-radius: 10px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; }
-  .foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .6s; }
+  .foto { position: relative; height: 100%; aspect-ratio: 1; flex-shrink: 0; max-width: 40%; border-radius: 14px; overflow: hidden; background: #f3f6f4; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .foto img { position: absolute; inset: 6%; width: 88%; height: 88%; object-fit: contain; opacity: 0; transition: opacity .6s; mix-blend-mode: multiply; }
   .foto img.ver { opacity: 1; }
-  .puntos { position: absolute; bottom: 4px; left: 0; right: 0; display: flex; justify-content: center; gap: 4px; }
-  .puntos i { width: 7px; height: 7px; border-radius: 50%; background: #0003; }
-  .puntos i.ver { background: var(--verde); }
+  .puntos { position: absolute; bottom: 5px; left: 0; right: 0; display: flex; justify-content: center; gap: 4px; }
+  .puntos i { width: 6px; height: 6px; border-radius: 50%; background: #0002; }
+  .puntos i.ver { background: var(--verde); width: 14px; border-radius: 3px; }
   .dibujo { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: clamp(34px, 9vh, 64px); }
   .info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
-  .info h3 { flex-shrink: 0; margin: 0; font-size: 16px; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .incluye { flex: 1; min-height: 0; overflow: hidden; margin: 0; padding: 0; list-style: none; font-size: 13.5px; line-height: 1.3; color: #3d3d42; }
-  .incluye li { padding-left: 1.1em; text-indent: -1.1em; }
+  .info h3 { flex-shrink: 0; margin: 0; font-size: 15.5px; line-height: 1.22; font-weight: 800; letter-spacing: -.2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; }
+  .incluye { flex: 1; min-height: 0; overflow: hidden; margin: 0; padding: 0; list-style: none; font-size: 13px; line-height: 1.32; color: #43524b; }
+  .incluye li { padding-left: 1.15em; text-indent: -1.15em; }
   .incluye li::before { content: "✓ "; color: var(--verde); font-weight: 900; }
   .incluye li.mas { color: var(--verde); font-weight: 800; } .incluye li.mas::before { content: ""; }
-  .abajo { flex-shrink: 0; display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .detalle-link { flex-shrink: 0; align-self: flex-start; border: 0; background: none; padding: 0; font-size: 12.5px; font-weight: 800; color: #0f6b4a; text-decoration: underline; text-underline-offset: 2px; }
+  .abajo { flex-shrink: 0; display: flex; align-items: center; gap: 8px; min-width: 0; }
   .abajo .quiero { min-width: 0; }
-  .etiqueta { position: absolute; top: 4px; left: 4px; background: #ffd54f; border-radius: 6px; padding: 1px 7px; font-size: 12px; font-weight: 800; }
+  .etiqueta { position: absolute; top: 6px; left: 6px; z-index: 1; background: var(--oro); color: #3b2a00; border-radius: 999px; padding: 2px 8px; font-size: 10.5px; font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+  .etiqueta.prod { background: #e0ecff; color: #1d4ed8; }
+  .precio { margin: 0; font-size: 17px; font-weight: 800; white-space: nowrap; color: var(--marca); letter-spacing: -.3px; }
+  .precio small { display: block; font-size: 10.5px; font-weight: 700; color: var(--gris); letter-spacing: 0; margin-top: -2px; }
+  .quiero { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 999px; background: linear-gradient(135deg, var(--verde2), var(--verde)); color: #fff; font-size: 14.5px; font-weight: 800; padding: 10px 8px; white-space: nowrap; box-shadow: 0 4px 12px rgba(22,163,74,.35); transition: transform .1s, box-shadow .2s; }
+  .quiero svg { width: 17px; height: 17px; fill: none; stroke: #fff; stroke-width: 2.4; flex-shrink: 0; }
+  .quiero:active { box-shadow: 0 2px 6px rgba(22,163,74,.3); }
+  .mini { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 2px; border: 0; border-radius: 999px; background: var(--verdeclaro); padding: 3px; box-shadow: inset 0 0 0 1.5px #b7e4c7; }
+  .mini button { flex-shrink: 0; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: var(--verde); font-size: 21px; font-weight: 800; line-height: 1; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+  .mini button.mas1 { background: var(--verde); color: #fff; }
+  .mini output { font-size: 15px; font-weight: 800; color: var(--marca2); white-space: nowrap; }
   @media (max-height: 700px) {
-    #lista { gap: 6px; padding-top: 6px; }
-    .arriba h1 { font-size: 17px; } .wa { padding: 7px 9px; font-size: 15px; }
-    .cats { gap: 4px; } .cats button { padding: 5px 1px; font-size: 12px; }
-    .info h3 { -webkit-line-clamp: 1; } .incluye { font-size: 12.5px; line-height: 1.25; } .quiero { padding: 7px 4px !important; }
-    .paginas button { padding: 10px 6px; font-size: 16px; } .kit { padding: 6px; }
+    #lista { gap: 6px; padding-top: 7px; }
+    .logo { width: 34px; height: 34px; font-size: 18px; border-radius: 10px; } .marca h1 { font-size: 15.5px; } .wa { width: 38px; height: 38px; }
+    .cats { gap: 5px; } .cats button { padding: 6px 1px; font-size: 12px; }
+    .info h3 { -webkit-line-clamp: 1; } .incluye { font-size: 12.5px; line-height: 1.25; } .quiero { padding: 8px 6px !important; }
+    .paginas button { padding: 11px 6px; font-size: 15.5px; } .kit { padding: 7px; }
   }
-  @media (max-width: 340px) { .cats button { font-size: 11px !important; letter-spacing: -0.3px; } }
-  @media (max-width: 340px) { .quiero { font-size: 12px !important; letter-spacing: -0.2px; } .precio { font-size: 14.5px !important; } }
-  /* celulares muy chicos: se achica lo de arriba para que entren 3 líneas de descripción */
+  @media (max-width: 340px) { .cats button { font-size: 11px !important; letter-spacing: -0.3px; } .marca small { display: none; } }
+  @media (max-width: 340px) { .quiero { font-size: 12.5px !important; } .quiero svg { display: none; } .precio { font-size: 14.5px !important; } }
   @media (max-height: 600px) {
     #lista { gap: 5px; padding: 5px 8px 6px; }
-    .arriba h1 { font-size: 15px; } .arriba h1 br { display: none; } .wa { padding: 6px 8px; font-size: 13px; }
-    .aviso { display: none; }
+    .logo { width: 30px; height: 30px; font-size: 16px; } .marca h1 { font-size: 14.5px; } .marca small { display: none; } .wa { width: 34px; height: 34px; }
+    .confianza-barra { display: none; }
     .cats button { padding: 5px 2px; font-size: 12px; }
-    .paginas button { padding: 8px 4px; font-size: 15px; }
-    .foto { max-width: 34%; } .precio { font-size: 15px; } .quiero { font-size: 13px; padding: 6px 3px !important; }
-    .info { gap: 2px; } .info h3 { font-size: 14px; } .incluye { font-size: 12px; line-height: 1.2; }
-    .cats button { padding: 4px 2px; } .kit { padding: 5px; }
+    .paginas button { padding: 9px 4px; font-size: 14.5px; }
+    .foto { max-width: 34%; } .precio { font-size: 15px; } .precio small { display: none; } .quiero { font-size: 13px; padding: 7px 4px !important; }
+    .info { gap: 2px; } .info h3 { font-size: 14px; } .incluye { font-size: 12px; line-height: 1.2; } .detalle-link { font-size: 11.5px; }
+    .kit { padding: 5px; }
   }
-  .precio { margin: 0; font-size: 18px; font-weight: 900; white-space: nowrap; }
-  .quiero { flex: 1; border: 0; border-radius: 10px; background: var(--verde); color: #fff; font-size: 15px; font-weight: 800; padding: 9px 4px; white-space: nowrap; }
 
   .paginas { display: flex; align-items: center; gap: 8px; }
-  .paginas button { flex: 1; white-space: nowrap; border: 0; border-radius: 12px; padding: 13px 6px; font-size: 18px; font-weight: 800; background: #1565c0; color: #fff; }
-  .paginas button:disabled { background: #d9d4cc; color: #8a857d; }
-  .paginas span { font-weight: 800; color: var(--gris); min-width: 52px; text-align: center; }
+  .paginas button { flex: 1; white-space: nowrap; border: 0; border-radius: 999px; padding: 13px 6px; font-size: 16.5px; font-weight: 800; background: var(--marca); color: #fff; box-shadow: 0 4px 12px rgba(11,59,46,.25); }
+  .paginas button#ant { background: #fff; color: var(--marca); box-shadow: inset 0 0 0 1.5px var(--borde); }
+  .paginas button:disabled { opacity: .45; box-shadow: none; }
+  .paginas span { font-weight: 800; color: var(--gris); min-width: 52px; text-align: center; font-size: 14px; }
+
+  /* ===== FICHA DEL KIT (descripción completa) ===== */
+  #ficha { position: fixed; inset: 0; z-index: 20; }
+  #ficha .velo { position: absolute; inset: 0; background: rgba(8,24,18,.45); animation: velo .2s ease-out; }
+  @keyframes velo { from { opacity: 0; } }
+  .hoja { position: absolute; left: 0; right: 0; bottom: 0; max-width: 560px; margin: 0 auto; max-height: 92dvh; display: flex; flex-direction: column; background: #fff; border-radius: 24px 24px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,.2); animation: sube .28s cubic-bezier(.2,.8,.2,1); overflow: hidden; }
+  @keyframes sube { from { transform: translateY(100%); } }
+  .hoja .cerrar { position: absolute; top: 12px; right: 12px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(255,255,255,.95); font-size: 18px; font-weight: 800; box-shadow: 0 2px 10px rgba(0,0,0,.15); }
+  .hoja .agarre { position: absolute; top: 7px; left: 50%; transform: translateX(-50%); width: 42px; height: 5px; border-radius: 3px; background: #0002; z-index: 2; }
+  .hoja .scroll { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .galeria { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; background: #f3f6f4; scrollbar-width: none; }
+  .galeria::-webkit-scrollbar { display: none; }
+  .galeria img, .galeria .dibujo { flex: 0 0 100%; height: min(42dvh, 340px); object-fit: contain; scroll-snap-align: center; padding: 22px; mix-blend-mode: multiply; }
+  .gpuntos { display: flex; justify-content: center; gap: 5px; margin-top: -18px; position: relative; }
+  .gpuntos i { width: 6px; height: 6px; border-radius: 50%; background: #0002; } .gpuntos i.ver { background: var(--verde); width: 14px; border-radius: 3px; }
+  .fcuerpo { padding: 16px 18px 8px; }
+  .fcuerpo h2 { margin: 6px 0 4px; font-size: 21px; line-height: 1.2; font-weight: 800; letter-spacing: -.3px; }
+  .fprecio { margin: 0; font-size: 24px; font-weight: 800; color: var(--marca); }
+  .fprecio small { font-size: 13px; color: var(--verde); font-weight: 700; margin-left: 6px; }
+  .sellos { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin: 14px 0 6px; }
+  .sellos div { background: #f3f8f5; border-radius: 12px; padding: 8px 6px; text-align: center; font-size: 11.5px; font-weight: 700; color: var(--marca2); line-height: 1.2; }
+  .sellos div b { display: block; font-size: 18px; margin-bottom: 2px; }
+  .fcuerpo h3 { font-size: 15px; margin: 18px 0 8px; text-transform: uppercase; letter-spacing: .6px; color: var(--gris); }
+  .prod { border: 1px solid var(--borde); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; }
+  .prod h4 { margin: 0 0 6px; font-size: 15.5px; font-weight: 800; }
+  .prod h4 span { color: var(--verde); }
+  .prod p { margin: 0; font-size: 14.5px; line-height: 1.5; color: #3c4a44; white-space: pre-line; }
+  .prod p.cargando { color: var(--gris); font-style: italic; }
+  .fbarra { display: flex; gap: 10px; align-items: center; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--borde); background: #fff; }
+  .fbarra .quiero { padding: 15px 10px; font-size: 17px; }
+  .fbarra .mini { padding: 5px; } .fbarra .mini button { width: 40px; height: 40px; }
+  .fbarra .verpedido { flex: 1; border: 0; border-radius: 999px; background: var(--marca); color: #fff; font-weight: 800; font-size: 15.5px; padding: 14px 10px; }
 
   /* ===== PANTALLA 2: el pedido ===== */
   #pedido { max-width: 560px; margin: 0 auto; padding: 12px 16px 40px; }
-  .boton { display: block; width: 100%; border: 0; border-radius: 14px; background: var(--verde); color: #fff; font-size: 21px; font-weight: 800; padding: 16px; }
-  .boton.claro { background: #fff; color: var(--texto); border: 2px solid var(--borde); font-size: 19px; }
-  .carrito-btn { background: #ff9800; color: #fff; border: 0; border-radius: 12px; padding: 9px 11px; font-size: 16px; font-weight: 900; white-space: nowrap; }
-  .mini { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 2px; border: 2px solid var(--verde); border-radius: 10px; background: #e8f7ee; padding: 2px; }
-  .mini button { flex-shrink: 0; width: 28px; height: 32px; padding: 0; border: 0; border-radius: 8px; background: var(--verde); color: #fff; font-size: 22px; font-weight: 900; line-height: 1; }
-  .mini output { font-size: 17px; font-weight: 900; color: var(--verde); white-space: nowrap; }
+  .boton { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: 0; border-radius: 16px; background: linear-gradient(135deg, var(--verde2), var(--verde)); color: #fff; font-size: 19px; font-weight: 800; padding: 16px; box-shadow: 0 6px 16px rgba(22,163,74,.3); }
+  .boton.claro { background: #fff; color: var(--texto); box-shadow: inset 0 0 0 1.5px var(--borde); font-size: 17px; }
+  .boton.enviar { background: #25d366; flex-direction: column; gap: 2px; padding: 15px; box-shadow: 0 8px 20px rgba(37,211,102,.35); font-size: 20px; }
+  .boton.enviar span { display: flex; align-items: center; gap: 10px; }
+  .boton.enviar svg { width: 26px; height: 26px; fill: #fff; }
+  .boton.enviar small { font-size: 13px; font-weight: 600; opacity: .95; }
   .arriba.con-pedido .wa .num { display: none; }
-  .aviso-toast { position: fixed; left: 50%; top: 58px; pointer-events: none; transform: translateX(-50%); background: #1d1d1f; color: #fff; padding: 12px 16px; border-radius: 12px; font-weight: 800; font-size: 16px; z-index: 9; max-width: 92vw; text-align: center; box-shadow: 0 6px 20px #0004; }
+  .arriba.con-pedido .marca small { display: none; }
+  .arriba.con-pedido .marca h1 { white-space: normal; font-size: 14.5px; }
+  .aviso-toast { position: fixed; left: 50%; top: 62px; pointer-events: none; transform: translateX(-50%); background: var(--marca); color: #fff; padding: 12px 18px; border-radius: 999px; font-weight: 800; font-size: 15px; z-index: 30; max-width: 92vw; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,.25); animation: toast .25s ease-out; }
+  @keyframes toast { from { opacity: 0; transform: translate(-50%, -8px); } }
   .carrito-btn.salta { animation: salta .5s ease 2; }
-  @keyframes salta { 50% { transform: scale(1.18); } }
-  h2.tit { font-size: 23px; margin: 16px 0 8px; }
-  .item { background: #fff; border: 2px solid var(--verde); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; }
-  .item h3 { margin: 0; font-size: 19px; }
+  @keyframes salta { 50% { transform: scale(1.12); } }
+  h2.tit { font-size: 23px; margin: 18px 0 10px; font-weight: 800; letter-spacing: -.3px; }
+  .item { background: #fff; border: 1px solid var(--borde); border-radius: var(--radio); padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--sombra); }
+  .item h3 { margin: 0; font-size: 17.5px; font-weight: 800; }
   .item .fila { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
-  .item .sub { font-size: 20px; font-weight: 900; margin-left: auto; }
-  .quitar { border: 0; background: none; color: var(--rojo); font-weight: 800; font-size: 16px; padding: 8px 0; }
-  .vacio-msg { text-align: center; color: var(--gris); font-size: 19px; margin: 30px 0; }
-  .trae { margin: 6px 0; padding-left: 22px; color: var(--gris); font-size: 16px; }
+  .item .sub { font-size: 19px; font-weight: 800; margin-left: auto; color: var(--marca); }
+  .quitar { border: 0; background: none; color: var(--rojo); font-weight: 700; font-size: 15px; padding: 8px 0; }
+  .vacio-msg { text-align: center; color: var(--gris); font-size: 18px; margin: 30px 0; }
+  .trae { margin: 6px 0; padding-left: 20px; color: var(--gris); font-size: 14.5px; }
   .incl { color: var(--verde); font-weight: 700; margin: 0; }
   .cant { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
-  .cant button { width: 52px; height: 52px; border-radius: 12px; border: 2px solid var(--borde); background: #fff; font-size: 28px; font-weight: 800; }
-  .cant output { font-size: 26px; font-weight: 900; min-width: 30px; text-align: center; }
-  label { display: block; font-weight: 800; font-size: 20px; margin: 20px 0 6px; }
-  input, textarea { width: 100%; font: inherit; font-size: 20px; padding: 14px; border: 2px solid var(--borde); border-radius: 12px; background: #fff; }
-  input:focus, textarea:focus { outline: 3px solid #9ad7b0; border-color: var(--verde); }
-  .ayuda { color: var(--gris); font-size: 16px; margin: 6px 0 0; }
-  .gps { background: #1565c0; }
-  .gps.listo { background: var(--verde); }
-  .ciudades { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .ciudades button { padding: 14px 6px; font-size: 18px; font-weight: 800; border-radius: 12px; border: 3px solid var(--borde); background: #fff; }
-  .ciudades button.si { border-color: var(--verde); background: #e8f7ee; }
+  .cant button { width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--verdeclaro); color: var(--verde); font-size: 26px; font-weight: 800; }
+  .cant output { font-size: 22px; font-weight: 800; min-width: 30px; text-align: center; }
+  label { display: block; font-weight: 800; font-size: 18px; margin: 22px 0 8px; }
+  input, textarea { width: 100%; font: inherit; font-size: 18px; padding: 14px; border: 1.5px solid var(--borde); border-radius: 14px; background: #fff; }
+  input:focus, textarea:focus { outline: 3px solid #bfe9cf; border-color: var(--verde); }
+  .ayuda { color: var(--gris); font-size: 15px; margin: 6px 0 0; }
+  .gps { background: linear-gradient(135deg, #2563eb, #1d4ed8); box-shadow: 0 6px 16px rgba(37,99,235,.3); }
+  .gps.listo { background: linear-gradient(135deg, var(--verde2), var(--verde)); }
+  .ciudades { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ciudades button { padding: 13px 6px; font-size: 16px; font-weight: 700; border-radius: 14px; border: 1.5px solid var(--borde); background: #fff; }
+  .ciudades button.si { border-color: var(--verde); background: var(--verdeclaro); color: var(--marca2); font-weight: 800; }
   .barrios { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 320px; overflow-y: auto; padding: 2px; }
-  .barrios button { padding: 12px 6px; font-size: 16px; font-weight: 700; border-radius: 10px; border: 2px solid var(--borde); background: #fff; }
-  .barrios button.si { border-color: var(--verde); background: #e8f7ee; font-weight: 800; }
-  .obligatorio { background: #fff3e0; border: 3px solid #ef6c00; border-radius: 16px; padding: 14px; margin-top: 8px; }
-  .obligatorio p { margin: 0 0 10px; font-weight: 800; color: #b23c00; font-size: 17px; }
-  .gps { font-size: 23px; padding: 20px; animation: late 1.6s ease-in-out infinite; }
+  .barrios button { padding: 12px 6px; font-size: 15px; font-weight: 600; border-radius: 12px; border: 1.5px solid var(--borde); background: #fff; }
+  .barrios button.si { border-color: var(--verde); background: var(--verdeclaro); font-weight: 800; }
+  .obligatorio { background: #fff7ed; border: 1.5px solid #fdba74; border-radius: 18px; padding: 14px; margin-top: 8px; }
+  .obligatorio p { margin: 0 0 10px; font-weight: 800; color: #b45309; font-size: 16px; }
+  .gps { font-size: 20px; padding: 18px; animation: late 1.6s ease-in-out infinite; }
   .gps.listo { animation: none; }
-  @keyframes late { 50% { transform: scale(1.03); box-shadow: 0 0 0 6px #1565c033; } }
-  .pagos { display: grid; gap: 10px; }
-  .pagos button { text-align: left; padding: 15px 16px; font-size: 19px; line-height: 1.2; font-weight: 800; border-radius: 12px; border: 3px solid var(--borde); background: #fff; }
-  .pagos button.si { border-color: var(--verde); background: #e8f7ee; }
-  .total { font-size: 26px; font-weight: 900; text-align: center; margin: 24px 0 10px; }
-  .error { background: #fdecea; color: var(--rojo); border-radius: 12px; padding: 12px 14px; font-weight: 700; margin: 16px 0 0; }
-  .pie { text-align: center; color: var(--gris); font-size: 15px; margin-top: 16px; }
+  @keyframes late { 50% { transform: scale(1.02); box-shadow: 0 0 0 6px rgba(37,99,235,.15); } }
+  .pagos { display: grid; gap: 8px; }
+  .pagos button { text-align: left; padding: 15px 16px; font-size: 17px; line-height: 1.2; font-weight: 700; border-radius: 14px; border: 1.5px solid var(--borde); background: #fff; }
+  .pagos button.si { border-color: var(--verde); background: var(--verdeclaro); font-weight: 800; }
+  .total { font-size: 25px; font-weight: 800; text-align: center; margin: 26px 0 12px; color: var(--marca); }
+  .error { background: #fdecea; color: var(--rojo); border-radius: 14px; padding: 12px 14px; font-weight: 700; margin: 16px 0 0; }
+  .pie { text-align: center; color: var(--gris); font-size: 14px; margin-top: 16px; }
+  .garantias { display: grid; gap: 8px; margin: 22px 0 0; padding: 14px 16px; background: #fff; border: 1px solid var(--borde); border-radius: var(--radio); font-size: 14.5px; color: #3c4a44; }
+  .garantias div { display: flex; gap: 10px; align-items: flex-start; } .garantias b { color: var(--marca); }
 </style>
 </head>
 <body>
@@ -125,12 +188,12 @@
 <!-- PANTALLA 1: categorías + 3 kits por vez -->
 <main id="lista">
   <div class="arriba">
-    <h1>🎁 Tu Centro <br>de Compras</h1>
-    <button class="carrito-btn" id="verCarrito" hidden>🛒 <span id="nCarrito">0</span> · Terminar</button>
-    <a class="wa" href="https://wa.me/595992500100" target="_blank" rel="noopener">💬<span class="num"> 0992 500 100</span></a>
+    <div class="marca"><span class="logo" aria-hidden="true">🛍️</span><div><h1>Tu Centro de Compras</h1><small>Productos originales de Ciudad del Este</small></div></div>
+    <button class="carrito-btn" id="verCarrito" hidden>🛒 Mi pedido <b id="nCarrito">0</b></button>
+    <a class="wa" href="https://wa.me/595992500100" target="_blank" rel="noopener" aria-label="WhatsApp 0992 500 100"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.08c-.24.68-1.42 1.3-1.95 1.34-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.92-4.66-4.1-.13-.18-1.11-1.48-1.11-2.83 0-1.34.71-2 .96-2.28.25-.27.54-.34.72-.34h.52c.17 0 .39-.06.61.47.24.57.8 1.96.87 2.1.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.35-.41.47-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.13.43.11.59-.07.16-.18.68-.79.86-1.07.18-.27.36-.22.61-.13.25.09 1.6.75 1.87.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg></a>
   </div>
+  <div class="confianza-barra"><span>✔ Originales y sellados</span><span>🚚 Envíos a todo el país</span><span>💬 Atención por WhatsApp</span><span>💵 Pagás al recibir en CDE</span></div>
   <div class="cats" id="cats"></div>
-  <p class="aviso">🚚 Delivery incluido · CDE y hasta 20 km</p>
   <div id="kits"></div>
   <div class="paginas">
     <button id="ant">◀ Atrás</button>
@@ -138,6 +201,27 @@
     <button id="sig">Siguientes ▶</button>
   </div>
 </main>
+
+<!-- FICHA: fotos grandes y descripción completa de cada producto -->
+<div id="ficha" hidden>
+  <div class="velo" onclick="history.back()"></div>
+  <section class="hoja" role="dialog" aria-modal="true" aria-labelledby="fNom">
+    <span class="agarre"></span>
+    <button class="cerrar" onclick="history.back()" aria-label="Cerrar">✕</button>
+    <div class="scroll" id="fScroll">
+      <div class="galeria" id="fGal"></div>
+      <div class="gpuntos" id="fPuntos"></div>
+      <div class="fcuerpo">
+        <h2 id="fNom"></h2>
+        <p class="fprecio" id="fPre"></p>
+        <div class="sellos"><div><b>✔</b>Original y sellado</div><div><b>🚚</b>Envío a todo el país</div><div><b>💬</b>Confirmás por WhatsApp</div></div>
+        <h3 id="fTit">Qué incluye</h3>
+        <div id="fItems"></div>
+      </div>
+    </div>
+    <div class="fbarra" id="fBarra"></div>
+  </section>
+</div>
 
 <!-- PANTALLA 2: el pedido -->
 <main id="pedido" hidden>
@@ -180,13 +264,18 @@
 
   <div class="total" id="total"></div>
   <p class="error" id="error" hidden></p>
-  <button class="boton" id="enviar" style="margin-top:12px">💬 Enviar pedido por WhatsApp</button>
-  <p class="pie">Te respondemos por WhatsApp para confirmar tu pedido.</p>
+  <button class="boton enviar" id="enviar" style="margin-top:12px"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.08c-.24.68-1.42 1.3-1.95 1.34-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.92-4.66-4.1-.13-.18-1.11-1.48-1.11-2.83 0-1.34.71-2 .96-2.28.25-.27.54-.34.72-.34h.52c.17 0 .39-.06.61.47.24.57.8 1.96.87 2.1.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.35-.41.47-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.13.43.11.59-.07.16-.18.68-.79.86-1.07.18-.27.36-.22.61-.13.25.09 1.6.75 1.87.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg> Enviar pedido por WhatsApp</span><small>Te respondemos para confirmar tu pedido</small></button>
+  <div class="garantias">
+    <div>✔ <span><b>Productos originales</b>, comprados en tiendas de Ciudad del Este y entregados sellados.</span></div>
+    <div>🔒 <span><b>No pagás nada en esta página</b>: primero te confirmamos todo por WhatsApp.</span></div>
+    <div>📞 <span>¿Dudas? Escribinos al <b>0992 500 100</b>.</span></div>
+  </div>
 </main>
 
 <script>
 const WHATSAPP = "595992500100";
 const CATALOGO = "https://motor-kits.gedepla.workers.dev/kits.csv";   // precios y stock que llena el motor solo
+const DETALLE = "https://motor-kits.gedepla.workers.dev/detalle.json"; // descripción completa de cada producto
 const RESPALDO = "id,destacado,categoria,nombre,productos,precio,etiqueta,foto1,foto2,foto3,foto4,activo\n1,si,longevidad,Kit Longevidad NAD+ y Resveratrol,NAD+ 120 cápsulas + resveratrol 120 cápsulas,229000,Más vendido,,,,,si\n2,no,longevidad,Kit Antiedad Celular,NAD-Age 120 cápsulas | Resveratrol 120 cápsulas,259000,,,,,,si\n3,no,longevidad,Kit NAD Diario,NAD + resveratrol 120 cápsulas | Vitamina D3 + K2 60 cápsulas,239000,,,,,,si\n4,no,longevidad,Kit Corazón Sano,Omega 3 120 cápsulas | Coenzima Q10 + vitamina E 60 cápsulas,279000,,,,,,si\n5,si,longevidad,Kit Colágeno Belleza,Colágeno hidrolizado 120 cápsulas | Vitamina C y zinc,239000,Más vendido,,,,,si\n6,no,longevidad,Kit Articulaciones,Mega colágeno tipo II + vitaminas E y C | Glucosamina 120 cápsulas,289000,,,,,,si\n7,no,longevidad,Kit Articulaciones Plus,Colágeno tipo II + cúrcuma 120 cápsulas | Cúrcuma con pimienta negra 120 cápsulas,259000,,,,,,si\n8,si,longevidad,Kit Defensas,Vitamina C y zinc | Vitamina D3 + K2 60 cápsulas,229000,Más vendido,,,,,si\n9,no,longevidad,Kit Defensas Plus,Vitamina C liposomal 120 cápsulas | Zinc 60 cápsulas,239000,,,,,,si\n10,no,longevidad,Kit Energía Diaria,Complejo B 120 cápsulas | Vitamina B12 60 cápsulas,259000,,,,,,si\n11,no,longevidad,Kit Multivitamínico,Multivitamínico de la A a la Z | Omega 3-6-9 120 cápsulas,259000,,,,,,si\n12,no,longevidad,Kit Sueño Profundo,Glicinato de magnesio 120 cápsulas | L-teanina 60 cápsulas,259000,,,,,,si\n13,no,longevidad,Kit Antiestrés,Ashwagandha 120 cápsulas | 7 magnesios 120 cápsulas,259000,,,,,,si\n14,no,longevidad,Kit Calma y Foco,L-teanina 60 cápsulas | L-treonato de magnesio 120 cápsulas,259000,,,,,,si\n15,no,longevidad,Kit Magnesio Completo,Bisglicinato + treonato de magnesio (2 frascos),229000,,,,,,si\n16,no,longevidad,Kit Calambres Fuera,Citrato de magnesio + potasio (2 frascos),229000,,,,,,si\n17,no,longevidad,Kit Omega + Magnesio,Omega 3 + citrato de magnesio (2 frascos),259000,,,,,,si\n18,no,longevidad,Kit Hígado y Detox,NAC 120 cápsulas | Zeolita 120 cápsulas,279000,,,,,,si\n19,no,longevidad,Kit Digestión,Psyllium 60 cápsulas | Cúrcuma con pimienta negra 120 cápsulas,259000,,,,,,si\n20,no,longevidad,Kit Azúcar Controlada,Berberina 120 cápsulas | Picolinato de cromo 60 cápsulas,239000,,,,,,si\n21,no,longevidad,Kit Vista Cansada,Luteína + zeaxantina 60 cápsulas | Zinc 60 cápsulas,289000,,,,,,si\n22,no,longevidad,Kit Antiinflamatorio,Curcumina pura 60 cápsulas | Omega 3 120 cápsulas,279000,,,,,,si\n23,no,longevidad,Kit Huesos Fuertes,Vitamina D3 + K2 120 cápsulas | 7 magnesios 120 cápsulas,259000,,,,,,si\n24,no,longevidad,Kit Piel desde Adentro,Colágeno hidrolizado 120 cápsulas | Silicio orgánico 30 cápsulas,259000,,,,,,si\n25,no,longevidad,Kit Cabello y Uñas Fuertes,Silicio orgánico 30 cápsulas | Zinc 60 cápsulas,239000,,,,,,si\n26,no,longevidad,Kit Tiroides y Defensas,Selenio quelado 60 cápsulas | Zinc 60 cápsulas,229000,,,,,,si\n27,no,longevidad,Kit Matcha Glow,Matcha con colágeno y vitamina C | Vitamina C y zinc,239000,,,,,,si\n28,no,longevidad,Kit Superalimento,Espirulina 150 cápsulas,229000,,,,,,si\n29,no,longevidad,Kit Limpieza Intestinal,Zeolita 120 cápsulas | Psyllium 60 cápsulas,259000,,,,,,si\n30,no,longevidad,Kit Corazón Plus,Omega 3 Katigua 1400 mg 120 cápsulas | Aceite de ajo 60 cápsulas,289000,,,,,,si\n31,no,longevidad,Kit Inmunidad Natural,Aceite de orégano 120 cápsulas | Zinc 60 cápsulas,299000,,,,,,si\n32,no,longevidad,Kit Antioxidante,Coenzima Q10 + vitamina E 60 cápsulas | Resveratrol 120 cápsulas,259000,,,,,,si\n33,no,longevidad,Kit Memoria y Concentración,L-treonato de magnesio 120 cápsulas | Omega 3 120 cápsulas,279000,,,,,,si\n34,no,longevidad,Kit Mujer 40+,Mega colágeno tipo II + vitaminas E y C | Vitamina D3 + K2 60 cápsulas,259000,,,,,,si\n35,no,longevidad,Kit Mujer Radiante,Colágeno hidrolizado 120 cápsulas | Vitamina C liposomal 120 cápsulas,259000,,,,,,si\n36,no,longevidad,Kit Hombre 40+,Coenzima Q10 + vitamina E 60 cápsulas | Zinc 60 cápsulas,249000,,,,,,si\n37,no,longevidad,Kit Longevidad Premium,\"Resveratrol 2,5 g 120 cápsulas | Coenzima Q10 + vitamina E 60 cápsulas\",279000,,,,,,si\n38,no,longevidad,Kit Equilibrio Hormonal,Maca peruana negra 120 cápsulas | 7 magnesios 120 cápsulas,259000,,,,,,si\n39,no,longevidad,Kit Metabolismo Activo,Picolinato de cromo 60 cápsulas | Aceite de coco 60 cápsulas,229000,,,,,,si\n40,no,longevidad,Kit Vitaminas Esenciales,Vitamina D3 5000 UI 120 cápsulas | Complejo B 120 cápsulas,259000,,,,,,si\n41,si,gym,Kit Fuerza,Creatina monohidratada 300 g | Colostro bovino 60 cápsulas,269000,Más vendido,,,,,si\n42,no,gym,Kit Recuperación Muscular,L-glutamina 120 cápsulas | Colostro bovino 60 cápsulas,269000,,,,,,si\n43,no,gym,Kit Creatina Práctica,Creatina 60 cápsulas | Multivitamínico de la A a la Z,239000,,,,,,si\n44,si,gym,Kit Testosterona Natural,Testosterona Power 120 cápsulas | Zinc 60 cápsulas,239000,Más vendido,,,,,si\n45,no,gym,Kit Vigor Masculino,Shilajit + tongkat ali 120 cápsulas | Maca peruana negra 120 cápsulas,259000,,,,,,si\n46,no,gym,Kit Energía Hombre,Shilajit 120 cápsulas | Complejo B 120 cápsulas,259000,,,,,,si\n47,no,gym,Kit Testo Plus,+Testo 600 mg 60 cápsulas | Vitamina D3 5000 UI 120 cápsulas,239000,,,,,,si\n48,no,gym,Kit Rendimiento,Creatina 60 cápsulas | Citrato de magnesio 120 cápsulas,249000,,,,,,si\n49,no,gym,Kit Articulaciones del Deportista,Glucosamina 120 cápsulas | Colágeno tipo II + cúrcuma 120 cápsulas,279000,,,,,,si\n50,si,gym,Kit Barbería en Casa,Máquina de cortar cabello Quanta | Afeitadora portátil Krab,159000,Más vendido,,,,,no\n51,no,gym,Kit Barba Perfecta,Recortador portátil Mondial | Bálsamo after shave NIVEA Men 100 ml,289000,,,,,,si\n52,no,gym,Kit Corte Pro,Máquina de cortar cabello Prosper P-2130 | Desodorante NIVEA Men Black & White,209000,,,,,,si\n53,no,gym,Kit Hombre Fresco,Desodorante NIVEA Men Black & White | Desodorante roll-on NIVEA Men | Crema NIVEA Men 150 ml,179000,,,,,,si\n54,no,gym,Kit Perfume y Desodorante Hombre,Perfume Nasma Firas 100 ml | Desodorante NIVEA Men Black & White,209000,,,,,,si\n55,no,gym,Kit Hombre Elegante,Perfume Lattafa Asad 100 ml | Desodorante Maison Alhambra La Voie 200 ml,259000,,,,,,no\n56,no,gym,Kit Mochila Deportiva,Mochila Xiaomi | Desodorante roll-on NIVEA Men | Crema NIVEA Men 150 ml,209000,,,,,,si\n57,no,gym,Kit Recortador 5 en 1,Recortador 5 en 1 Prosper | Desodorante NIVEA Men Black & White,209000,,,,,,si\n58,no,gym,Kit Viaje Hombre,Afeitadora portátil Krab | Desodorante roll-on NIVEA Men | Crema NIVEA Men 150 ml,199000,,,,,,si\n59,no,gym,Kit Cortes en Casa,Máquina de cortar cabello Britania | Desodorante NIVEA Men Black & White,179000,,,,,,si\n60,no,gym,Kit Hombre Activo,+Testo 600 mg 60 cápsulas | Creatina 60 cápsulas,239000,,,,,,si\n61,no,gym,Kit Pre-Entreno,Creatina 60 cápsulas | Complejo B 120 cápsulas,249000,,,,,,si\n62,no,gym,Kit Masa Muscular,Creatina monohidratada 300 g | Multivitamínico de la A a la Z,289000,,,,,,si\n63,no,gym,Kit Defensas del Deportista,L-glutamina 120 cápsulas | Vitamina C y zinc,289000,,,,,,si\n64,no,gym,Kit Hombre Saludable,Omega 3 120 cápsulas | Zinc 60 cápsulas,259000,,,,,,si\n65,no,gym,Kit Afeitado Completo,Afeitadora portátil Krab | Bálsamo after shave NIVEA Men 100 ml,229000,,,,,,si\n66,si,piel,Kit Rutina Coreana Básica,Gel de limpieza COSRX Good Morning 50 ml | Tónico Anua Heartleaf 77 (40 ml) | Crema SKIN1004 Centella 30 ml,269000,Más vendido,,,,,no\n67,no,piel,Kit Glow Coreano,Esencia COSRX Snail 96 Mucin 100 ml | 2 x Mascarilla Numbuzin No. 4 hidratante,259000,,,,,,si\n68,si,piel,Kit Granitos Fuera,Limpiador COSRX ácido salicílico | Parches para granitos COSRX Pimple Master,189000,Más vendido,,,,,si\n69,no,piel,Kit Acné Control,Limpiador SKIN1004 BHA | Parches para granitos SKIN1004 | Tónico SKIN1004 Centella 30 ml,289000,,,,,,si\n70,no,piel,Kit Piel Hidratada,Limpiador Round Lab Dokdo 150 ml | Tónico Round Lab Dokdo 200 ml,259000,,,,,,si\n71,no,piel,Kit Protección Solar Diaria,Protector solar Round Lab Birch | Limpiador Round Lab Dokdo 150 ml,289000,,,,,,si\n72,no,piel,Kit Doble Limpieza,Bálsamo desmaquillante Banila Co 100 ml | Gel de limpieza COSRX Good Morning 50 ml,219000,,,,,,no\n73,no,piel,Kit Doble Limpieza Plus,Bálsamo desmaquillante Banila Co 100 ml | Limpiador Round Lab Dokdo 150 ml,259000,,,,,,no\n74,no,piel,Kit Ojeras Fuera,Crema de ojos Mary&May 30 g | 3 x Mascarilla Medicube colágeno lifting,209000,,,,,,si\n75,no,piel,Kit Mirada Joven,Crema de ojos Haruharu arroz negro | 2 x Mascarilla Numbuzin No. 4 hidratante,219000,,,,,,si\n76,si,piel,Kit Colágeno Medicube,Sérum Medicube triple colágeno 55 ml | 2 x Mascarilla Medicube colágeno lifting,209000,Más vendido,,,,,no\n77,no,piel,Kit Triple Colágeno,Tónico Medicube triple colágeno 140 ml | 3 x Mascarilla Medicube colágeno lifting,259000,,,,,,no\n78,no,piel,Kit Antiarrugas Noche,Sérum Medicube retinol 30 ml | Crema Dr. Althea 345 Relief 15 ml,269000,,,,,,no\n79,no,piel,Kit Manchas Fuera,Sérum Medicube glutatión 30 g | 2 x Mascarilla Anua Peach niacinamida,289000,,,,,,no\n80,no,piel,Kit Poros Cerrados,Tónico Medicube Zero Pore 250 ml | 2 x Mascarilla Medicube colágeno lifting,219000,,,,,,si\n81,no,piel,Kit Piel Sensible,Crema Dr. Althea 345 Relief 15 ml | Sérum Dr. Althea 345 Relief 15 ml,219000,,,,,,si\n82,no,piel,Kit Centella Calmante,Crema SKIN1004 Centella 30 ml | Tónico SKIN1004 Centella 30 ml | Parches para granitos SKIN1004,269000,,,,,,no\n83,no,piel,Kit 6 Mascarillas Coreanas,2 x Mascarilla Medicube colágeno lifting | 2 x Mascarilla Medicube PDRN Pink | 2 x Mascarilla Numbuzin No. 4 hidratante,239000,,,,,,no\n84,no,piel,Kit Spa Facial,Mascarilla Dexe negra 120 g | Mascarilla Dexe dorada 120 g | Gel de limpieza COSRX Good Morning 50 ml,199000,,,,,,si\n85,no,piel,Kit Puntos Negros,Mascarilla Dexe negra 120 g | Limpiador COSRX ácido salicílico,199000,,,,,,si\n86,no,piel,Kit Labios Perfectos,Kit aceite de labios + mascarilla labial de miel | Bálsamo labial NIVEA vainilla,149000,,,,,,si\n87,no,piel,Kit Labios Voluminosos,Voluminizador de labios VT Reedle Shot | Bálsamo labial NIVEA vainilla,189000,,,,,,si\n88,no,piel,Kit Labios PDRN,Mascarilla de labios Medicube PDRN 10 g | Bálsamo labial NIVEA vainilla,209000,,,,,,no\n89,no,piel,Kit Exfoliación Suave,Exfoliante Beauty of Joseon damasco 100 ml | Tónico Anua Heartleaf 77 (40 ml),229000,,,,,,si\n90,no,piel,Kit Peeling en Casa,Exfoliante COSRX AHA 7 100 ml | Gel de limpieza COSRX Good Morning 50 ml,289000,,,,,,si\n91,no,piel,Kit Hidratación Profunda,Sérum COSRX ácido hialurónico 20 ml | 2 x Mascarilla Numbuzin No. 4 hidratante,259000,,,,,,si\n92,no,piel,Kit Sérum Retinal,Sérum Meditherapy retinal 20 ml | Protector solar facial NIVEA SPF 50,279000,,,,,,si\n93,no,piel,Kit Sol y Playa,Protector solar NIVEA SPF 50 200 ml | Bálsamo labial NIVEA vainilla,239000,,,,,,si\n94,no,piel,Kit Sol para Niños,Protector solar NIVEA Kids SPF 60 | Bálsamo labial NIVEA vainilla,219000,,,,,,si\n95,no,piel,Kit Maquillaje Natural,BB cream Missha SPF 42 | Bálsamo labial NIVEA vainilla,189000,,,,,,si\n96,no,piel,Kit Cuerpo Suave,Crema NIVEA Soft Milk 220 ml | Crema corporal NIVEA Express 100 ml | Bálsamo labial NIVEA vainilla,199000,,,,,,si\n97,no,piel,Kit Reafirmante,Crema reafirmante NIVEA Q10 250 ml | Exfoliante corporal SKIN1004 Centella,269000,,,,,,si\n98,no,piel,Kit Crema Clásica,Crema NIVEA lata 400 ml | Bálsamo labial NIVEA vainilla | Crema NIVEA 30 ml,209000,,,,,,si\n99,no,piel,Kit Desmaquillado Fácil,Toallitas desmaquillantes NIVEA | Agua de limpieza Round Lab 400 ml,199000,,,,,,si\n100,no,piel,Kit Cuerpo Perfumado Yara,Crema corporal Lattafa Yara 310 g | Aceite corporal perfumado Lattafa Yara 20 ml,219000,,,,,,si\n101,no,piel,Kit Cuerpo Árabe,Crema corporal Lattafa Khamrah 300 g | Body mist Lattafa Teriaq 250 ml,209000,,,,,,si\n102,no,piel,Kit Anua Peach Glow,Sérum Anua Peach niacinamida 30 ml | Mascarilla Anua Peach niacinamida,289000,,,,,,no\n103,no,piel,Kit Anua Calmante,2 x Mascarilla Anua Heartleaf panthenol | Tónico Anua Heartleaf 77 (40 ml),219000,,,,,,si\n104,no,piel,Kit Pads Coreanos,Almohadillas calmantes SKIN1004 Centella | 2 x Mascarilla Numbuzin No. 4 hidratante,239000,,,,,,si\n105,no,piel,Kit Vitamina Glow,Mascarilla Dr. Althea Vita Glow | Tónico Anua Heartleaf 77 (40 ml),219000,,,,,,si\n106,no,piel,Kit Barrera Reparadora,Crema Anua 3 ceramidas 100 ml | Mascarilla Numbuzin No. 4 hidratante,259000,,,,,,si\n107,no,piel,Kit Piel Grasa,Almohadillas Medicube Zero Pore | Parches para granitos COSRX Pimple Master,219000,,,,,,si\n108,no,piel,Kit Belleza de Viaje,Gel de limpieza COSRX Good Morning 50 ml | Tónico SKIN1004 Centella 30 ml | Crema NIVEA 30 ml | Bálsamo labial NIVEA vainilla,239000,,,,,,si\n109,no,piel,Kit Belleza desde Adentro,Colágeno hidrolizado 120 cápsulas | Sérum Medicube triple colágeno 55 ml,269000,,,,,,no\n110,no,piel,Kit Glow Total,Esencia COSRX Galactomyces 100 ml | 2 x Mascarilla Medicube colágeno lifting,259000,,,,,,si\n111,si,cabello,Kit Karseell Completo,Shampoo Karseell Maca 500 ml | Acondicionador Karseell Maca 500 ml | Máscara Karseell colágeno 500 ml,199000,Más vendido,,,,,no\n112,no,cabello,Kit Reparación Maca,Máscara Karseell colágeno 500 ml | Aceite Karseell Maca 50 ml,139000,,,,,,no\n113,no,cabello,Kit Rubias Perfectas,Máscara matizadora Karseell violeta 500 ml | Shampoo Karseell Maca 500 ml,169000,,,,,,no\n114,no,cabello,Kit Argán Nutritivo,Aceite de argán Karseell 60 ml | Máscara Karseell argán y colágeno 160 ml | Acondicionador Karseell Maca 500 ml,219000,,,,,,si\n115,no,cabello,Kit Sin Frizz,Leave-in Karseell en crema 200 ml | Aceite Karseell Maca 50 ml | Shampoo Karseell Maca 500 ml,179000,,,,,,si\n116,no,cabello,Kit Leave-in Doble,Leave-in Karseell en spray 200 ml | Leave-in Karseell en crema 200 ml,149000,,,,,,no\n117,no,cabello,Kit Silicon Mix Coco,Shampoo Silicon Mix coco 473 ml | Gotas de brillo Silicon Mix 118 ml,169000,,,,,,no\n118,si,cabello,Kit Rizos Definidos,Máscara Silicon Mix rizos 295 g | Leave-in Silicon Mix rizos 251 ml | Gel Silicon Mix rizos 295 g,259000,Más vendido,,,,,si\n119,no,cabello,Kit Brillo Perla,Shampoo Silicon Mix perla 473 ml | Leave-in Silicon Mix perla 236 ml,169000,,,,,,no\n120,no,cabello,Kit Tsubaki Japonés,Shampoo Tsubaki Premium 450 ml | Acondicionador Tsubaki Premium 450 ml,259000,,,,,,si\n121,no,cabello,Kit Tsubaki Reparación,Shampoo Tsubaki Premium 450 ml | Máscara Tsubaki Premium 180 g,259000,,,,,,si\n122,no,cabello,Kit Fino Premium,Shampoo Fino Premium Touch 550 ml | Acondicionador Fino Premium Touch 550 ml,289000,,,,,,no\n123,no,cabello,Kit Fino Reparación,Máscara Fino Premium Touch 230 g | Aceite Fino Premium Touch 70 ml,229000,,,,,,si\n124,no,cabello,Kit Argán Dexe,Acondicionador Dexe argán 400 ml | Máscara Dexe argán | Aceite Dexe argán 50 ml,219000,,,,,,si\n125,si,cabello,Kit Anticaída Natural,Shampoo Moev anticaída 300 ml | Cepillo masajeador gua sha para cuero cabelludo,219000,Más vendido,,,,,si\n126,no,cabello,Kit Anticaída Pro,Shampoo anticaída Medicube Soyxidil 490 ml | Aceite Karseell Maca 50 ml,279000,,,,,,si\n127,no,cabello,Kit Romero Medicube,Acondicionador Medicube romero 250 ml | Cepillo masajeador gua sha para cuero cabelludo,259000,,,,,,si\n128,no,cabello,Kit Cuero Cabelludo Sano,Cepillo masajeador de cuero cabelludo Moev | Shampoo Moev anticaída 300 ml,239000,,,,,,si\n129,no,cabello,Kit Aceite Moev,Aceite Moev Annurcatin 80 ml | Cepillo masajeador gua sha para cuero cabelludo,229000,,,,,,si\n130,no,cabello,Kit Secado Rápido,Secador de pelo MegaStar 1000 W | Aceite Karseell Maca 50 ml,159000,,,,,,no\n131,no,cabello,Kit Lacio Perfecto,Planchita para cabello Mondial | Aceite Karseell Maca 50 ml,189000,,,,,,si\n132,no,cabello,Kit Planchita Pro,Planchita MegaStar 230 °C | Gotas de brillo Silicon Mix 118 ml,259000,,,,,,si\n133,no,cabello,Kit Rulos Fáciles,Rizador Quanta 19 mm | Leave-in Karseell en spray 200 ml,179000,,,,,,no\n134,no,cabello,Kit Rizos Espiral,Rizador espiral Mondial | Gel Silicon Mix rizos 295 g,209000,,,,,,si\n135,no,cabello,Kit Secador de Viaje,Secador de viaje Britania | Leave-in Karseell en crema 200 ml,209000,,,,,,si\n136,no,cabello,Kit Cepillo Alisador,Cepillo eléctrico alisador Prosper | Aceite Karseell Maca 50 ml,239000,,,,,,si\n137,no,cabello,Kit Peinado Completo,Secador de pelo Quanta compacto | Planchita para cabello Mondial,219000,,,,,,no\n138,no,cabello,Kit Cabello Fuerte desde Adentro,Silicio orgánico 30 cápsulas | Shampoo Karseell Maca 500 ml,199000,,,,,,si\n139,no,cabello,Kit GKhair Gold,Acondicionador GKhair Gold 250 ml | Shampoo Karseell Maca 500 ml | Aceite Karseell Maca 50 ml,199000,,,,,,si\n140,no,cabello,Kit Máscara Doble,Máscara Karseell colágeno 500 ml | Máscara Karseell argán y colágeno 160 ml,149000,,,,,,no\n141,no,cabello,Kit Aceites Capilares,Aceite Karseell Maca 50 ml | Aceite de argán Karseell 60 ml | Aceite Dexe argán 50 ml,199000,,,,,,si\n142,no,cabello,Kit Cabello Teñido,Máscara matizadora Karseell violeta 500 ml | Acondicionador Karseell Maca 500 ml | Aceite Karseell Maca 50 ml,229000,,,,,,no\n143,no,cabello,Kit Salón en Casa,Secador de pelo MegaStar 1000 W | Planchita para cabello Mondial | Máscara Karseell colágeno 500 ml,279000,,,,,,no\n144,no,cabello,Kit Hidratación Extrema,Máscara Fino Premium Touch 230 g | Máscara Karseell colágeno 500 ml | Aceite Karseell Maca 50 ml,239000,,,,,,no\n145,no,cabello,Kit Cabello y Uñas,Colágeno hidrolizado 120 cápsulas | Máscara Karseell colágeno 500 ml,199000,,,,,,no\n146,no,perfumes,Kit Yara,Perfume Lattafa Yara 100 ml | Desodorante NIVEA Pearl & Beauty,299000,,,,,,si\n147,si,perfumes,Kit Ameerat Al Arab,Perfume Lattafa Ameerat Al Arab 100 ml | Desodorante Lattafa Ameerat Al Arab 200 ml,199000,Más vendido,,,,,si\n148,no,perfumes,Kit Árabe para Él,Perfume Lattafa Asad 100 ml | Desodorante NIVEA Men Black & White,259000,,,,,,no\n149,si,perfumes,Kit Dúo Árabe Pareja,Perfume Lattafa Adeeb 80 ml | Perfume Lattafa Ameerat Al Arab 100 ml,279000,Más vendido,,,,,si\n150,no,perfumes,Kit Fakhar Hombre,Perfume Lattafa Fakhar 100 ml | Desodorante Maison Alhambra La Voie 200 ml,259000,,,,,,no\n151,no,perfumes,Kit Maahir Unisex,Perfume Lattafa Maahir 100 ml | Desodorante Maison Alhambra So Candid 200 ml,249000,,,,,,si\n152,no,perfumes,Kit Jouri Mujer,Perfume Lattafa Jouri 100 ml | Desodorante Maison Alhambra So Candid 200 ml,269000,,,,,,si\n153,no,perfumes,Kit Nasma Bellissima,Perfume Nasma Bellissima 100 ml | Body mist Armaf Club de Nuit Woman 250 ml,229000,,,,,,si\n154,no,perfumes,Kit Nasma Aline,Perfume Nasma Aline 100 ml | Body mist Armaf Celestial 250 ml,259000,,,,,,si\n155,no,perfumes,Kit Nasma Salma,Perfume Nasma Salma 100 ml | Desodorante NIVEA Pearl & Beauty,209000,,,,,,si\n156,no,perfumes,Kit Nasma Sherif,Perfume Nasma Sherif 100 ml | Desodorante NIVEA Men Black & White,199000,,,,,,si\n157,no,perfumes,Kit Salem Hombre,Perfume Nasma Salem 100 ml | Desodorante roll-on NIVEA Men,209000,,,,,,si\n158,no,perfumes,Kit Firas Hombre,Perfume Nasma Firas 100 ml | Desodorante Maison Alhambra La Voie 200 ml,209000,,,,,,si\n159,no,perfumes,Kit Faraón,Perfume Nasma Faraón 100 ml | Desodorante NIVEA Men Black & White,219000,,,,,,si\n160,no,perfumes,Kit Pharaoh,Perfume Rayhaan Pharaoh 100 ml | Desodorante Maison Alhambra La Voie 200 ml,209000,,,,,,si\n161,no,perfumes,Kit Unbeatable,Perfume Arqus Unbeatable 100 ml | Desodorante NIVEA Men Black & White,229000,,,,,,si\n162,no,perfumes,Kit Shouq Mujer,Perfume Al Wataniah Shouq 100 ml | Body mist Stella Dustin Honey Dream 250 ml,249000,,,,,,no\n163,si,perfumes,Kit Pistacho Gourmand,Perfume Maison Alhambra Pistacho Chocolate 100 ml | Body mist Armaf Club de Nuit Woman 250 ml,209000,Más vendido,,,,,si\n164,no,perfumes,Kit Chocolate de Dubái,Perfume Armaf Dubai Chocolat 100 ml | Body mist Lattafa Sehr 250 ml,219000,,,,,,si\n165,no,perfumes,Kit 3 Body Mist Árabes,Body mist Lattafa Angham 250 ml | Body mist Lattafa Sehr 250 ml | Body mist Lattafa Teriaq 250 ml,279000,,,,,,si\n166,no,perfumes,Kit Dúo Body Mist,Body mist Armaf Club de Nuit Woman 250 ml | Body mist Armaf Celestial 250 ml,169000,,,,,,si\n167,no,perfumes,Kit Victoria's Secret,Body mist Victoria's Secret Gelato Oasis | Body mist Victoria's Secret Pitaya Paradise,259000,,,,,,no\n168,no,perfumes,Kit Ariana Cloud,Body mist Ariana Grande Cloud 236 ml | Desodorante NIVEA Pearl & Beauty,189000,,,,,,si\n169,no,perfumes,Kit Body Mist y Crema,Body mist Lattafa Sehr 250 ml | Crema corporal Lattafa Yara 310 g,209000,,,,,,si\n170,no,perfumes,Kit Niña Perfumada,Colonia infantil Frozen 200 ml | Perfume infantil Tubbes chocolate 50 ml,199000,,,,,,si\n171,no,perfumes,Kit Colonias Infantiles,Colonia infantil Mickey 200 ml | Colonia infantil Stitch 200 ml,229000,,,,,,si\n172,no,perfumes,Kit Princesas,Colonia infantil Princesas 200 ml | Bálsamo labial NIVEA vainilla,179000,,,,,,si\n173,no,perfumes,Kit Casa Perfumada,2 x Aromatizante de ambiente Lattafa Haya 300 ml | Body mist Armaf Club de Nuit Woman 250 ml,169000,,,,,,si\n174,no,perfumes,Kit 3 Desodorantes Hombre,Desodorante NIVEA Men Black & White | Desodorante Maison Alhambra La Voie 200 ml | Desodorante roll-on NIVEA Men,139000,,,,,,si\n175,no,perfumes,Kit 3 Desodorantes Mujer,Desodorante NIVEA Pearl & Beauty | Desodorante Maison Alhambra So Candid 200 ml | Desodorante roll-on NIVEA Pearl,139000,,,,,,si\n176,si,tecno,Kit Carga Rápida,Cargador rápido 30 W doble | 2 x Cable USB-C 1 m,99000,Más vendido,,,,,si\n177,no,tecno,Kit Carga iPhone,Cargador 20 W + cable | 2 x Cable USB-C a Lightning (iPhone) 1 m,99000,,,,,,si\n178,no,tecno,Kit Carga Total,\"Cargador 22,5 W + cable USB-C | Cable USB-C 2 m reforzado\",149000,,,,,,si\n179,no,tecno,Kit Power Bank Viajero,Power bank Xiaomi 10.000 mAh | Cable USB-C 1 m,219000,,,,,,si\n180,si,tecno,Kit Música Bluetooth,Auriculares bluetooth Prosper | Parlante bluetooth con radio Quanta,159000,Más vendido,,,,,no\n181,no,tecno,Kit Auriculares Mibro,Auriculares inalámbricos Mibro 5 | Cable USB-C 1 m,129000,,,,,,si\n182,no,tecno,Kit Auriculares Rosa,Auriculares inalámbricos Mibro 5 rosa | Cable USB-C 1 m,129000,,,,,,si\n183,no,tecno,Kit HYE Pro,Auriculares inalámbricos HYE H2 Pro | Cargador 20 W + cable,149000,,,,,,si\n184,no,tecno,Kit Silencio Total,Auriculares G-TiDE Clip con cancelación de ruido | Cable USB-C 1 m,169000,,,,,,si\n185,no,tecno,Kit QCY Buds,Auriculares inalámbricos QCY Buds | Cargador 20 W + cable,189000,,,,,,si\n186,si,tecno,Kit Oficina en Casa,Mouse inalámbrico | Teclado USB en español | Hub USB 3 puertos,159000,Más vendido,,,,,no\n187,no,tecno,Kit Oficina Logitech,Teclado Logitech K120 | Mouse inalámbrico,149000,,,,,,no\n188,no,tecno,Kit Estudiante,Mouse USB | Pendrive 64 GB Kingston | Hub USB 3 puertos,159000,,,,,,si\n189,no,tecno,Kit Respaldo de Fotos,Pendrive 32 GB SanDisk | Memoria micro SD 32 GB SanDisk,199000,,,,,,si\n190,no,tecno,Kit Reloj Inteligente,Reloj inteligente Audisat X5 Pro | Cargador 20 W + cable,169000,,,,,,no\n191,no,tecno,Kit Reloj X6 Pro,Reloj inteligente Audisat X6 Pro | Cable USB-C 1 m,189000,,,,,,no\n192,no,tecno,Kit Creador de Contenido,Trípode para celular con luz y micrófono | Micrófono MegaStar,259000,,,,,,si\n193,no,tecno,Kit Streaming,Luz LED portátil RGB | Micrófono MegaStar con soporte,149000,,,,,,si\n194,no,tecno,Kit Luz para Fotos,Luz LED portátil 3 tonos | Luz LED portátil RGB,159000,,,,,,si\n195,no,tecno,Kit Seguridad Casa,Cámara Wi-Fi Satellite | Memoria micro SD 32 GB SanDisk,239000,,,,,,si\n196,no,tecno,Kit Seguridad Plus,Cámara Wi-Fi con micrófono | Memoria micro SD 32 GB SanDisk,249000,,,,,,si\n197,no,tecno,Kit Fiesta,Parlante bluetooth MOX 10 W | Luz LED portátil RGB,219000,,,,,,si\n198,no,tecno,Kit Gamer Inicial,Auriculares con micrófono G-TiDE | Mouse USB | Hub USB 3 puertos,179000,,,,,,si\n199,no,tecno,Kit Escritorio LED,Lámpara LED giratoria | Mouse inalámbrico | Hub USB 3 puertos,139000,,,,,,no\n200,no,tecno,Kit Llamadas,Auriculares con micrófono G-TiDE | Cargador rápido 30 W doble,139000,,,,,,si\n201,no,tecno,Kit Viaje Tech,Power bank Xiaomi 10.000 mAh | Auriculares bluetooth Prosper,269000,,,,,,si\n202,no,tecno,Kit Celular Completo,\"Cargador 22,5 W + cable USB-C | Auriculares bluetooth Prosper\",189000,,,,,,si\n203,no,tecno,Kit Karaoke,Micrófono MegaStar | Parlante bluetooth con radio Quanta,169000,,,,,,no\n204,no,tecno,Kit Dos Cámaras,2 x Cámara Wi-Fi Satellite,259000,,,,,,si\n205,no,tecno,Kit Cables de Repuesto,2 x Cable USB-C 1 m | Cable USB-C a Lightning (iPhone) 1 m | Cable USB-C 2 m reforzado,109000,,,,,,si\n206,no,tecno,Kit Música y Carga,Parlante bluetooth con radio Quanta | Cargador rápido 30 W doble | Cable USB-C 1 m,139000,,,,,,no\n207,no,tecno,Kit Teletrabajo,Auriculares con micrófono G-TiDE | Mouse inalámbrico | Teclado USB en español,189000,,,,,,no\n208,no,tecno,Kit Fotos Pro,Trípode para celular con luz y micrófono | Luz LED portátil 3 tonos,249000,,,,,,si\n209,no,tecno,Kit Reloj + Auriculares,Reloj inteligente Audisat X5 Pro | Auriculares inalámbricos Mibro 5,229000,,,,,,no\n210,no,tecno,Kit Regalo Tech,Auriculares inalámbricos Mibro 5 | Parlante bluetooth con radio Quanta | Cable USB-C 1 m,189000,,,,,,no\n211,no,regalos,Kit Para Él Clásico,Whisky White Horse 1 L | Desodorante NIVEA Men Black & White,169000,,,,,,no\n212,no,regalos,Kit Whisky Red Label,Whisky Johnnie Walker Red Label 1 L | Desodorante Maison Alhambra La Voie 200 ml,199000,,,,,,si\n213,no,regalos,Kit Whisky Blonde,Whisky Johnnie Walker Blonde 750 ml | Desodorante NIVEA Men Black & White,189000,,,,,,no\n214,si,regalos,Kit Brindis,2 x Espumante Freixenet Mía Moscato,199000,Más vendido,,,,,si\n215,no,regalos,Kit Brindis Dulce,Espumante Freixenet Mía Moscato | Espumante Freixenet Mía Fruity,199000,,,,,,no\n216,no,regalos,Kit Para Ella,Perfume Lattafa Ameerat Al Arab 100 ml | Espumante Freixenet Mía Moscato,249000,,,,,,si\n217,no,regalos,Kit Perfume y Whisky,Perfume Nasma Sherif 100 ml | Whisky White Horse 1 L,269000,,,,,,no\n218,no,regalos,Kit Día de la Madre,Crema NIVEA lata 400 ml | Body mist Stella Dustin Honey Dream 250 ml | Bálsamo labial NIVEA vainilla,259000,,,,,,no\n219,no,regalos,Kit Novios,Perfume Armaf Dubai Chocolat 100 ml | Espumante Freixenet Mía Fruity,219000,,,,,,no\n220,no,regalos,Kit Amiga Secreta,Kit aceite de labios + mascarilla labial de miel | Body mist Armaf Club de Nuit Woman 250 ml,149000,,,,,,si\n221,si,hogar,Kit Tereré Completo,Guampa + bombilla para tereré Indio | Bombilla Indio + yerba Temate 150 g,289000,Más vendido,,,,,si\n222,no,hogar,Kit Mate Completo,Guampa + bombilla para mate Indio | Bombilla Indio + yerba Temate 150 g,289000,,,,,,si\n223,no,hogar,Kit Guampa y Bombilla,Guampa Tramontina 240 ml | Bombilla de alpaca para tereré,229000,,,,,,si\n224,no,hogar,Kit 2 Guampas Inox,2 x Guampa de acero inoxidable 240 ml,219000,,,,,,si\n225,no,hogar,Kit Termo y Guampa,Porta termo Fiore | Guampa Tramontina 240 ml,269000,,,,,,si\n226,no,hogar,Kit Café para Dos,Vaso térmico para café Melitta 250 ml | Set de 2 tazas Tramontina,249000,,,,,,si\n227,si,hogar,Kit Asado Completo,Set de 12 cuchillos para asado Tramontina | Tabla para servir Tramontina de teca,219000,Más vendido,,,,,si\n228,no,hogar,Kit Parrillero,Set de 6 cuchillos para churrasco Tramontina | Tabla para servir Tramontina de teca,209000,,,,,,si\n229,no,hogar,Kit Cocina Básica,Set de 6 cuchillos Tramontina | Sartén antiadherente Tramontina | Juego de 10 tuppers,189000,,,,,,si\n230,no,hogar,Kit Sartenes y Cuchillos,Set de 3 sartenes Tramontina | Set de 6 cuchillos Tramontina,169000,,,,,,si\n231,no,hogar,Kit Orden en la Cocina,Set de 3 táperes Rubbermaid | Juego de 10 tuppers | 3 organizadores transparentes,239000,,,,,,si\n232,no,hogar,Kit Mesa Lista,Juego de 25 cubiertos Tramontina | Set de tazas con platillos Danny Home,239000,,,,,,si\n233,no,hogar,Kit Té de la Tarde,Tetera Danny Home 1 L | Set de 2 tazas Tramontina,189000,,,,,,si\n234,no,hogar,Kit Casa Iluminada,Pack de 4 lámparas LED luz cálida | Lámpara inteligente Philips de colores,189000,,,,,,si\n235,no,hogar,Kit Living Acogedor,2 x Funda de almohadón de terciopelo | Aromatizante de ambiente Lattafa Haya 300 ml,159000,,,,,,si\n236,si,hogar,Kit Aromaterapia,Humidificador y difusor de aromas Nappo | Aromatizante de ambiente Lattafa Haya 300 ml,249000,Más vendido,,,,,si\n237,no,hogar,Kit Mate Eléctrico,Pava eléctrica MOX 2 L | Guampa Tramontina 240 ml,189000,,,,,,no\n238,no,hogar,Kit Noches de Verano,Lámpara antimosquitos | Pack de 4 lámparas LED luz cálida,269000,,,,,,si\n239,si,mascotas,Kit Perro Feliz,Collar para perro 51 cm | Correa para perro 120 cm | Pelota para perro Duraball,259000,Más vendido,,,,,si\n240,no,mascotas,Kit Paseo Perruno,Collar para perro 38 cm | Correa para perro chico 110 cm | Snack Monello sabor bacon 300 g,149000,,,,,,si\n241,no,mascotas,Kit Perro Limpio,Shampoo antipulgas Pulgafin 300 ml | Shampoo en seco PisPás 200 ml | Comedero para mascotas 21 cm,189000,,,,,,si\n242,no,mascotas,Kit Snacks Perrunos,Patitas de pollo deshidratadas PetChef | Cuero de pescado PetChef | Snack Monello sabor bacon 300 g,199000,,,,,,si\n243,si,mascotas,Kit Cachorro Nuevo,Alimento Monello cachorros pollo | Comedero para mascotas 21 cm | Collar para perro 38 cm,179000,Más vendido,,,,,si\n244,no,mascotas,Kit Descanso Perruno,Cama oval para mascota | Pelota para perro Duraball,229000,,,,,,si\n245,no,mascotas,Kit Gato Feliz,Juguete rascador para gatos | 2 x Snack Monello Bites para gatos 80 g,249000,,,,,,si\n246,no,mascotas,Kit Gato Limpio,Arena sanitaria BioKitty lavanda | Shampoo para gatos Beeps 502 ml,169000,,,,,,si\n247,no,mascotas,Kit Gato Bien Comido,Alimento Monello gatos salmón y pollo | 2 x Snack Monello Bites para gatos 80 g | Comedero para mascotas 21 cm,169000,,,,,,si\n248,no,mascotas,Kit Perro Gourmet,Pechuga de pollo deshidratada PetChef | Alimento Monello perros adultos pollo,219000,,,,,,no\n249,si,bebe,Kit Recién Nacido,Biberón anticólico Dr. Brown's 120 ml | Chupete Buba Comfort | Babero Buba con bolsillo,259000,Más vendido,,,,,si\n250,no,bebe,Kit Dentición,Mordillo frío para dentición Dr. Brown's | Cuchara de dentición Munchkin | Mordedor Bright Starts,249000,,,,,,si\n251,no,bebe,Kit Hora de Comer,Cuchara y babero de silicona | Biberón anticólico Dr. Brown's 250 ml,239000,,,,,,si\n252,no,bebe,Kit Baño Divertido,Juego de baño 3 patitos | Tijera de uñas para bebé Dr. Brown's,169000,,,,,,si\n253,no,bebe,Kit Chupete Seguro,Chupete Buba Comfort | Porta chupete Petú Petú,179000,,,,,,si\n254,no,bebe,Kit Bebé Sano,Termómetro digital Aspen | Tijera de uñas para bebé Dr. Brown's | Mordillo frío para dentición Dr. Brown's,249000,,,,,,si\n255,no,bebe,Kit Juegos para Bebé,Juguetes educativos Lalaboom 10 piezas | Sonajero mordedor Bright Starts,189000,,,,,,si\n256,no,bebe,Kit Jirafa Mordillo,Peluche jirafa con mordillo | Mordedor Bright Starts,179000,,,,,,si\n257,no,bebe,Kit Primeros Sorbos,Botella Buba con pajita (unicornio) | Cuchara de dentición Munchkin,189000,,,,,,si\n258,no,bebe,Kit 2 Biberones,Biberón anticólico Dr. Brown's 120 ml | Biberón anticólico Dr. Brown's 250 ml,249000,,,,,,si\n259,no,bebe,Kit Bebé de Paseo,Chupete alimentador Munchkin | Botella Buba con pajita (león) | Porta chupete Petú Petú,279000,,,,,,si\n260,si,bebe,Kit Baby Shower,Sonajero mordedor Bright Starts | Babero Buba con bolsillo | Chupete Buba Comfort,259000,Más vendido,,,,,si\n";                                          // copia por si el motor no responde
 const POR_PAGINA = 3;
 
@@ -305,14 +394,15 @@ function mostrarPagina(direccion) {
   const tres = [0, 1, 2].map((n) => lista[desde + n]);
   $("kits").innerHTML = tres.map((k) => !k ? `<div class="kit vacio"></div>` : `
     <article class="kit" data-kit="${k.id}">
-      <div class="foto" data-id="${k.id}">${k.fotos.length
+      <div class="foto" data-id="${k.id}" onclick="abrirFicha('${k.id}')">${k.fotos.length
         ? k.fotos.map((f, n) => `<img src="${f}" alt="" class="${n ? "" : "ver"}" referrerpolicy="no-referrer" onerror="fotoRota(this)">`).join("") + puntos(k.fotos.length)
-        : dibujo(k)}${k.etiqueta ? `<span class="etiqueta">${k.etiqueta}</span>` : ""}</div>
+        : dibujo(k)}${k.etiqueta ? `<span class="etiqueta ${k.suelto ? "prod" : ""}">${k.etiqueta}</span>` : ""}</div>
       <div class="info">
-        <h3>${k.nombre}</h3>
+        <h3 onclick="abrirFicha('${k.id}')">${k.nombre}</h3>
         <ul class="incluye">${k.trae.map((t) => `<li>${t}</li>`).join("")}</ul>
+        <button type="button" class="detalle-link" onclick="abrirFicha('${k.id}')">Ver detalle y descripción ›</button>
         <div class="abajo">
-          <p class="precio">${gs(k.precio)}</p>
+          <p class="precio">${gs(k.precio)}<small>${lejos() ? "+ envío" : "envío incluido"}</small></p>
           ${botonKit(k.id)}
         </div>
       </div>
@@ -331,9 +421,10 @@ function ajustarIncluye() {
     const lis = [...ul.children], fin = ul.getBoundingClientRect().bottom + 1;
     const fuera = lis.filter((li) => li.getBoundingClientRect().bottom > fin);
     if (!fuera.length) return;
-    const ocultar = fuera.length + 1, quedan = lis.length - ocultar;
+    const quedan = Math.max(0, lis.length - fuera.length - 1), ocultar = lis.length - quedan;
     lis.slice(quedan).forEach((li) => li.remove());
-    ul.insertAdjacentHTML("beforeend", `<li class="mas">+ ${ocultar} producto${ocultar > 1 ? "s" : ""} más</li>`);
+    ul.insertAdjacentHTML("beforeend", quedan ? `<li class="mas">+ ${ocultar} producto${ocultar > 1 ? "s" : ""} más</li>`
+      : `<li class="mas">Incluye ${ocultar} producto${ocultar > 1 ? "s" : ""}</li>`);
   });
 }
 addEventListener("resize", () => { if (!$("lista").hidden) mostrarPagina(0); });
@@ -391,20 +482,67 @@ function abrirPedido() {
 // En la lista: "Lo quiero" suma el kit sin salir de la pantalla; después aparecen − cantidad +.
 function botonKit(id) {
   const c = carrito.find((x) => x.id === id);
-  return c ? `<div class="mini"><button type="button" onclick="enLista('${id}',-1)" aria-label="Uno menos">−</button><output>${c.cant}</output><button type="button" onclick="enLista('${id}',1)" aria-label="Uno más">+</button></div>`
-           : `<button class="quiero" onclick="pedir('${id}')">Lo quiero</button>`;
+  return c ? `<div class="mini"><button type="button" onclick="enLista('${id}',-1)" aria-label="Uno menos">−</button><output>${c.cant}</output><button type="button" class="mas1" onclick="enLista('${id}',1)" aria-label="Uno más">+</button></div>`
+           : `<button class="quiero" onclick="pedir('${id}')">${ICONO_CARRITO}Lo quiero</button>`;
 }
 function enLista(id, d) {
   if (d > 0 && !carrito.find((x) => x.id === id)) carrito.push({ id, cant: 0 });
   const antes = carrito.reduce((t, c) => t + c.cant, 0);
   cambiar(id, d);
   document.querySelectorAll(`[data-kit="${id}"] .abajo`).forEach((a) => { a.lastElementChild.outerHTML = botonKit(id); });
+  if (!$("ficha").hidden) pintarBarraFicha();
   if (carrito.reduce((t, c) => t + c.cant, 0) > antes) {
     $("verCarrito").classList.remove("salta"); void $("verCarrito").offsetWidth; $("verCarrito").classList.add("salta");
     avisar("✅ Agregado al pedido");
   }
 }
 function pedir(id) { enLista(id, 1); }
+const ICONO_CARRITO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 1.9-1.5L21 8H6.2"/><circle cx="10" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>';
+
+// --- ficha del kit: fotos grandes + descripción completa de cada producto ---
+let detalle = null, fichaId = null;
+function cargarDetalle() {
+  if (detalle) return Promise.resolve(detalle);
+  return fetch(DETALLE).then((r) => r.json()).then((d) => (detalle = d)).catch(() => null);
+}
+const escHTML = (t) => String(t).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+function abrirFicha(id) {
+  const k = kits.find((x) => x.id === id); if (!k) return;
+  fichaId = id;
+  $("fGal").innerHTML = k.fotos.length ? k.fotos.map((f) => `<img src="${f}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`).join("") : dibujo(k);
+  $("fPuntos").innerHTML = k.fotos.length > 1 ? k.fotos.map((_, i) => `<i class="${i ? "" : "ver"}"></i>`).join("") : "";
+  $("fNom").textContent = k.nombre;
+  $("fPre").innerHTML = `${gs(k.precio)}<small>${lejos() ? "+ envío al recibir" : "envío incluido en CDE"}</small>`;
+  $("fTit").textContent = k.suelto ? "Descripción" : `Qué incluye (${k.trae.length} producto${k.trae.length > 1 ? "s" : ""})`;
+  $("fItems").innerHTML = k.trae.map((t) => `<div class="prod"><h4>${k.suelto ? "" : "<span>✓</span> "}${escHTML(t)}</h4><p class="cargando">Cargando descripción…</p></div>`).join("");
+  pintarBarraFicha();
+  if ($("ficha").hidden) { $("ficha").hidden = false; history.pushState({ ficha: true }, ""); }
+  $("fScroll").scrollTop = 0; $("fGal").scrollLeft = 0;
+  cargarDetalle().then((d) => { if (fichaId === id) pintarDescripciones(k, d); });
+}
+function pintarDescripciones(k, d) {
+  const items = d?.kits?.[k.id];
+  const cajas = [...$("fItems").children];
+  k.trae.forEach((t, i) => {
+    const p = cajas[i]?.querySelector("p"); if (!p) return;
+    const clave = items?.[i]?.[0], prod = clave && d.productos?.[clave];
+    p.classList.remove("cargando");
+    p.textContent = prod?.d || `${t}. Producto original, comprado en tiendas de Ciudad del Este y entregado sellado.`;
+  });
+}
+function pintarBarraFicha() {
+  const id = fichaId, c = carrito.find((x) => x.id === id), k = kits.find((x) => x.id === id);
+  $("fBarra").innerHTML = c
+    ? `<div class="mini" style="flex:0 0 auto;gap:8px"><button type="button" onclick="enLista('${id}',-1)" aria-label="Uno menos">−</button><output>${c.cant}</output><button type="button" class="mas1" onclick="enLista('${id}',1)" aria-label="Uno más">+</button></div><button class="verpedido" onclick="irAlPedido()">Ver mi pedido →</button>`
+    : `<button class="quiero" onclick="pedir('${id}')">${ICONO_CARRITO}Lo quiero · ${gs(k.precio)}</button>`;
+}
+function cerrarFicha() { $("ficha").hidden = true; fichaId = null; }
+function irAlPedido() { cerrarFicha(); history.replaceState(null, ""); abrirPedido(); }
+// deslizar las fotos grandes: los puntitos siguen a la foto que se ve
+$("fGal").addEventListener("scroll", () => {
+  const g = $("fGal"), i = Math.round(g.scrollLeft / g.clientWidth);
+  [...$("fPuntos").children].forEach((p, n) => p.classList.toggle("ver", n === i));
+}, { passive: true });
 let avisoT;
 function avisar(texto) {
   document.querySelector(".aviso-toast")?.remove(); clearTimeout(avisoT);
@@ -413,7 +551,10 @@ function avisar(texto) {
 }
 $("verCarrito").onclick = abrirPedido;
 $("volver").onclick = $("agregarOtro").onclick = () => history.back();
-addEventListener("popstate", () => { $("pedido").hidden = true; $("lista").hidden = false; pintarCarrito(); mostrarPagina(0); });
+addEventListener("popstate", () => {
+  if (!$("ficha").hidden) { cerrarFicha(); return; }   // atrás con la ficha abierta: solo se cierra la ficha
+  $("pedido").hidden = true; $("lista").hidden = false; pintarCarrito(); mostrarPagina(0);
+});
 
 $("ciudades").innerHTML = CIUDADES.map((c) => `<button type="button" data-ciudad="${c}">${c}</button>`).join("");
 $("ciudadesPais").innerHTML = CIUDADES_PAIS.map((c) => `<button type="button" data-ciudad="${c}">${c}</button>`).join("");
@@ -510,6 +651,9 @@ function cargar(texto) {
 }
 cargar(RESPALDO);
 fetch(CATALOGO, { cache: "no-store" }).then((r) => r.ok ? r.text() : Promise.reject()).then(cargar).catch(() => {});
+setTimeout(cargarDetalle, 4000);
+// cuando termina de cargar la letra, se vuelven a medir las listas de cada tarjeta
+document.fonts?.ready.then(() => { if (!$("lista").hidden) mostrarPagina(0); });   // la descripción se adelanta para que la ficha abra al instante
 </script>
 </body>
 </html>
