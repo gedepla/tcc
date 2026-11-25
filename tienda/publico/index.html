@@ -3,7 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Tu Centro de Compras</title>
+<title>Tu Centro de Compras · Calidad y buenos precios ¡Siempre!</title>
+<meta name="description" content="Kits y productos originales de Ciudad del Este. Pedís por WhatsApp y te lo enviamos a todo el Paraguay.">
+<link rel="icon" type="image/svg+xml" href="icono.svg">
+<link rel="apple-touch-icon" href="icono-180.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tu Centro de Compras">
+<meta property="og:title" content="Tu Centro de Compras · Calidad y buenos precios ¡Siempre!">
+<meta property="og:description" content="Kits y productos originales de Ciudad del Este. Pedís por WhatsApp y te lo enviamos a todo el Paraguay.">
+<meta property="og:image" content="https://tucentrodecompras.gedepla.workers.dev/logo-compartir.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:url" content="https://tucentrodecompras.gedepla.workers.dev/">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#14213d">
@@ -27,8 +37,11 @@
   #lista { height: 100vh; height: 100dvh; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; padding: 10px 12px 10px; gap: 8px; overflow: hidden; }
   .arriba { display: flex; align-items: center; gap: 8px; }
   .marca { flex: 1; min-width: 0; display: flex; align-items: center; gap: 9px; }
-  .logo { width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; display: grid; place-items: center; font-size: 14px; font-weight: 800; letter-spacing: -.5px; color: var(--tinta); background: var(--cartel); transform: rotate(-4deg); box-shadow: 2px 2px 0 var(--tinta); }
-  .marca h1 { margin: 0; font-size: 18px; line-height: 1.05; font-weight: 800; letter-spacing: -.4px; font-variation-settings: "opsz" 48; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .logo { width: 44px; height: 44px; flex-shrink: 0; display: block; }
+  /* el nombre como en el logo: banda azul oscuro, "Compras" en amarillo */
+  .marca h1 b { color: var(--cartel); font-weight: 800; }
+  .marca small em { font-style: normal; font-weight: 800; color: #d6262d; }
+  .marca h1 { display: inline-block; max-width: 100%; margin: 0 0 3px; padding: 4px 11px 5px; border-radius: 999px; background: var(--tinta); color: #fff; font-size: 16.5px; line-height: 1.05; font-weight: 800; letter-spacing: -.3px; font-variation-settings: "opsz" 48; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .marca small { display: block; color: var(--gris); font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .wa { flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--wa); }
   .wa svg { width: 23px; height: 23px; fill: #fff; }
@@ -145,7 +158,7 @@
   body[data-cols="3"] #lista { max-width: 1320px; padding: 16px 28px 16px; gap: 12px; }
   body:not([data-cols="1"]) .marca h1 { font-size: 21px; }
   body:not([data-cols="1"]) .marca small { font-size: 13px; }
-  body:not([data-cols="1"]) .logo { width: 46px; height: 46px; font-size: 16px; border-radius: 12px; }
+  body:not([data-cols="1"]) .logo { width: 54px; height: 54px; }
   body:not([data-cols="1"]) .confianza-barra { justify-content: center; flex-wrap: wrap; }
   body:not([data-cols="1"]) .confianza-barra span { font-size: 13px; }
   body:not([data-cols="1"]) .cats { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
@@ -192,7 +205,10 @@
   .boton.enviar small { font-size: 13px; font-weight: 600; opacity: .95; }
   .arriba.con-pedido .wa .num { display: none; }
   .arriba.con-pedido .marca small { display: none; }
-  .arriba.con-pedido .marca h1 { white-space: normal; font-size: 14.5px; }
+  .marca > div { min-width: 0; }
+  .marca h1 .corto { display: none; }
+  body[data-cols="1"] .arriba.con-pedido .marca h1 .largo { display: none; }
+  body[data-cols="1"] .arriba.con-pedido .marca h1 .corto { display: inline; font-size: 19px; letter-spacing: .5px; }
   .aviso-toast { position: fixed; left: 50%; top: 62px; pointer-events: none; transform: translateX(-50%); background: var(--tinta); color: #fff; padding: 12px 18px; border-radius: 999px; font-weight: 800; font-size: 15px; z-index: 30; max-width: 92vw; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,.25); animation: toast .25s ease-out; }
   @keyframes toast { from { opacity: 0; transform: translate(-50%, -8px); } }
   .carrito-btn.salta { animation: salta .5s ease 2; }
@@ -241,7 +257,7 @@
 <!-- PANTALLA 1: categorías + 3 kits por vez -->
 <main id="lista">
   <div class="arriba">
-    <div class="marca"><span class="logo" aria-hidden="true">CDE</span><div><h1>Tu Centro de Compras</h1><small>Productos originales de Ciudad del Este</small></div></div>
+    <div class="marca"><img class="logo" src="icono.svg" alt="" width="44" height="44"><div><h1><span class="largo">Tu Centro de <b>Compras</b></span><span class="corto" aria-hidden="true">T<b>C</b>C</span></h1><small>Calidad y buenos precios <em>¡Siempre!</em></small></div></div>
     <button class="carrito-btn" id="verCarrito" hidden>🛒 Mi pedido <b id="nCarrito">0</b></button>
     <a class="wa" href="https://wa.me/595992500100" target="_blank" rel="noopener" aria-label="WhatsApp 0992 500 100"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.08c-.24.68-1.42 1.3-1.95 1.34-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.92-4.66-4.1-.13-.18-1.11-1.48-1.11-2.83 0-1.34.71-2 .96-2.28.25-.27.54-.34.72-.34h.52c.17 0 .39-.06.61.47.24.57.8 1.96.87 2.1.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.35-.41.47-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.13.43.11.59-.07.16-.18.68-.79.86-1.07.18-.27.36-.22.61-.13.25.09 1.6.75 1.87.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg></a>
   </div>
