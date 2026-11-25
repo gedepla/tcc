@@ -14,7 +14,7 @@ hogar|Kit Té de la Tarde|tetera tazas2|
 hogar|Kit Casa Iluminada|lamparas4 lamparargb|
 hogar|Kit Living Acogedor|fundaterc*2 ambhaya|
 hogar|Kit Aromaterapia|humidif ambhaya|MV
-hogar|Kit Mate Eléctrico|pava guampatram|
+hogar|Kit Mate Eléctrico|jarraxion guampatram|
 hogar|Kit Noches de Verano|antimosq lamparas4|
 mascotas|Kit Perro Feliz|collar2 correa pelota|MV
 mascotas|Kit Paseo Perruno|collar1 correach snackbacon|

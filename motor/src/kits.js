@@ -124,7 +124,7 @@ export const KITS = [
   k(106, "piel", "Kit Barrera Reparadora", [["anuacrema", 1], ["numbuzin", 1]]),
   k(107, "piel", "Kit Piel Grasa", [["mcporepad", 1], ["cxparche", 1]]),
   k(108, "piel", "Kit Belleza de Viaje", [["cxgelm", 1], ["s1004ton", 1], ["nvcrema30", 1], ["nvlabial", 1]]),
-  k(109, "piel", "Kit Belleza desde Adentro", [["colageno", 1], ["mccolser", 1]]),
+  k(109, "piel", "Kit Belleza desde Adentro", [["colII", 1], ["vitclipo", 1]]),
   k(110, "piel", "Kit Glow Total", [["cxgalac", 1], ["mcmask", 2]]),
 
   // ---------- Cabello ----------
@@ -155,14 +155,14 @@ export const KITS = [
   k(135, "cabello", "Kit Secador de Viaje", [["secviaje", 1], ["kleavein", 1]]),
   k(136, "cabello", "Kit Cepillo Alisador", [["cepelec", 1], ["kaceite", 1]]),
   k(137, "cabello", "Kit Peinado Completo", [["secadorq", 1], ["plancha", 1]]),
-  k(138, "cabello", "Kit Cabello Fuerte desde Adentro", [["silicio", 1], ["kshamp", 1]]),
+  k(138, "cabello", "Kit Cabello Fuerte desde Adentro", [["silicio", 1], ["compb", 1]]),
   k(139, "cabello", "Kit GKhair Gold", [["gkacond", 1], ["kshamp", 1], ["kaceite", 1]]),
   k(140, "cabello", "Kit Máscara Doble", [["kmascol", 1], ["kmasargan", 1]]),
   k(141, "cabello", "Kit Aceites Capilares", [["kaceite", 1], ["kargan", 1], ["dexeaceite", 1]]),
   k(142, "cabello", "Kit Cabello Teñido", [["kmasvio", 1], ["kacond", 1], ["kaceite", 1]]),
   k(143, "cabello", "Kit Salón en Casa", [["secador", 1], ["plancha", 1], ["kmascol", 1]]),
   k(144, "cabello", "Kit Hidratación Extrema", [["finomasc", 1], ["kmascol", 1], ["kaceite", 1]]),
-  k(145, "cabello", "Kit Cabello y Uñas", [["colageno", 1], ["kmascol", 1]]),
+  k(145, "cabello", "Kit Cabello y Uñas", [["kshamp", 1], ["kmasargan", 1], ["dexeaceite", 1]]),
 
   // ---------- Perfumes ----------
   k(146, "perfumes", "Kit Yara", [["pyara", 1], ["dnvpearl", 1]]),
@@ -260,9 +260,9 @@ export const KITS = [
   k(232, "hogar", "Kit Mesa Lista", [["cubiertos", 1], ["tazasplat", 1]]),
   k(233, "hogar", "Kit Té de la Tarde", [["tetera", 1], ["tazas2", 1]]),
   k(234, "hogar", "Kit Casa Iluminada", [["lamparas4", 1], ["lamparargb", 1]]),
-  k(235, "hogar", "Kit Living Acogedor", [["fundaterc", 2], ["ambhaya", 1]]),
-  k(236, "hogar", "Kit Aromaterapia", [["humidif", 1], ["ambhaya", 1]], MV),
-  k(237, "hogar", "Kit Mate Eléctrico", [["pava", 1], ["guampatram", 1]]),
+  k(235, "hogar", "Kit Living Acogedor", [["fundaterc", 2], ["lamparargb", 1]]),
+  k(236, "hogar", "Kit Aromaterapia", [["humidif", 1], ["fundaterc", 1]], MV),
+  k(237, "hogar", "Kit Mate Eléctrico", [["jarraxion", 1], ["guampatram", 1]]),
   k(238, "hogar", "Kit Noches de Verano", [["antimosq", 1], ["lamparas4", 1]]),
 
   // ---------- Mascotas ----------

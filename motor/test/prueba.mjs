@@ -62,3 +62,9 @@ assert.ok(afectados.every((id) => !k3.find((k) => k.id === id).activo), "kits co
 assert.equal(k3.filter((k) => k.activo).length, 260 - afectados.length);
 console.log(`Sin stock "${unoWeb}": se ocultan ${afectados.length} kits, el resto sigue visible.`);
 console.log("Todas las pruebas pasaron.");
+
+// Cada kit sale de UN solo proveedor (una sola persona va a buscarlo).
+import { proveedorDe } from "../src/compras.js";
+const mezclados = KITS.filter((k) => new Set(k.items.map(([c]) => proveedorDe(c).proveedor)).size > 1);
+assert.equal(mezclados.length, 0, "Kits con más de un proveedor: " + mezclados.map((k) => "#" + k.id).join(" "));
+console.log("Todos los kits son de un solo proveedor.");

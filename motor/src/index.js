@@ -37,6 +37,25 @@ ${avisos ? `<h2>Tiendas que no respondieron (se usó el último precio)</h2><ul>
 </body></html>`;
 }
 
+// Las fotos de algunos proveedores (Seiva) no se dejan mostrar en otras páginas:
+// el motor las trae y las entrega él, guardadas una semana en la caché de Cloudflare.
+const FOTOS_PERMITIDAS = ["seiva.com.py", "resource.megaeletronicos.com", "www.megaeletronicos.com", "nissei.com"];
+async function foto(url, ctx) {
+  let origen;
+  try { origen = new URL(url.searchParams.get("u") || ""); } catch { return new Response("Falta la foto", { status: 400 }); }
+  if (origen.protocol !== "https:" || !FOTOS_PERMITIDAS.includes(origen.hostname)) return new Response("Proveedor no permitido", { status: 403 });
+  const cache = caches.default;
+  const clave = new Request(url.toString());
+  const guardada = await cache.match(clave);
+  if (guardada) return guardada;
+  const r = await fetch(origen.toString(), { headers: { "User-Agent": "Mozilla/5.0", Accept: "image/*" }, cf: { cacheTtl: 604800 } });
+  const tipo = r.headers.get("Content-Type") || "";
+  if (!r.ok || !tipo.startsWith("image/")) return new Response("No se pudo traer la foto", { status: 502 });
+  const resp = new Response(r.body, { headers: { "Content-Type": tipo, "Cache-Control": "public, max-age=604800", "Access-Control-Allow-Origin": "*", "Cross-Origin-Resource-Policy": "cross-origin" } });
+  ctx.waitUntil(cache.put(clave, resp.clone()));
+  return resp;
+}
+
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
@@ -53,6 +72,7 @@ export default {
       const k = JSON.parse((await env.CATALOGO.get("catalogo.json")) || "[]");
       return new Response(paginaReporte(r, k), { headers: { "Content-Type": "text/html; charset=utf-8" } });
     }
+    if (url.pathname === "/foto") return foto(url, ctx);
     if (url.pathname === "/compras" || url.pathname === "/planilla.json") {
       if (!env.CLAVE || url.searchParams.get("clave") !== env.CLAVE) return new Response("Clave incorrecta", { status: 401 });
       const estado = JSON.parse((await env.CATALOGO.get("estado")) || "{}");
@@ -61,7 +81,7 @@ export default {
       if (url.pathname === "/compras") {
         return new Response(paginaCompras(env.CLAVE, url.searchParams.get("pedido") || "", lecturas, catalogo), { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
       }
-      const productos = Object.keys(PRODUCTOS).map((c) => ({ clave: c, producto: PRODUCTOS[c].muestra, ...proveedorDe(c), costo: lecturas[c]?.precio ?? null, stock: lecturas[c]?.stock ?? null }));
+      const productos = Object.keys(PRODUCTOS).map((c) => ({ clave: c, producto: PRODUCTOS[c].muestra, ...proveedorDe(c), costo: lecturas[c]?.precio ?? null, stock: lecturas[c]?.stock ?? null, imagen: lecturas[c]?.imagen || estado.imagenes?.[c] || null }));
       const kits = catalogo.map((k) => ({ id: k.id, categoria: k.categoria, nombre: k.nombre, precio: k.precio, costo: k.costo, ganancia: k.ganancia, activo: k.activo, motivos: k.motivos, items: KITS.find((x) => x.id === k.id)?.items || [] }));
       return Response.json({ actualizado: new Date().toISOString(), kits, productos });
     }

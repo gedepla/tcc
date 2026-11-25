@@ -48,10 +48,13 @@ export function leerSchemaOrg(html) {
     leidos.push({ precio, stock, imagen: typeof imagen === "object" ? imagen.url : imagen || null });
   }
   // Si hay variantes, se toma la primera con stock (o la primera, si ninguna tiene).
+  // Foto de respaldo: la que la página comparte en redes (og:image).
+  const og = (html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i) || [])[1] || null;
+  for (const l of leidos) if (!l.imagen) l.imagen = og;
   if (leidos.length) return leidos.find((l) => l.stock) || leidos[0];
   // Respaldo: meta product:price:amount
   const meta = html.match(/product:price:amount"\s+content="([\d.]+)"/i);
-  if (meta) return { precio: Math.round(parseFloat(meta[1])), stock: !/Sin stock|Agotado|OutOfStock/i.test(html), imagen: null };
+  if (meta) return { precio: Math.round(parseFloat(meta[1])), stock: !/Sin stock|Agotado|OutOfStock/i.test(html), imagen: og };
   return null;
 }
 
@@ -129,7 +132,7 @@ function nombreItem(clave, cant) {
   return cant > 1 ? `${cant} x ${n}` : n;
 }
 
-export function calcularKits(lecturas, anteriores = {}) {
+export function calcularKits(lecturas, anteriores = {}, imagenes = {}) {
   const alertas = [];
   const kits = KITS.map((kit) => {
     const motivos = [];
@@ -145,7 +148,8 @@ export function calcularKits(lecturas, anteriores = {}) {
         motivos.push(`${nombre}: subió de ${antes} a ${l.precio}`);
       }
       costo += l.precio * cant;
-      if (l.imagen && !fotos.includes(l.imagen)) fotos.push(l.imagen);
+      const foto = l.imagen || imagenes[clave];   // si hoy no vino foto, se usa la última conocida
+      if (foto && !fotos.includes(foto)) fotos.push(foto);
     }
     const precio = motivos.some((m) => /no se pudo|no está|no definido|falta|no existe|no publica|respondió|tardó|todavía|subrequests/.test(m)) ? null : precioDeVenta(costo, kit.categoria);
     if (precio && CONFIG.precioMaximo && precio > CONFIG.precioMaximo) motivos.push(`precio ${precio} supera el máximo de ${CONFIG.precioMaximo}`);
@@ -209,7 +213,7 @@ export async function actualizar(env, fetchFn = fetch) {
     }
   }
 
-  const { kits, alertas } = calcularKits(lecturas, anteriores);
+  const { kits, alertas } = calcularKits(lecturas, anteriores, estado.imagenes || {});
 
   const lecturasGuardadas = { ...cache };
   for (const [c, l] of Object.entries(nuevas)) if (l.precio && !l.error) lecturasGuardadas[c] = { precio: l.precio, stock: l.stock, imagen: l.imagen || null, ts: ahora };

@@ -263,6 +263,7 @@ export const PRODUCTOS = {
   freixfruit: { fuente: "web", url: MEGA + "1034783/kit", muestra: "Espumante Freixenet Mía Fruity" },
   pava: { fuente: "web", url: MEGA + "1495485/kit", muestra: "Pava eléctrica MOX 2 L" },
   // ---------- NISSEI: hogar, mate y cocina ----------
+  jarraxion: { fuente: "web", url: NISSEI + "jarra-electrica-xion-xi-gl15-2200-w-220v-1-7l-pc-111013", muestra: "Jarra eléctrica Xion 1,7 L" },
   guampatram: { fuente: "web", url: NISSEI + "guampa-tramontina-exata-240ml", muestra: "Guampa Tramontina 240 ml" },
   guampainox: { fuente: "web", url: NISSEI + "guampa-tramontina-acero-inoxidable-240ml", muestra: "Guampa de acero inoxidable 240 ml" },
   kitterere: { fuente: "web", url: NISSEI + "kit-de-terere-guampa-bombilla-plata", muestra: "Guampa + bombilla para tereré Indio" },

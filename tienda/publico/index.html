@@ -216,7 +216,9 @@ const CATEGORIAS = [
   ["hogar", "🧉 Hogar"], ["mascotas", "🐶 Mascota"], ["bebe", "🍼 Bebé"], ["regalos", "🎁 Regalos"],
 ];
 // Fotos que la tienda del proveedor no deja mostrar en otras páginas: se usa el dibujo.
-const FOTOS_BLOQUEADAS = ["seiva.com.py"];
+// Seiva no deja mostrar sus fotos en otras páginas: pasan por el motor, que las entrega.
+const FOTOS_POR_MOTOR = ["seiva.com.py"];
+const fotoUrl = (f) => FOTOS_POR_MOTOR.some((b) => f.includes(b)) ? "https://motor-kits.gedepla.workers.dev/foto?u=" + encodeURIComponent(f) : f;
 const DIBUJO = { longevidad: ["💊", "#e8f5e9"], cabello: ["💇", "#fff3e0"], piel: ["🧴", "#fce4ec"], perfumes: ["🌸", "#f3e5f5"], tecno: ["📱", "#e3f2fd"],
   gym: ["💪", "#e0f2f1"], hogar: ["🧉", "#f1f8e9"], mascotas: ["🐶", "#fff8e1"], bebe: ["🍼", "#e1f5fe"], regalos: ["🎁", "#fbe9e7"] };
 
@@ -248,7 +250,7 @@ function prepararKits(texto) {
       id: k.id, nombre: k.nombre, categoria: k.categoria, precio: Number(k.precio), etiqueta: k.etiqueta,
       destacado: /^(si|sí)$/i.test(k.destacado),
       trae: k.productos.split(/\s*\|\s*/).filter(Boolean),
-      fotos: [k.foto1, k.foto2, k.foto3, k.foto4].filter((f) => f && /^https?:/.test(f) && !FOTOS_BLOQUEADAS.some((b) => f.includes(b))),
+      fotos: [k.foto1, k.foto2, k.foto3, k.foto4].filter((f) => f && /^https?:/.test(f)).map(fotoUrl),
     }))
     .sort((a, b) => (b.destacado - a.destacado) || (a.precio - b.precio));
 }
