@@ -20,6 +20,10 @@ async function conTiempo(fetchFn, url, ms = 15000, accept = "text/html,applicati
   }
 }
 
+// Mega publica algunas fotos con www.megaeletronicos.com/uploads/…, que no abre:
+// la misma foto está en resource.megaeletronicos.com.
+export const arreglarFoto = (u) => (u ? String(u).replace(/^https?:\/\/(www\.)?megaeletronicos\.com\/uploads\//, "https://resource.megaeletronicos.com/uploads/") : u);
+
 // Lee el precio, el stock y la foto que la página publica con el estándar schema.org.
 export function leerSchemaOrg(html) {
   const bloques = [...html.matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)].map((m) => m[1]);
@@ -148,7 +152,7 @@ export function calcularKits(lecturas, anteriores = {}, imagenes = {}) {
         motivos.push(`${nombre}: subió de ${antes} a ${l.precio}`);
       }
       costo += l.precio * cant;
-      const foto = l.imagen || imagenes[clave];   // si hoy no vino foto, se usa la última conocida
+      const foto = arreglarFoto(l.imagen || imagenes[clave]);   // si hoy no vino foto, se usa la última conocida
       if (foto && !fotos.includes(foto)) fotos.push(foto);
     }
     const precio = motivos.some((m) => /no se pudo|no está|no definido|falta|no existe|no publica|respondió|tardó|todavía|subrequests/.test(m)) ? null : precioDeVenta(costo, kit.categoria);

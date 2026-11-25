@@ -6,6 +6,7 @@
 import { KITS } from "./kits.js";
 import { PRODUCTOS } from "./productos.js";
 import { proveedorDe } from "./compras.js";
+import { arreglarFoto } from "./motor.js";
 
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const gs = (n) => (n == null ? "–" : Math.round(n).toLocaleString("es-PY") + " Gs");
@@ -20,13 +21,13 @@ export function filasPlanilla(catalogo, lecturas, imagenes) {
     const v = porId.get(kit.id) || {};
     const items = kit.items.map(([c, n]) => {
       const p = proveedorDe(c);
-      return { cant: n, producto: PRODUCTOS[c]?.muestra || c, ref: p.ref, link: p.link, costo: lecturas[c]?.precio ?? null, stock: lecturas[c]?.stock, foto: lecturas[c]?.imagen || imagenes[c] || null };
+      return { cant: n, producto: PRODUCTOS[c]?.muestra || c, ref: p.ref, link: p.link, costo: lecturas[c]?.precio ?? null, stock: lecturas[c]?.stock, foto: arreglarFoto(lecturas[c]?.imagen || imagenes[c]) || null };
     });
     return {
       id: kit.id, nombre: kit.nombre, categoria: CAT[kit.categoria] || kit.categoria, masVendido: kit.destacado,
       proveedor: [...new Set(kit.items.map(([c]) => proveedorDe(c).proveedor))].join(" + "),
       precio: v.precio ?? null, costo: v.costo ?? null, ganancia: v.ganancia ?? null,
-      visible: !!v.activo, motivo: (v.motivos || []).join("; "), fotos: v.fotos?.length ? v.fotos : items.map((i) => i.foto).filter(Boolean), items,
+      visible: !!v.activo, motivo: (v.motivos || []).join("; "), fotos: [...new Set((v.fotos?.length ? v.fotos : items.map((i) => i.foto)).map(arreglarFoto).filter(Boolean))], items,
     };
   });
 }
