@@ -10,7 +10,7 @@ import { arreglarFoto } from "./motor.js";
 
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const gs = (n) => (n == null ? "–" : Math.round(n).toLocaleString("es-PY") + " Gs");
-const CAT = { longevidad: "Salud", gym: "Hombre", piel: "Piel", cabello: "Cabello", perfumes: "Perfume", tecno: "Tecno", hogar: "Hogar", mascotas: "Mascota", bebe: "Bebé", regalos: "Regalos" };
+const CAT = { longevidad: "Salud", fitness: "Fitness", gym: "Hombre", piel: "Piel", cabello: "Cabello", perfumes: "Perfume", tecno: "Tecno", hogar: "Hogar", mascotas: "Mascota", bebe: "Bebé", regalos: "Regalos" };
 const POR_MOTOR = ["seiva.com.py"];
 export const fotoVisible = (origen, f) => (f && POR_MOTOR.some((b) => f.includes(b)) ? origen + "/foto?u=" + encodeURIComponent(f) : f || "");
 

@@ -33,7 +33,7 @@ assert.equal(redondear(141000), 149000);
 assert.equal(precioDeVenta(150000, "longevidad"), redondear(150000 * 1.3 + 30000));
 assert.equal(leerSchemaOrg(html(94144)).precio, 94144);
 const N = KITS.length;
-assert.equal(N, 269);
+assert.equal(N, 275);
 import { TODOS, SUELTOS } from "../src/sueltos.js";
 assert.equal(new Set(TODOS.map((k) => k.id)).size, TODOS.length, "ids únicos (kits y sueltos)");
 assert.equal(SUELTOS.length, Object.keys(PRODUCTOS).length);

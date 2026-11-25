@@ -38,7 +38,7 @@
   .confianza-barra { display: flex; gap: 14px; overflow: hidden; white-space: nowrap; }
   .confianza-barra span { flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--gris); }
   .cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-  .cats button.doble { grid-column: span 2; }
+  .cats button.doble { grid-column: span 1; }
   .cats button { border: 1px solid var(--borde); background: #fff; border-radius: 10px; padding: 7px 2px; font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: clip; }
   .cats button.si { background: var(--tinta); border-color: var(--tinta); color: #fff; font-weight: 700; }
   .aviso { display: none; }
@@ -359,6 +359,8 @@ const BARRIOS = {
   "Minga Guazú": ["Km 14", "Km 15", "Km 16", "Km 17 lado Acaray", "Km 17 lado Monday", "Km 18", "Km 19", "Km 20", "Minga Poty"],
 };
 const CIUDADES = Object.keys(BARRIOS);
+// Barrios del resto del país (las ciudades chicas tienen "Centro" y "Otro barrio" para escribirlo)
+const BARRIOS_PAIS = {"Asunción": ["Centro (Catedral)", "Bella Vista", "Botánico", "Carlos A. López", "Ciudad Nueva", "Dr. Francia", "General Díaz", "Herrera", "Hipódromo", "Jara", "Las Lomas (Carmelitas)", "Las Mercedes", "Los Laureles", "Loma Pytã", "Madame Lynch", "Manorá", "Mbocayaty", "Mburicaó", "Mburucuyá", "Mcal. Estigarribia", "Mcal. López", "Nazareth", "Obrero", "Pettirossi", "Pinoza", "Recoleta", "Republicano", "Ricardo Brugada (Chacarita)", "Roberto L. Petit", "Sajonia", "Salvador del Mundo", "San Antonio", "San Cristóbal", "San Jorge", "San Pablo", "San Roque", "San Vicente", "Santa Ana", "Santa María", "Santa Rosa", "Santísima Trinidad", "Santo Domingo", "Tablada Nueva", "Tacumbú", "Tembetary", "Terminal", "Villa Aurelia", "Villa Morra", "Vista Alegre", "Ycuá Satí", "Zeballos Cué"], "Luque": ["Centro", "Itapuamí", "Laurelty", "Maramburé", "Isla Bogado", "Mora Cué", "Zárate Isla", "Tarumandy", "Yukyry", "Costa Sosa", "Cañada San Rafael", "Loma Merlo"], "San Lorenzo": ["Centro", "Barcequillo", "Reducto", "San Miguel", "Laurelty", "Tayazuapé", "Villa del Agrónomo", "Universitario", "Mbocayaty", "Ñu Porã", "Santa María", "Cañadita", "San Isidro"], "Capiatá": ["Centro", "Aldana Cañada", "Toledo Cañada", "Rojas Cañada", "Posta Ybycuá", "Loma Barrero", "Kennedy", "Yataity"], "Lambaré": ["Centro", "Valle Apu'a", "Cerro Lambaré", "Puerto Pabla", "Mbachió", "Santo Domingo", "San Isidro", "Santa Rosa", "Lomas Valentinas", "Caacupemí"], "Fernando de la Mora": ["Centro", "Zona Norte", "Zona Sur", "Pitiantuta", "Domínguez", "Laguna Grande", "Santa Lucía"], "Limpio": ["Centro", "Piquete Cué", "Salado", "Isla Aranda", "San Francisco"], "Ñemby": ["Centro", "Caañabé", "Pa'i Ñu", "Cañadita", "Villa Anita", "Mbocayaty", "San Miguel"], "Mariano Roque Alonso": ["Centro", "Arecaya"], "Villa Elisa": ["Centro", "Mbocayaty", "Tres Bocas", "Villa Bonita"], "Itauguá": ["Centro", "Itauguá Guazú", "Mbocayaty"], "Areguá": ["Centro", "Isla Valle", "Caacupemí"], "Caacupé": ["Centro", "Zona Basílica", "Cabañas"], "Encarnación": ["Centro", "Pacu Cuá", "San Pedro", "Quiteria", "Ka'aguy Rory", "Itá Paso", "Arroyo Porá", "Fátima", "Mboi Ka'e", "Chaipé", "Buena Vista", "Ciudad Nueva"], "Coronel Oviedo": ["Centro", "San Antonio", "San Miguel", "Santa Librada"], "Villarrica": ["Centro", "Ybaroty", "Estación", "San Miguel"], "Pedro Juan Caballero": ["Centro", "Jardín Aurora", "San Gerardo", "Obrero", "María Victoria"], "Concepción": ["Centro", "San Antonio", "Fátima", "Itacurubí", "Inmaculada", "Primero de Mayo"]};
 // Resto del país: solo transferencia de los productos y el envío se paga al recibir.
 const CIUDADES_PAIS = ["Asunción", "Luque", "San Lorenzo", "Capiatá", "Lambaré", "Fernando de la Mora", "Limpio", "Ñemby",
   "Mariano Roque Alonso", "Villa Elisa", "San Antonio", "Itauguá", "Areguá", "Ypacaraí", "Caacupé", "Encarnación",
@@ -374,7 +376,7 @@ function kmDesdeCDE(lat, lng) {
 
 // Categorías (en este orden). "vendidos" = los kits marcados como destacados en la planilla.
 const CATEGORIAS = [
-  ["vendidos", "⭐ Más vendidos"], ["longevidad", "💊 Salud"], ["gym", "💪 Hombre"],
+  ["vendidos", "⭐ Populares"], ["longevidad", "💊 Salud"], ["fitness", "🏋️ Fitness"], ["gym", "💪 Hombre"],
   ["piel", "🧴 Piel"], ["cabello", "💇 Cabello"], ["perfumes", "🌸 Perfume"], ["tecno", "📱 Tecno"],
   ["hogar", "🧉 Hogar"], ["mascotas", "🐶 Mascota"], ["bebe", "🍼 Bebé"], ["regalos", "🎁 Regalos"],
 ];
@@ -383,7 +385,7 @@ const CATEGORIAS = [
 const FOTOS_POR_MOTOR = ["seiva.com.py"];
 const fotoUrl = (f) => FOTOS_POR_MOTOR.some((b) => f.includes(b)) ? "https://motor-kits.gedepla.workers.dev/foto?u=" + encodeURIComponent(f) : f;
 const DIBUJO = { longevidad: ["💊", "#e8f5e9"], cabello: ["💇", "#fff3e0"], piel: ["🧴", "#fce4ec"], perfumes: ["🌸", "#f3e5f5"], tecno: ["📱", "#e3f2fd"],
-  gym: ["💪", "#e0f2f1"], hogar: ["🧉", "#f1f8e9"], mascotas: ["🐶", "#fff8e1"], bebe: ["🍼", "#e1f5fe"], regalos: ["🎁", "#fbe9e7"] };
+  gym: ["💪", "#e0f2f1"], fitness: ["🏋️", "#e8eefc"], hogar: ["🧉", "#f1f8e9"], mascotas: ["🐶", "#fff8e1"], bebe: ["🍼", "#e1f5fe"], regalos: ["🎁", "#fbe9e7"] };
 
 const $ = (id) => document.getElementById(id);
 const gs = (n) => n.toLocaleString("es-PY") + " Gs";
@@ -636,9 +638,10 @@ $("ciudadesPais").innerHTML = CIUDADES_PAIS.map((c) => `<button type="button" da
 document.querySelectorAll("[data-ciudad]").forEach((b) => b.onclick = () => {
   ciudad = b.dataset.ciudad; barrio = "";
   document.querySelectorAll("[data-ciudad]").forEach((x) => x.classList.toggle("si", x === b));
-  const pais = !BARRIOS[ciudad];
-  $("barrios").innerHTML = pais ? "" : [...BARRIOS[ciudad], "✏️ Otro barrio"].map((n) => `<button type="button" data-barrio="${n}">${n}</button>`).join("");
-  barrio = ""; $("otroBarrio").hidden = !pais; $("otroBarrio").value = "";
+  const otra = ciudad === "Otra ciudad";
+  const lista = BARRIOS[ciudad] || BARRIOS_PAIS[ciudad] || ["Centro"];
+  $("barrios").innerHTML = otra ? "" : [...lista, "✏️ Otro barrio"].map((n) => `<button type="button" data-barrio="${n}">${n}</button>`).join("");
+  barrio = ""; $("otroBarrio").hidden = !otra; $("otroBarrio").value = "";
   $("otroBarrio").placeholder = ciudad === "Otra ciudad" ? "Escribí tu ciudad y barrio" : "Escribí tu barrio o dirección";
   aplicarZona(); $("pasoBarrio").hidden = false; $("barrios").scrollTop = 0;
   $("pasoBarrio").scrollIntoView({ behavior: "smooth", block: "start" });

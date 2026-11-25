@@ -362,4 +362,12 @@ export const PRODUCTOS = {
   vroutertp: { desc: "Router TP-Link Aginet X521 con Wi-Fi 6 (AX3000) de doble banda, 2,4 GHz y 5 GHz. Da más velocidad y mejor cobertura para varios celulares, televisores y computadoras conectados a la vez.", fuente: "web", url: VISAO + "router-y-repetidor/router-tp-link-aginet-x521-ax3000-dual-band-2-4ghz-5ghz-wi-fi-6/54387/", muestra: "Router TP-Link Wi-Fi 6", cat: "tecno" },
   vmeshxiaomi: { fuente: "web", url: VISAO + "router-y-repetidor/router-xiaomi-rd13-dvb4451gl-mesh-system-ac1200-dual-band-2-4ghz-5ghz-300mbps-blanco-kit-con-2/49796/", muestra: "Wi-Fi Mesh Xiaomi (2 equipos)", cat: "tecno" },
   vrouter4g: { fuente: "web", url: VISAO + "router-y-repetidor/router-tp-link-tl-mr100-3g-4g-2-antenas-negro/50553/", muestra: "Router 4G TP-Link con chip", cat: "tecno" },
+  // ---------- Fitness (gimnasio) ----------
+  whey: { fuente: "seiva", id: 19, muestra: "Proteína whey Integralmedica 900 g" },
+  bcaa: { fuente: "seiva", id: 52, muestra: "BCAA 300 g (leucina, isoleucina y valina)" },
+  preentreno: { fuente: "seiva", id: 49, muestra: "Pre-entreno en polvo King Monster 300 g" },
+  betaala: { fuente: "seiva", id: 50, muestra: "Beta-alanina 300 g" },
+  carnitina: { fuente: "seiva", id: 77, muestra: "L-carnitina 120 cápsulas" },
+  shaker: { fuente: "web", url: MEGA + "1532876/kit", muestra: "Shaker Stanley Activate 591 ml", cat: "fitness" },
+  termogym: { fuente: "web", url: MEGA + "1457056/kit", muestra: "Botella térmica Hydrate Forge 1,25 L", cat: "fitness" },
 };
