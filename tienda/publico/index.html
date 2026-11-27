@@ -335,6 +335,22 @@
   .kform button { flex: 0 0 auto; width: 46px; height: 46px; border: 0; border-radius: 50%; background: var(--rio); color: #fff; display: grid; place-items: center; cursor: pointer; }
   .kform button svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
   @media (prefers-reduced-motion: reduce) { .k-globo, .kescribe i { animation: none; } }
+  /* ---------- Buscador: por número de kit o por lo que trae ---------- */
+  .buscar-btn { flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; border: 0; background: var(--rioclaro); display: grid; place-items: center; cursor: pointer; }
+  .buscar-btn svg, .buscador .lupa svg { width: 22px; height: 22px; fill: none; stroke: var(--rio); stroke-width: 2.6; stroke-linecap: round; }
+  .buscador { display: flex; align-items: center; gap: 6px; background: #fff; border: 2px solid var(--rio); border-radius: 999px; padding: 4px 4px 4px 12px; }
+  .buscador[hidden] { display: none; }
+  .buscador input { flex: 1; min-width: 0; border: 0; outline: 0; font: inherit; font-size: 16px; color: var(--tinta); padding: 8px 0; background: none; }
+  .buscador input::-webkit-search-cancel-button { display: none; }
+  .buscador button { flex: 0 0 auto; width: 38px; height: 38px; border: 0; border-radius: 50%; background: var(--tinta); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+  body:not([data-cols="1"]) .buscador { max-width: 640px; width: 100%; margin: 0 auto; }
+  .buscador:focus-within { box-shadow: 0 0 0 3px var(--rioclaro); }
+  .sin-resultados { grid-column: 1 / -1; grid-row: 1 / -1; display: grid; place-content: center; gap: 12px; text-align: center; color: var(--tinta); padding: 16px; }
+  .sin-resultados p { margin: 0; font-size: 17px; font-weight: 700; }
+  .sin-resultados button { justify-self: center; border: 2.5px solid var(--tinta); background: var(--cartel); color: var(--tinta); border-radius: 999px; padding: 10px 18px; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer; }
+  @media (max-width: 440px) { body[data-cols="1"] .arriba.con-pedido .buscar-btn { width: 38px; height: 38px; } body[data-cols="1"] .arriba.con-pedido .carrito-btn .mp { display: none; } }
+  .foto .cod { position: absolute; left: 6px; bottom: 6px; z-index: 1; background: #fffffff0; color: var(--tinta); border-radius: 6px; padding: 1px 6px; font-size: 11px; font-weight: 800; letter-spacing: .2px; }
+  .fcod { display: inline-block; margin: 0 0 2px; font-size: 13px; font-weight: 800; color: var(--gris); }
 </style>
 </head>
 <body>
@@ -343,7 +359,8 @@
 <main id="lista">
   <div class="arriba">
     <div class="marca"><svg class="logo" width="56" height="56" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"> <path d="M9 58c8-4 30-7 50-3" fill="none" stroke="#f5a300" stroke-width="4" stroke-linecap="round"/> <path d="M20 20c0-9 4-14 10-14s10 5 10 14" fill="none" stroke="#1a3f9e" stroke-width="4" stroke-linecap="round"/> <path d="M11 19h37l4 35H7z" fill="#1f4fd1"/> <path d="M11 19h4l-3 35H7z" fill="#173fa8"/> <g fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 29h4l3.5 13h15l3-10H20.5"/> </g> <circle cx="24" cy="47" r="2.4" fill="#fff"/> <circle cx="36" cy="47" r="2.4" fill="#fff"/> <g transform="rotate(20 50 15)"> <path d="M43 9h12a2 2 0 0 1 2 2v9l-8 6-8-6v-9a2 2 0 0 1 2-2z" fill="#e3262d"/> <circle cx="49" cy="12.5" r="1.6" fill="#fff"/> <text x="49" y="22.5" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="8.5" fill="#fff">%</text> </g> </svg><div class="nombre"><span class="tcc" aria-hidden="true">T<span>C</span>C</span><h1>Tu Centro de <b>Compras</b></h1><small>Calidad y buenos precios <em>¡Siempre!</em></small></div></div>
-    <button class="carrito-btn" id="verCarrito" hidden>🛒 Mi pedido <b id="nCarrito">0</b></button>
+    <button type="button" class="buscar-btn" id="buscarBtn" aria-label="Buscar por número de kit o descripción"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button>
+    <button class="carrito-btn" id="verCarrito" hidden>🛒 <span class="mp">Mi pedido</span> <b id="nCarrito">0</b></button>
     <a class="wa" href="https://wa.me/595992500100" target="_blank" rel="noopener" aria-label="WhatsApp 0992 500 100"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.08c-.24.68-1.42 1.3-1.95 1.34-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.92-4.66-4.1-.13-.18-1.11-1.48-1.11-2.83 0-1.34.71-2 .96-2.28.25-.27.54-.34.72-.34h.52c.17 0 .39-.06.61.47.24.57.8 1.96.87 2.1.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.35-.41.47-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.13.43.11.59-.07.16-.18.68-.79.86-1.07.18-.27.36-.22.61-.13.25.09 1.6.75 1.87.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg></a>
   </div>
   <div class="confianza-barra"><span class="hola">¡Mba'éichapa!</span><span class="desde-tag">Kits desde <b class="desde">99.000 Gs</b></span><span>✔ Originales y sellados</span><span>🚚 Envío incluido en CDE y a todo el país</span><span>💵 En CDE pagás al recibir</span></div>
@@ -355,6 +372,7 @@
     <span class="hero-precio">Kits desde <b class="desde">99.000 Gs</b></span>
     <ol class="pasos"><li><b>1</b>Elegí tu kit</li><li><b>2</b>Tocá “Lo quiero”</li><li><b>3</b>Mandá por WhatsApp</li></ol>
   </section>
+  <form class="buscador" id="buscador" hidden role="search"><span class="lupa"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span><input id="buscarTexto" type="search" autocomplete="off" placeholder="Número de kit o lo que buscás: colágeno, perfume…" aria-label="Buscar por número de kit o descripción"><button type="button" id="buscarCerrar" aria-label="Cerrar búsqueda">×</button></form>
   <div class="cats" id="cats"></div>
   <div id="kits"></div>
   <div class="paginas">
@@ -544,7 +562,41 @@ function prepararKits(texto) {
 }
 
 // --- categorías y páginas de a 3 ---
-const kitsDe = (cat) => cat === "vendidos" ? kits.filter((k) => k.destacado) : kits.filter((k) => k.categoria === cat);
+const kitsDe = (cat) => cat === "buscar" ? buscarKits(busqueda) : cat === "vendidos" ? kits.filter((k) => k.destacado) : kits.filter((k) => k.categoria === cat);
+// --- buscador: por número de kit (#123 o 123) o por palabras del nombre, lo que trae o su descripción ---
+let busqueda = "", categoriaAntes = "vendidos";
+const normal = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+function textoKit(k) {
+  if (!k._txt) {
+    const cat = (CATEGORIAS.find(([c]) => c === k.categoria) || [, ""])[1];
+    k._txt = normal(k.nombre + " " + k.trae.join(" ") + " " + cat);
+  }
+  const ds = detalle?.kits?.[k.id]?.map(([c]) => detalle.productos?.[c]?.d || "").join(" ") || "";
+  return [k._txt, normal(ds)];
+}
+function buscarKits(q) {
+  q = normal(q).trim(); if (!q) return [];
+  const num = q.replace(/^#|^kit\s*/, "");
+  if (/^\d+$/.test(num)) return kits.filter((k) => String(k.id) === num).concat(kits.filter((k) => String(k.id) !== num && String(k.id).startsWith(num)));
+  const pal = q.split(/\s+/).filter((w) => w.length > 1).map((w) => w.length > 4 ? w.replace(/(es|s)$/, "") : w);
+  return kits.map((k) => {
+    const [base, desc] = textoKit(k);
+    let p = 0;
+    for (const w of pal) { if (normal(k.nombre).includes(w)) p += 3; else if (base.includes(w)) p += 2; else if (desc.includes(w)) p += 1; else return [0, k]; }
+    return [p, k];
+  }).filter(([p]) => p > 0).sort((a, b) => b[0] - a[0] || a[1].precio - b[1].precio).map(([, k]) => k);
+}
+function abrirBuscador() {
+  if (categoria !== "buscar") categoriaAntes = categoria;
+  $("buscador").hidden = false; $("cats").hidden = true;
+  categoria = "buscar"; pagina = 0; medir(); mostrarPagina(0);
+  $("buscarTexto").focus();
+  cargarDetalle().then(() => { if (categoria === "buscar" && busqueda) mostrarPagina(0); });
+}
+function cerrarBuscador() {
+  $("buscador").hidden = true; $("cats").hidden = false; busqueda = ""; $("buscarTexto").value = "";
+  categoria = categoriaAntes; pagina = 0; medir(); mostrarCategorias(); mostrarPagina(0);
+}
 const paginas = () => Math.max(1, Math.ceil(kitsDe(categoria).length / POR_PAGINA));
 
 function mostrarCategorias() {
@@ -586,7 +638,7 @@ function mostrarPagina(direccion) {
     <article class="kit" data-kit="${k.id}">
       <div class="foto" data-id="${k.id}" onclick="abrirFicha('${k.id}')">${k.fotos.length
         ? k.fotos.map((f, n) => `<img src="${f}" alt="" class="${n ? "" : "ver"}" referrerpolicy="no-referrer" onerror="fotoRota(this)">`).join("") + puntos(k.fotos.length)
-        : dibujo(k)}${k.etiqueta ? `<span class="etiqueta ${k.suelto ? "prod" : ""}">${k.etiqueta}</span>` : ""}</div>
+        : dibujo(k)}${k.etiqueta ? `<span class="etiqueta ${k.suelto ? "prod" : ""}">${k.etiqueta}</span>` : ""}<span class="cod">N° ${k.id}</span></div>
       <div class="info">
         <h3 onclick="abrirFicha('${k.id}')">${k.nombre}</h3>
         <ul class="incluye">${k.trae.map((t) => `<li>${t}</li>`).join("")}</ul>
@@ -597,6 +649,9 @@ function mostrarPagina(direccion) {
         </div>
       </div>
     </article>`).join("");
+  if (categoria === "buscar" && !lista.length) $("kits").innerHTML = busqueda.trim()
+    ? `<div class="sin-resultados"><p>No encontramos “${escHTML(busqueda.trim())}”.</p><button type="button" onclick="kabrir();kpreguntar('Busco ' + busqueda.trim())">Preguntale a Karrito</button></div>`
+    : `<div class="sin-resultados"><p>Escribí el número del kit o lo que buscás.</p></div>`;
   ajustarIncluye();
   $("num").textContent = `${pagina + 1} de ${paginas()}`;
   $("ant").disabled = pagina === 0;
@@ -713,7 +768,7 @@ function abrirFicha(id) {
   fichaId = id;
   $("fGal").innerHTML = k.fotos.length ? k.fotos.map((f) => `<img src="${f}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`).join("") : dibujo(k);
   $("fPuntos").innerHTML = k.fotos.length > 1 ? k.fotos.map((_, i) => `<i class="${i ? "" : "ver"}" onclick="$('fGal').scrollTo({left:${i}*$('fGal').clientWidth,behavior:'smooth'})"></i>`).join("") : "";
-  $("fNom").textContent = k.nombre;
+  $("fNom").innerHTML = `<span class="fcod">N° ${k.id}</span><br>${escHTML(k.nombre)}`;
   $("fPre").innerHTML = `${gs(k.precio)}<small>${lejos() ? "+ envío al recibir" : "envío incluido en CDE"}</small>`;
   $("fTit").textContent = k.suelto ? "Descripción" : `Qué incluye (${k.trae.length} producto${k.trae.length > 1 ? "s" : ""})`;
   $("fItems").innerHTML = k.trae.map((t) => `<div class="prod"><h4>${k.suelto ? "" : "<span>✓</span> "}${escHTML(t)}</h4><p class="cargando">Cargando descripción…</p></div>`).join("");
@@ -881,6 +936,14 @@ fetch(CATALOGO, { cache: "no-store" }).then((r) => r.ok ? r.text() : Promise.rej
 setTimeout(cargarDetalle, 4000);
 // cuando termina de cargar la letra, se vuelven a medir las listas de cada tarjeta
 document.fonts?.ready.then(() => { if (!$("lista").hidden) mostrarPagina(0); });   // la descripción se adelanta para que la ficha abra al instante
+
+// --- buscador ---
+$("buscarBtn").onclick = () => $("buscador").hidden ? abrirBuscador() : $("buscarTexto").focus();
+$("buscarCerrar").onclick = cerrarBuscador;
+$("buscador").onsubmit = (e) => { e.preventDefault(); $("buscarTexto").blur(); };
+let buscarT;
+$("buscarTexto").addEventListener("input", () => { clearTimeout(buscarT); buscarT = setTimeout(() => { busqueda = $("buscarTexto").value; pagina = 0; mostrarPagina(0); }, 180); });
+$("buscarTexto").addEventListener("keydown", (e) => { if (e.key === "Escape") { e.stopPropagation(); cerrarBuscador(); } });
 
 // ---------- Karrito ----------
 const KARRITO_API = "https://motor-kits.gedepla.workers.dev/chat";
