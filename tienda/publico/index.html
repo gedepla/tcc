@@ -293,6 +293,39 @@
   .pie { text-align: center; color: var(--gris); font-size: 14px; margin-top: 16px; }
   .garantias { display: grid; gap: 8px; margin: 22px 0 0; padding: 14px 16px; background: #fff; border: 1px solid var(--borde); border-radius: var(--radio); font-size: 14.5px; color: #3c4a44; }
   .garantias div { display: flex; gap: 10px; align-items: flex-start; } .garantias b { color: var(--marca); }
+  /* ---------- Karrito: la mascota que ayuda a elegir ---------- */
+  .paginas .karrito-btn { position: relative; flex: 0 0 auto; width: 50px; height: 50px; padding: 0; border-radius: 50%; border: 3px solid var(--tinta); background: var(--cartel); display: grid; place-items: center; cursor: pointer; }
+  .paginas .karrito-btn svg { width: 38px; height: 38px; }
+  .kchat:not([hidden]) ~ #ficha { z-index: 45; } .aviso-toast { z-index: 50; }
+  .karrito-btn:focus-visible, .kchat button:focus-visible, .kchat input:focus-visible { outline: 3px solid var(--rio); outline-offset: 2px; }
+  .paginas .k-globo { position: absolute; right: 0; bottom: 60px; z-index: 5; background: var(--tinta); color: #fff; font-size: 14px; font-weight: 700; white-space: nowrap; padding: 8px 12px; border-radius: 14px 14px 4px 14px; box-shadow: 0 6px 18px rgba(20,33,61,.3); animation: kglobo .3s ease-out; pointer-events: none; }
+  @keyframes kglobo { from { opacity: 0; transform: translateY(6px); } }
+  .kchat { position: fixed; inset: auto 0 0 0; z-index: 40; height: min(86vh, 640px); background: #fff; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(20,33,61,.3); overflow: hidden; }
+  @media (min-width: 700px) { .kchat { inset: auto 20px 20px auto; width: 400px; height: min(82vh, 620px); border-radius: 20px; } }
+  .kchat header { display: flex; align-items: center; gap: 10px; padding: 10px 12px; padding-top: max(10px, env(safe-area-inset-top, 0px)); background: var(--tinta); color: #fff; }
+  .kchat header .cara { width: 40px; height: 40px; border-radius: 50%; background: var(--cartel); display: grid; place-items: center; flex: 0 0 auto; }
+  .kchat header .cara svg { width: 31px; height: 31px; }
+  .kchat header b { display: block; font-size: 17px; } .kchat header small { font-size: 12.5px; color: #c9d3ea; }
+  .kchat header button { margin-left: auto; width: 40px; height: 40px; border: 0; border-radius: 50%; background: #ffffff1f; color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+  .kmsgs { flex: 1; overflow-y: auto; padding: 12px; background: var(--fondo); display: flex; flex-direction: column; gap: 8px; overscroll-behavior: contain; }
+  .kmsg { max-width: 86%; padding: 9px 12px; border-radius: 16px 16px 16px 4px; background: #fff; color: var(--tinta); font-size: 15px; line-height: 1.4; white-space: pre-line; box-shadow: 0 1px 0 var(--borde); }
+  .kmsg.yo { align-self: flex-end; background: var(--rio); color: #fff; border-radius: 16px 16px 4px 16px; box-shadow: none; }
+  .kmsg a { color: var(--rio); font-weight: 700; }
+  .kkit { display: flex; align-items: center; gap: 10px; max-width: 92%; background: #fff; border: 1.5px solid var(--borde); border-radius: 14px; padding: 8px; }
+  .kkit img, .kkit .sinfoto { width: 54px; height: 54px; border-radius: 10px; object-fit: cover; flex: 0 0 auto; background: var(--rioclaro); }
+  .kkit .txt { flex: 1; min-width: 0; } .kkit .txt b { display: block; font-size: 14px; line-height: 1.2; color: var(--tinta); cursor: pointer; }
+  .kkit .kp { display: inline-block; margin-top: 4px; background: var(--cartel); color: var(--tinta); font-weight: 800; font-size: 14px; padding: 1px 8px 1px 14px; border-radius: 3px 6px 6px 3px; clip-path: polygon(8px 0, 100% 0, 100% 100%, 8px 100%, 0 50%); }
+  .kkit .quiero, .kkit .mini { flex: 0 0 auto; font-size: 14px; padding: 9px 11px; }
+  .kescribe { align-self: flex-start; background: #fff; border-radius: 16px; padding: 12px 14px; display: flex; gap: 4px; }
+  .kescribe i { width: 7px; height: 7px; border-radius: 50%; background: var(--gris); animation: kpunto 1s infinite; } .kescribe i:nth-child(2) { animation-delay: .15s; } .kescribe i:nth-child(3) { animation-delay: .3s; }
+  @keyframes kpunto { 50% { opacity: .25; transform: translateY(-3px); } }
+  .kchips { display: flex; gap: 6px; overflow-x: auto; padding: 8px 12px 0; scrollbar-width: none; } .kchips::-webkit-scrollbar { display: none; }
+  .kchips button { flex: 0 0 auto; border: 1.5px solid var(--borde); background: #fff; color: var(--tinta); border-radius: 999px; padding: 7px 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .kform { display: flex; gap: 8px; padding: 8px 12px; padding-bottom: max(10px, env(safe-area-inset-bottom, 0px)); }
+  .kform input { flex: 1; min-width: 0; border: 1.5px solid var(--borde); border-radius: 999px; padding: 11px 16px; font-size: 16px; font-family: inherit; color: var(--tinta); }
+  .kform button { flex: 0 0 auto; width: 46px; height: 46px; border: 0; border-radius: 50%; background: var(--rio); color: #fff; display: grid; place-items: center; cursor: pointer; }
+  .kform button svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  @media (prefers-reduced-motion: reduce) { .k-globo, .kescribe i { animation: none; } }
 </style>
 </head>
 <body>
@@ -319,8 +352,18 @@
     <button id="ant">◀ Atrás</button>
     <span id="num"></span>
     <button id="sig">Siguientes ▶</button>
+    <button type="button" class="karrito-btn" id="karritoBtn" aria-label="Preguntale a Karrito: te ayuda a elegir"></button>
   </div>
 </main>
+
+
+<!-- KARRITO: chat que ayuda a elegir kits y responde sobre envíos y pagos -->
+<section class="kchat" id="kchat" hidden aria-label="Chat con Karrito">
+  <header><span class="cara" id="kcara"></span><div><b>Karrito</b><small>Te ayudo a elegir tu kit</small></div><button type="button" id="kcerrar" aria-label="Cerrar chat">×</button></header>
+  <div class="kmsgs" id="kmsgs" aria-live="polite"></div>
+  <div class="kchips" id="kchips"></div>
+  <form class="kform" id="kform"><input id="ktexto" autocomplete="off" maxlength="500" placeholder="Busco un regalo para mi mamá" aria-label="Tu pregunta"><button aria-label="Enviar"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button></form>
+</section>
 
 <!-- FICHA: fotos grandes y descripción completa de cada producto -->
 <div id="ficha" hidden>
@@ -809,6 +852,60 @@ fetch(CATALOGO, { cache: "no-store" }).then((r) => r.ok ? r.text() : Promise.rej
 setTimeout(cargarDetalle, 4000);
 // cuando termina de cargar la letra, se vuelven a medir las listas de cada tarjeta
 document.fonts?.ready.then(() => { if (!$("lista").hidden) mostrarPagina(0); });   // la descripción se adelanta para que la ficha abra al instante
+
+// ---------- Karrito ----------
+const KARRITO_API = "https://motor-kits.gedepla.workers.dev/chat";
+const KARRITO_SVG = '<svg viewBox="0 0 120 120" aria-hidden="true"><path d="M30 36h76l-9 40a8 8 0 0 1-8 6H44a8 8 0 0 1-8-6z" fill="#1f4fd1"/><path d="M14 26h12l6 10" fill="none" stroke="#14213d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="56" cy="56" r="9" fill="#fff"/><circle cx="82" cy="56" r="9" fill="#fff"/><circle cx="58" cy="57" r="4.5" fill="#14213d"/><circle cx="84" cy="57" r="4.5" fill="#14213d"/><path d="M60 69q9 8 18 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="95" r="9" fill="#14213d"/><circle cx="50" cy="95" r="3.5" fill="#ffcc29"/><circle cx="86" cy="95" r="9" fill="#14213d"/><circle cx="86" cy="95" r="3.5" fill="#ffcc29"/><g transform="rotate(18 100 24)"><path d="M92 10h16a3 3 0 0 1 3 3v13l-11 8-11-8V13a3 3 0 0 1 3-3z" fill="#e3262d"/><circle cx="100" cy="16" r="2.2" fill="#fff"/></g></svg>';
+const K_CHIPS = ["🎁 Busco un regalo", "🧴 Algo de belleza", "🏋️ Kits de fitness", "🚚 ¿Envían a mi ciudad?", "💳 ¿Cómo pago?", "💰 Algo hasta 300 mil"];
+const K_HOLA = "¡Mba'éichapa! Soy Karrito 🛒 Contame para quién es o qué buscás (regalo, belleza, fitness, salud, tecno, hogar…) y te ayudo a elegir el kit justo.";
+let kconv = [];
+try { kconv = JSON.parse(sessionStorage.getItem("karrito") || "[]"); } catch (e) {}
+const kguardar = () => { try { sessionStorage.setItem("karrito", JSON.stringify(kconv.slice(-20))); } catch (e) {} };
+$("karritoBtn").innerHTML = KARRITO_SVG; $("kcara").innerHTML = KARRITO_SVG;
+$("kchips").innerHTML = K_CHIPS.map((c) => `<button type="button">${c}</button>`).join("");
+$("kchips").querySelectorAll("button").forEach((b) => b.onclick = () => kpreguntar(b.textContent.replace(/^\S+\s/, "")));
+
+function ktarjeta(id) {
+  const k = kits.find((x) => String(x.id) === String(id)); if (!k) return "";
+  const foto = k.fotos[0] ? `<img src="${k.fotos[0]}" alt="" referrerpolicy="no-referrer" onerror="this.outerHTML='<span class=sinfoto></span>'">` : '<span class="sinfoto"></span>';
+  return `<div class="kkit" data-kit="${k.id}">${foto}<div class="txt"><b onclick="abrirFicha('${k.id}')">${escHTML(k.nombre)}</b><span class="kp">${gs(k.precio)}</span></div><span class="abajo">${botonKit(k.id)}</span></div>`;
+}
+function kpintar() {
+  const m = [{ rol: "karrito", texto: K_HOLA }, ...kconv];
+  $("kmsgs").innerHTML = m.map((x) => `<div class="kmsg ${x.rol === "cliente" ? "yo" : ""}">${escHTML(x.texto)}</div>${(x.kits || []).map(ktarjeta).join("")}`).join("");
+  $("kchips").hidden = kconv.length > 0;
+  $("kmsgs").scrollTop = $("kmsgs").scrollHeight;
+}
+function kabrir() {
+  document.querySelector(".k-globo")?.remove();
+  kpintar(); $("kchat").hidden = false;
+  if (matchMedia("(min-width: 700px)").matches) $("ktexto").focus();
+}
+function kcerrar() { $("kchat").hidden = true; $("karritoBtn").focus(); }
+async function kpreguntar(texto) {
+  texto = texto.trim(); if (!texto) return;
+  kconv.push({ rol: "cliente", texto }); kguardar(); kpintar();
+  $("kmsgs").insertAdjacentHTML("beforeend", '<div class="kescribe" aria-label="Karrito está escribiendo"><i></i><i></i><i></i></div>');
+  $("kmsgs").scrollTop = $("kmsgs").scrollHeight;
+  let r;
+  try {
+    const resp = await fetch(KARRITO_API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mensajes: kconv.map(({ rol, texto }) => ({ rol, texto })), ciudad }) });
+    r = await resp.json();
+  } catch (e) { r = { texto: "Uy, se cortó la conexión. Probá de nuevo o escribinos al WhatsApp 0992 500 100." }; }
+  kconv.push({ rol: "karrito", texto: r.texto || "No te entendí bien, ¿me lo decís de otra forma?", kits: (r.kits || []).filter((id) => kits.some((k) => String(k.id) === String(id))) });
+  kguardar(); kpintar();
+}
+$("karritoBtn").onclick = kabrir;
+$("kcerrar").onclick = kcerrar;
+$("kform").onsubmit = (e) => { e.preventDefault(); const t = $("ktexto").value; $("ktexto").value = ""; kpreguntar(t); };
+addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("kchat").hidden) { e.stopImmediatePropagation(); kcerrar(); } }, true);
+// La primera vez, Karrito saluda con un globito unos segundos.
+setTimeout(() => {
+  let visto = false; try { visto = sessionStorage.getItem("kglobo"); sessionStorage.setItem("kglobo", "1"); } catch (e) {}
+  if (visto || !$("kchat").hidden || $("lista").hidden) return;
+  $("karritoBtn").insertAdjacentHTML("beforeend", '<span class="k-globo">¿Te ayudo a elegir?</span>');
+  setTimeout(() => document.querySelector(".k-globo")?.remove(), 7000);
+}, 5000);
 </script>
 </body>
 </html>

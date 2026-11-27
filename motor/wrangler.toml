@@ -13,3 +13,7 @@ id = "b8cd18ddab964487a8f8f594889d263b"
 # Corre cada 10 minutos: lee 40 tiendas por vez, así los 308 productos se actualizan cada hora.
 [triggers]
 crons = ["*/10 * * * *"]
+
+# IA de Cloudflare: respaldo de Karrito cuando no hay clave de Claude (ANTHROPIC_API_KEY).
+[ai]
+binding = "AI"
