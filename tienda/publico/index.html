@@ -294,8 +294,15 @@
   .garantias { display: grid; gap: 8px; margin: 22px 0 0; padding: 14px 16px; background: #fff; border: 1px solid var(--borde); border-radius: var(--radio); font-size: 14.5px; color: #3c4a44; }
   .garantias div { display: flex; gap: 10px; align-items: flex-start; } .garantias b { color: var(--marca); }
   /* ---------- Karrito: la mascota que ayuda a elegir ---------- */
-  .paginas .karrito-btn { position: relative; flex: 0 0 auto; width: 50px; height: 50px; padding: 0; border-radius: 50%; border: 3px solid var(--tinta); background: var(--cartel); display: grid; place-items: center; cursor: pointer; }
-  .paginas .karrito-btn svg { width: 38px; height: 38px; }
+  .paginas .karrito-btn { position: relative; flex: 0 0 auto; display: flex; align-items: center; gap: 7px; height: 52px; padding: 0 14px 0 5px; border-radius: 999px; border: 2.5px solid var(--tinta); background: var(--cartel); color: var(--tinta); cursor: pointer; text-align: left; }
+  .paginas .karrito-btn .kico { width: 40px; height: 40px; border-radius: 50%; background: #fff; display: grid; place-items: center; flex: 0 0 auto; }
+  .paginas .karrito-btn svg { width: 33px; height: 33px; }
+  .paginas .karrito-btn .ktxt { font-size: 15.5px; font-weight: 800; line-height: 1.05; white-space: nowrap; }
+  .paginas .karrito-btn .ktxt small { display: block; font-size: 11.5px; font-weight: 700; color: var(--rio2); letter-spacing: .2px; }
+  @media (max-width: 430px) { body[data-cols="1"] .txt-ant { display: none; } body[data-cols="1"] #ant { flex: 0 0 52px; } body[data-cols="1"] #num { display: none; } }
+  @media (max-width: 400px) { body[data-cols="1"] .paginas { gap: 6px; } body[data-cols="1"] #ant { flex-basis: 44px; } body[data-cols="1"] #sig { font-size: 15.5px; padding-inline: 4px; }
+    .paginas .karrito-btn { gap: 5px; padding: 0 10px 0 4px; } .paginas .karrito-btn .kico { width: 36px; height: 36px; } .paginas .karrito-btn svg { width: 30px; height: 30px; } .paginas .karrito-btn .ktxt { font-size: 14px; } }
+  @media (max-width: 340px) { body[data-cols="1"] #ant { flex-basis: 38px; } body[data-cols="1"] #sig { font-size: 14px; } .paginas .karrito-btn .ktxt { font-size: 13px; } .paginas .karrito-btn .ktxt small { display: none; } .paginas .karrito-btn { padding-right: 10px; } }
   .kchat:not([hidden]) ~ #ficha { z-index: 45; } .aviso-toast { z-index: 50; }
   .karrito-btn:focus-visible, .kchat button:focus-visible, .kchat input:focus-visible { outline: 3px solid var(--rio); outline-offset: 2px; }
   .paginas .k-globo { position: absolute; right: 0; bottom: 60px; z-index: 5; background: var(--tinta); color: #fff; font-size: 14px; font-weight: 700; white-space: nowrap; padding: 8px 12px; border-radius: 14px 14px 4px 14px; box-shadow: 0 6px 18px rgba(20,33,61,.3); animation: kglobo .3s ease-out; pointer-events: none; }
@@ -349,10 +356,10 @@
   <div class="cats" id="cats"></div>
   <div id="kits"></div>
   <div class="paginas">
-    <button id="ant">◀ Atrás</button>
+    <button id="ant" aria-label="Atrás">◀<span class="txt-ant"> Atrás</span></button>
     <span id="num"></span>
     <button id="sig">Siguientes ▶</button>
-    <button type="button" class="karrito-btn" id="karritoBtn" aria-label="Preguntale a Karrito: te ayuda a elegir"></button>
+    <button type="button" class="karrito-btn" id="karritoBtn" aria-label="Preguntale a Karrito: te ayuda a elegir"><span class="kico"></span><span class="ktxt"><small>Karrito</small>¿Te ayudo?</span></button>
   </div>
 </main>
 
@@ -861,7 +868,7 @@ const K_HOLA = "¡Mba'éichapa! Soy Karrito 🛒 Contame para quién es o qué b
 let kconv = [];
 try { kconv = JSON.parse(sessionStorage.getItem("karrito") || "[]"); } catch (e) {}
 const kguardar = () => { try { sessionStorage.setItem("karrito", JSON.stringify(kconv.slice(-20))); } catch (e) {} };
-$("karritoBtn").innerHTML = KARRITO_SVG; $("kcara").innerHTML = KARRITO_SVG;
+$("karritoBtn").querySelector(".kico").innerHTML = KARRITO_SVG; $("kcara").innerHTML = KARRITO_SVG;
 $("kchips").innerHTML = K_CHIPS.map((c) => `<button type="button">${c}</button>`).join("");
 $("kchips").querySelectorAll("button").forEach((b) => b.onclick = () => kpreguntar(b.textContent.replace(/^\S+\s/, "")));
 
