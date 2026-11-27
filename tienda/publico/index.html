@@ -351,6 +351,14 @@
   @media (max-width: 440px) { body[data-cols="1"] .arriba.con-pedido .buscar-btn { width: 38px; height: 38px; } body[data-cols="1"] .arriba.con-pedido .carrito-btn .mp { display: none; } }
   .foto .cod { position: absolute; left: 6px; bottom: 6px; z-index: 1; background: #fffffff0; color: var(--tinta); border-radius: 6px; padding: 1px 6px; font-size: 11px; font-weight: 800; letter-spacing: .2px; }
   .fcod { display: inline-block; margin: 0 0 2px; font-size: 13px; font-weight: 800; color: var(--gris); }
+  /* ---------- Pedido sin WhatsApp (PC) ---------- */
+  .boton.por-correo { margin-top: 10px; background: #fff; color: var(--rio); box-shadow: inset 0 0 0 2px var(--rio); font-size: 16px; font-weight: 700; padding: 13px; }
+  .caja-correo { margin-top: 10px; background: var(--rioclaro); border-radius: 14px; padding: 12px; }
+  .caja-correo label { margin-top: 4px; } .caja-correo input { width: 100%; margin-bottom: 8px; }
+  .boton.enviar-correo { background: var(--rio); color: #fff; font-size: 18px; font-weight: 800; padding: 14px; }
+  .boton.enviar-correo:disabled { opacity: .7; }
+  .listo-correo { text-align: center; color: var(--tinta); } .listo-correo .grande { font-size: 19px; font-weight: 800; margin: 4px 0 6px; } .listo-correo p { margin: 0 0 6px; }
+  @media (hover: hover) and (pointer: fine) and (min-width: 900px) { .boton.por-correo { background: var(--rio); color: #fff; box-shadow: none; font-size: 18px; font-weight: 800; } }
 </style>
 </head>
 <body>
@@ -455,6 +463,15 @@
   <div class="total" id="total"></div>
   <p class="error" id="error" hidden></p>
   <button class="boton enviar" id="enviar" style="margin-top:12px"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.08c-.24.68-1.42 1.3-1.95 1.34-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.92-4.66-4.1-.13-.18-1.11-1.48-1.11-2.83 0-1.34.71-2 .96-2.28.25-.27.54-.34.72-.34h.52c.17 0 .39-.06.61.47.24.57.8 1.96.87 2.1.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.35-.41.47-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.13.43.11.59-.07.16-.18.68-.79.86-1.07.18-.27.36-.22.61-.13.25.09 1.6.75 1.87.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg> Enviar pedido por WhatsApp</span><small>Te respondemos para confirmar tu pedido</small></button>
+  <button type="button" class="boton por-correo" id="porCorreo">📧 ¿No tenés WhatsApp acá? Enviá el pedido desde la página</button>
+  <div class="caja-correo" id="cajaCorreo" hidden>
+    <label for="celular">Tu celular, para confirmarte el pedido</label>
+    <input id="celular" type="tel" inputmode="tel" autocomplete="tel" placeholder="0981 123 456">
+    <label for="correo">Tu correo (opcional)</label>
+    <input id="correo" type="email" inputmode="email" autocomplete="email" placeholder="nombre@gmail.com">
+    <p class="error" id="errorCorreo" hidden></p>
+    <button type="button" class="boton enviar-correo" id="enviarCorreo">📧 Enviar pedido desde acá</button>
+  </div>
   <div class="garantias">
     <div>✔ <span><b>Productos originales</b>, comprados en tiendas de Ciudad del Este y entregados sellados.</span></div>
     <div>🔒 <span><b>No pagás nada en esta página</b>: primero te confirmamos todo por WhatsApp.</span></div>
@@ -889,14 +906,14 @@ $("gps").onclick = () => {
   }, { enableHighAccuracy: true, timeout: 15000 });
 };
 
-$("enviar").onclick = () => {
+function armarPedido() {
   const nombre = $("nombre").value.trim(), dir = $("direccion").value.trim();
   const zona = barrio || $("otroBarrio").value.trim();
   const falta = !enCarrito().length ? "Tu pedido está vacío. Tocá “➕ Agregar otro kit”." : !nombre ? "Escribí tu nombre." : !ciudad ? "Tocá tu ciudad." : !zona ? "Tocá tu barrio (o escribilo en “Otro barrio”)."
     : !ubicacion ? "Falta tu ubicación: tocá el botón azul “📍 Tocá acá para mandar tu ubicación”. Sin ubicación no se puede completar el pedido."
     : !pago ? "Elegí cómo vas a pagar." : "";
   if (falta && !ubicacion && nombre && ciudad && zona) $("gps").scrollIntoView({ behavior: "smooth", block: "center" });
-  if (falta) { $("error").textContent = "⚠️ " + falta; $("error").hidden = false; return; }
+  if (falta) { $("error").textContent = "⚠️ " + falta; $("error").hidden = false; $("error").scrollIntoView({ behavior: "smooth", block: "center" }); return null; }
   $("error").hidden = true;
   const texto = [
     "¡Hola! Quiero hacer este pedido:",
@@ -913,9 +930,42 @@ $("enviar").onclick = () => {
     `📍 Ubicación: ${ubicacion} (a ${Math.round(km)} km del centro)`,
     lejos() ? `💳 Pago: transferencia de los productos + envío al recibir` : `💳 Pago: ${pago}`,
   ].filter(Boolean).join("\n");
+  return texto;
+}
+$("enviar").onclick = () => {
+  const texto = armarPedido(); if (!texto) return;
   carrito = []; guardar();   // el pedido ya salió: el carrito queda vacío para la próxima
   avisar("¡Aguyje! Abrimos WhatsApp con tu pedido");
   location.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
+};
+// --- Sin WhatsApp (por ejemplo en la PC): el pedido se guarda en el motor y llega por correo ---
+const PEDIDO_API = "https://motor-kits.gedepla.workers.dev/pedido";
+const CORREO_PEDIDOS = "gedepla@gmail.com";
+$("porCorreo").onclick = () => { $("cajaCorreo").hidden = false; $("celular").focus(); $("cajaCorreo").scrollIntoView({ behavior: "smooth", block: "center" }); };
+["celular", "correo"].forEach((id) => $(id).addEventListener("input", () => { $("errorCorreo").hidden = true; }));
+$("enviarCorreo").onclick = async () => {
+  const texto = armarPedido(); if (!texto) return;
+  const celular = $("celular").value.trim(), correo = $("correo").value.trim();
+  if (celular.replace(/\D/g, "").length < 6) { $("errorCorreo").textContent = "⚠️ Escribí tu celular para que te confirmemos el pedido."; $("errorCorreo").hidden = false; $("celular").focus(); return; }
+  if (correo && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)) { $("errorCorreo").textContent = "⚠️ Revisá tu correo, parece incompleto."; $("errorCorreo").hidden = false; $("correo").focus(); return; }
+  $("errorCorreo").hidden = true;
+  const btn = $("enviarCorreo"); btn.disabled = true; btn.textContent = "Enviando tu pedido…";
+  let numero = null, llegoCorreo = false;
+  try {
+    const r = await fetch(PEDIDO_API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ texto, celular, correo }) }).then((r) => r.json());
+    if (r.ok) numero = r.numero;
+  } catch (e) {}
+  try {
+    const r = await fetch(`https://formsubmit.co/ajax/${CORREO_PEDIDOS}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ _subject: `🛒 Nuevo pedido web${numero ? " N° " + numero : ""} · Tu Centro de Compras`, _template: "box", _captcha: "false", ...(correo ? { _replyto: correo } : {}),
+        Pedido: texto, Celular: celular, Correo: correo || "(no dejó)" }) }).then((r) => r.json());
+    llegoCorreo = String(r.success) === "true";
+  } catch (e) {}
+  btn.disabled = false; btn.textContent = "📧 Enviar pedido desde acá";
+  if (!numero && !llegoCorreo) { $("errorCorreo").textContent = "⚠️ No se pudo enviar. Revisá tu internet y probá de nuevo, o llamanos al 0992 500 100."; $("errorCorreo").hidden = false; return; }
+  carrito = []; guardar(); pintarCarrito();
+  $("cajaCorreo").innerHTML = `<div class="listo-correo"><p class="grande">¡Aguyje! Recibimos tu pedido${numero ? ` N° ${numero}` : ""}.</p><p>Te vamos a llamar o escribir al <b>${escHTML(celular)}</b> para confirmarlo. No pagás nada hasta que te confirmemos.</p></div>`;
+  avisar("✅ Pedido enviado");
 };
 // el aviso rojo se borra apenas la persona corrige algo
 document.querySelectorAll("#pedido input, #pedido textarea, [data-pago], [data-ciudad], #gps").forEach((e) => e.addEventListener(e.tagName === "BUTTON" ? "click" : "input", () => $("error").hidden = true));

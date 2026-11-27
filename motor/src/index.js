@@ -9,6 +9,8 @@
 //  GET /planilla.json?clave=TU_CLAVE → kits, productos y proveedores (para archivar)
 //  GET /planilla?clave=TU_CLAVE   → los 260 kits con foto, proveedor y códigos (en vivo)
 //  GET /planilla.csv?clave=TU_CLAVE → lo mismo para Excel
+//  POST /pedido      → pedido enviado desde la web (sin WhatsApp)
+//  GET /pedidos?clave=TU_CLAVE → pedidos que llegaron por la web
 //  POST /chat        → Karrito, la mascota que responde a los clientes
 import { actualizar } from "./motor.js";
 import { paginaCompras, proveedorDe } from "./compras.js";
@@ -16,6 +18,7 @@ import { PRODUCTOS } from "./productos.js";
 import { TODOS as KITS } from "./sueltos.js";
 import { filasPlanilla, paginaPlanilla, planillaCSV } from "./planilla.js";
 import { responderChat } from "./chat.js";
+import { guardarPedido, paginaPedidos } from "./pedidos.js";
 
 const CORS = { "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=300" };
 const gs = (n) => (n == null ? "–" : n.toLocaleString("es-PY") + " Gs");
@@ -64,6 +67,17 @@ async function foto(url, ctx) {
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
+    if (url.pathname === "/pedido") {
+      const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" };
+      if (req.method === "OPTIONS") return new Response(null, { headers: cors });
+      if (req.method !== "POST") return new Response("Usá POST", { status: 405, headers: cors });
+      const r = await guardarPedido(req, env);
+      return Response.json(r, { status: r.ok ? 200 : 400, headers: { ...cors, "Cache-Control": "no-store" } });
+    }
+    if (url.pathname === "/pedidos") {
+      if (!env.CLAVE || url.searchParams.get("clave") !== env.CLAVE) return new Response("Clave incorrecta", { status: 401 });
+      return new Response(await paginaPedidos(env, env.CLAVE, url.origin), { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
+    }
     if (url.pathname === "/chat") {
       const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" };
       if (req.method === "OPTIONS") return new Response(null, { headers: cors });
