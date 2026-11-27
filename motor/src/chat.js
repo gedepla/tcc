@@ -37,6 +37,55 @@ export function catalogoTexto(catalogo, corto = false) {
     .join("\n");
 }
 
+// Para la IA gratis de Cloudflare: se manda solo lo relacionado con lo que pregunta el cliente,
+// así cada consulta gasta menos y rinden más preguntas por día sin pagar.
+const sinTilde = (t) => String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const PISTAS = {
+  regalos: ["regalo", "regalar", "cumple", "aniversario", "navidad", "dia de la madre", "dia del padre", "sorpresa", "novia", "novio", "esposa", "esposo", "mama", "papa", "amiga", "amigo"],
+  piel: ["belleza", "piel", "cara", "crema", "serum", "arruga", "manchas", "acne", "skin", "maquill", "facial", "protector", "mujer", "novia", "mama"],
+  cabello: ["pelo", "cabello", "shampoo", "caida", "calvicie", "barba", "belleza"],
+  perfumes: ["perfume", "fragancia", "olor", "colonia", "arab", "regalo", "belleza"],
+  fitness: ["gym", "gimnasio", "entren", "musculo", "proteina", "whey", "creatina", "fitness", "deporte", "correr", "pre entreno", "bajar de peso", "adelgaz", "dieta"],
+  gym: ["hombre", "gym", "papa", "novio", "esposo", "barba", "testosterona"],
+  longevidad: ["salud", "vitamina", "energia", "cansancio", "defensas", "dormir", "memoria", "articulacion", "colageno", "omega", "abuelo", "abuela"],
+  tecno: ["tecno", "celular", "cargador", "auricular", "parlante", "cable", "reloj", "smart", "router", "internet", "camara", "computadora"],
+  hogar: ["hogar", "casa", "cocina", "terere", "mate", "termo", "jarra", "limpieza"],
+  mascotas: ["perro", "gato", "mascota", "cachorro"],
+  bebe: ["bebe", "nino", "nina", "embaraz", "panal", "hijo"],
+};
+const VACIAS = new Set("para algo busco quiero tienen tenes hasta como cuanto sale este esta esos unas unos algun alguna donde cual cuales porque pero tambien mucho poco favor hola buenas gracias necesito regalo kits kit".split(" "));
+function presupuesto(texto) {
+  const m = sinTilde(texto).match(/(\d{2,3}(?:[.,]\d{3})*)\s*(mil|k|gs|guaranies)?/g) || [];
+  const montos = m.map((x) => {
+    const n = parseInt(x.replace(/[^\d]/g, ""), 10);
+    return /mil|k/.test(x) || n < 1000 ? n * 1000 : n;
+  }).filter((n) => n >= 30000 && n <= 5000000);
+  return montos.length ? Math.max(...montos) : null;
+}
+export function catalogoRelacionado(catalogo, mensajes, max = 24) {
+  const visibles = catalogo.filter((k) => k.activo && k.precio);
+  const texto = sinTilde(mensajes.filter((m) => m.role === "user").slice(-3).map((m) => m.content).join(" "));
+  const palabras = texto.split(/[^a-z0-9ñ]+/).filter((w) => w.length >= 4 && !VACIAS.has(w));
+  const tope = presupuesto(texto);
+  const cats = Object.entries(PISTAS).filter(([, ps]) => ps.some((p) => texto.includes(p))).map(([c]) => c);
+  const puntaje = (k) => {
+    const nombre = sinTilde(k.nombre + " " + (k.productos || []).join(" "));
+    let p = cats.includes(k.categoria) ? 3 : 0;
+    for (const w of palabras) if (nombre.includes(w)) p += 2;
+    if (k.destacado) p += 0.5;
+    if (tope && k.precio > tope) p -= 4;
+    return p;
+  };
+  let lista = visibles.map((k) => [puntaje(k), k]).filter(([p]) => p > 0.5).sort((a, b) => b[0] - a[0]).map(([, k]) => k);
+  if (lista.length < 8) {
+    // Pregunta general (envíos, pagos) o sin coincidencias: los más vendidos y uno de cada categoría.
+    const extra = [...visibles.filter((k) => k.destacado), ...Object.keys(CATEGORIAS).map((c) => visibles.find((k) => k.categoria === c)).filter(Boolean)]
+      .filter((k) => !tope || k.precio <= tope);
+    for (const k of extra) if (!lista.includes(k)) lista.push(k);
+  }
+  return lista.slice(0, max);
+}
+
 function instrucciones(catalogo, corto) {
   return `Sos Karrito, la mascota de "Tu Centro de Compras" (TCC): un carrito de compras simpático que atiende a los clientes en la tienda web.
 
@@ -55,7 +104,7 @@ TU TRABAJO
 - Ayudá SIEMPRE a elegir. Si piden un regalo, algo de belleza, fitness, salud, tecnología, hogar, mascotas, bebé o lo que sea, recomendá de 1 a 3 opciones del catálogo que de verdad sirvan, explicando en pocas palabras por qué cada una (para quién es, qué trae).
 - Si falta un dato clave (para quién es, presupuesto, ocasión), recomendá igual algo y hacé UNA pregunta corta para afinar.
 - Si piden algo que no está en el catálogo, decilo con honestidad y ofrecé lo más parecido que sí haya.
-- Usá los precios EXACTOS del catálogo. Nunca inventes kits, productos ni precios.
+- Usá los precios EXACTOS del catálogo. Si lo que busca no aparece en la lista, decí que por ahora no lo tenemos y ofrecé lo más parecido de la lista o el WhatsApp. Nunca inventes kits, productos ni precios.
 - Cada vez que recomiendes un kit, escribí su código entre corchetes así: [#123]. La tienda lo convierte en una tarjeta con el botón "Lo quiero".
 - No des consejos médicos: para salud o suplementos, sugerí consultar con un profesional si tiene alguna condición.
 
@@ -94,7 +143,7 @@ async function conClaude(env, catalogo, mensajes) {
 
 async function conCloudflare(env, catalogo, mensajes) {
   const r = await env.AI.run(MODELO_CF, {
-    messages: [{ role: "system", content: instrucciones(catalogo, true) }, ...mensajes],
+    messages: [{ role: "system", content: instrucciones(catalogoRelacionado(catalogo, mensajes), false) }, ...mensajes],
     max_tokens: 400,
   });
   return String(r?.response || "").trim();
@@ -120,7 +169,7 @@ export async function responderChat(req, env) {
   if (env.ANTHROPIC_API_KEY) {
     try { texto = await conClaude(env, catalogo, mensajes); motor = "claude"; } catch (e) { console.log(String(e)); }
   }
-  if (!texto && env.AI) {
+  if (!texto && env.AI) {   // gratis: plan Free de Cloudflare, sin tarjeta; si se pasa del límite diario, no cobra: falla y va al WhatsApp
     try { texto = await conCloudflare(env, catalogo, mensajes); motor = "cloudflare"; } catch (e) { console.log(String(e)); }
   }
   if (!texto) return { texto: `Uy, ahora no puedo responder. Escribinos al WhatsApp ${WHATSAPP} y te atendemos al toque.`, kits: [], whatsapp: true };
