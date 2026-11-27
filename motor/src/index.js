@@ -18,7 +18,7 @@ import { PRODUCTOS } from "./productos.js";
 import { TODOS as KITS } from "./sueltos.js";
 import { filasPlanilla, paginaPlanilla, planillaCSV } from "./planilla.js";
 import { responderChat } from "./chat.js";
-import { guardarPedido, paginaPedidos } from "./pedidos.js";
+import { guardarPedido, paginaPedidos, avisarPorCorreo } from "./pedidos.js";
 
 const CORS = { "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=300" };
 const gs = (n) => (n == null ? "–" : n.toLocaleString("es-PY") + " Gs");
@@ -71,8 +71,17 @@ export default {
       const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" };
       if (req.method === "OPTIONS") return new Response(null, { headers: cors });
       if (req.method !== "POST") return new Response("Usá POST", { status: 405, headers: cors });
-      const r = await guardarPedido(req, env);
+      const { pedido, ...r } = await guardarPedido(req, env);
+      if (pedido) r.correo = await avisarPorCorreo(env, pedido, url.origin);
       return Response.json(r, { status: r.ok ? 200 : 400, headers: { ...cors, "Cache-Control": "no-store" } });
+    }
+    if (url.pathname === "/config-correo") {
+      if (!env.CLAVE || url.searchParams.get("clave") !== env.CLAVE) return new Response("Clave incorrecta", { status: 401 });
+      const cfg = { url: url.searchParams.get("url") || "", token: url.searchParams.get("token") || "" };
+      if (!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(cfg.url)) return new Response("El link tiene que ser el de la app web de Apps Script (termina en /exec)", { status: 400 });
+      await env.CATALOGO.put("config:correo", JSON.stringify(cfg));
+      const prueba = await avisarPorCorreo(env, { numero: "PRUEBA", texto: "✅ Pedidos web activados: desde ahora cada pedido que se envíe desde la página te llega a este correo.", celular: "-", correo: "" }, url.origin);
+      return Response.json({ ok: true, correoDePrueba: prueba });
     }
     if (url.pathname === "/pedidos") {
       if (!env.CLAVE || url.searchParams.get("clave") !== env.CLAVE) return new Response("Clave incorrecta", { status: 401 });

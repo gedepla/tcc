@@ -938,9 +938,8 @@ $("enviar").onclick = () => {
   avisar("¡Aguyje! Abrimos WhatsApp con tu pedido");
   location.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
 };
-// --- Sin WhatsApp (por ejemplo en la PC): el pedido se guarda en el motor y llega por correo ---
+// --- Sin WhatsApp (por ejemplo en la PC): el pedido se guarda en el motor y el motor lo manda a tu Gmail ---
 const PEDIDO_API = "https://motor-kits.gedepla.workers.dev/pedido";
-const CORREO_PEDIDOS = "gedepla@gmail.com";
 $("porCorreo").onclick = () => { $("cajaCorreo").hidden = false; $("celular").focus(); $("cajaCorreo").scrollIntoView({ behavior: "smooth", block: "center" }); };
 ["celular", "correo"].forEach((id) => $(id).addEventListener("input", () => { $("errorCorreo").hidden = true; }));
 $("enviarCorreo").onclick = async () => {
@@ -950,19 +949,13 @@ $("enviarCorreo").onclick = async () => {
   if (correo && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)) { $("errorCorreo").textContent = "⚠️ Revisá tu correo, parece incompleto."; $("errorCorreo").hidden = false; $("correo").focus(); return; }
   $("errorCorreo").hidden = true;
   const btn = $("enviarCorreo"); btn.disabled = true; btn.textContent = "Enviando tu pedido…";
-  let numero = null, llegoCorreo = false;
+  let numero = null;
   try {
     const r = await fetch(PEDIDO_API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ texto, celular, correo }) }).then((r) => r.json());
     if (r.ok) numero = r.numero;
   } catch (e) {}
-  try {
-    const r = await fetch(`https://formsubmit.co/ajax/${CORREO_PEDIDOS}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ _subject: `🛒 Nuevo pedido web${numero ? " N° " + numero : ""} · Tu Centro de Compras`, _template: "box", _captcha: "false", ...(correo ? { _replyto: correo } : {}),
-        Pedido: texto, Celular: celular, Correo: correo || "(no dejó)" }) }).then((r) => r.json());
-    llegoCorreo = String(r.success) === "true";
-  } catch (e) {}
   btn.disabled = false; btn.textContent = "📧 Enviar pedido desde acá";
-  if (!numero && !llegoCorreo) { $("errorCorreo").textContent = "⚠️ No se pudo enviar. Revisá tu internet y probá de nuevo, o llamanos al 0992 500 100."; $("errorCorreo").hidden = false; return; }
+  if (!numero) { $("errorCorreo").textContent = "⚠️ No se pudo enviar. Revisá tu internet y probá de nuevo, o llamanos al 0992 500 100."; $("errorCorreo").hidden = false; return; }
   carrito = []; guardar(); pintarCarrito();
   $("cajaCorreo").innerHTML = `<div class="listo-correo"><p class="grande">¡Aguyje! Recibimos tu pedido${numero ? ` N° ${numero}` : ""}.</p><p>Te vamos a llamar o escribir al <b>${escHTML(celular)}</b> para confirmarlo. No pagás nada hasta que te confirmemos.</p></div>`;
   avisar("✅ Pedido enviado");

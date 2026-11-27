@@ -3,7 +3,8 @@
 // ============================================================
 //  POST /pedido  { texto, celular, correo } → guarda el pedido y devuelve su número
 //  GET  /pedidos?clave=TU_CLAVE → lista de pedidos recibidos por la web
-//  El aviso por correo a gedepla@gmail.com lo manda la tienda (FormSubmit) apenas se envía.
+//  GET  /config-correo?clave=TU_CLAVE&url=…&token=… → guarda el script de Google (Apps Script)
+//  que manda cada pedido a tu Gmail. El link y el token quedan en la base del motor, no en el código.
 
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
@@ -19,7 +20,19 @@ export async function guardarPedido(req, env) {
   const pedido = { numero, fecha: new Date().toISOString(), texto, celular, correo, ip: req.headers.get("CF-Connecting-IP") || "" };
   await env.CATALOGO.put("pedidos:ultimo", String(numero));
   await env.CATALOGO.put("pedido:" + String(numero).padStart(6, "0"), JSON.stringify(pedido), { expirationTtl: 60 * 60 * 24 * 180 });
-  return { ok: true, numero };
+  return { ok: true, numero, pedido };
+}
+
+// Manda el pedido a tu Gmail a través de tu script de Google (si está configurado).
+export async function avisarPorCorreo(env, pedido, origen) {
+  const cfg = JSON.parse((await env.CATALOGO.get("config:correo")) || "null");
+  if (!cfg?.url) return false;
+  const link = env.CLAVE ? `${origen}/pedidos?clave=${encodeURIComponent(env.CLAVE)}` : "";
+  try {
+    const r = await fetch(cfg.url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: cfg.token, link, ...pedido }), redirect: "follow" });
+    const t = await r.text();
+    return t.trim() === "ok";
+  } catch { return false; }
 }
 
 export async function paginaPedidos(env, clave, origen) {
